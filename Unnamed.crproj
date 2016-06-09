@@ -1,0 +1,16 @@
+<project outputDir="D:\Home\PixelMagic\PixelMagic\bin\Debug\Confused" baseDir="D:\Home\PixelMagic\PixelMagic\bin\Debug" xmlns="http://confuser.codeplex.com">
+  <module path="PixelMagic.exe">
+    <rule pattern="true" preset="normal" inherit="false">
+      <protection id="anti ildasm" />
+      <protection id="anti tamper" />
+      <protection id="constants" />
+      <protection id="ctrl flow" />
+      <protection id="anti dump" action="remove" />
+      <protection id="anti debug" />
+      <protection id="invalid metadata" action="remove" />
+      <protection id="ref proxy" />
+      <protection id="resources" action="remove" />
+      <protection id="rename" action="remove" />
+    </rule>
+  </module>
+</project>
