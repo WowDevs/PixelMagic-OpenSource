@@ -1,4 +1,6 @@
-﻿using PixelMagic.Helpers;
+﻿// winifix@gmail.com
+
+using PixelMagic.Helpers;
 using System.Drawing;
 using System.Threading;
 
@@ -29,7 +31,7 @@ namespace PixelMagic.Rotation
         {   
 			if (combatRoutine.Type == RotationType.SingleTarget)  // Do Single Target Stuff here
             {
-                if (WoW.HasTarget && !WoW.TargetIsFriend && !WoW.PlayerIsCasting)
+                if (WoW.HasTarget && WoW.TargetIsEnemy)
                 {
                     if (WoW.CanCast(3) && WoW.Focus >= 40) // Kill Command
                     {

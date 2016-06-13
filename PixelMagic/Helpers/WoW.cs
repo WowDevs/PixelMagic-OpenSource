@@ -193,6 +193,14 @@ namespace PixelMagic.Helpers
             }
         }
 
+        public static bool TargetIsEnemy
+        {
+            get
+            {
+                return !TargetIsFriend;
+            }
+        }
+
         public static int HealthPercent
         {
             get
@@ -292,19 +300,15 @@ namespace PixelMagic.Helpers
 
         public static bool CanCast(int spellNoInArrayOfSpells)
         {
-            if (IsSpellOnCooldown(spellNoInArrayOfSpells) == true)
-            {
-                //Log.Write("Spell No: " + spellNoInArrayOfSpells + " is on CD...", Color.Red);
+            if (PlayerIsCasting == true)
                 return false;
-            }
+
+            if (IsSpellOnCooldown(spellNoInArrayOfSpells) == true)
+                return false;
 
             if (IsSpellInRange(spellNoInArrayOfSpells) == false)
-            {
-                //Log.Write("Spell No: " + spellNoInArrayOfSpells + " is not in range...", Color.Red);
                 return false;
-            }
 
-            //Log.Write("Spell No: " + spellNoInArrayOfSpells + " is in range and not on CD...", Color.Green);
             return true;
         }
 

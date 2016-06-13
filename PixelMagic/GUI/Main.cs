@@ -491,7 +491,16 @@ namespace PixelMagic.GUI
 
                     using (StreamReader sr = new StreamReader(ConfigFile.LastRotation))
                     {
-                        rotationSource = Encryption.Encrypt(sr.ReadToEnd());
+                        string contents = sr.ReadToEnd();
+
+                        string line1 = contents.Split('\r')[0].Trim();
+
+                        if (!line1.Contains("@"))
+                        {
+                            throw new Exception("You are not permitted to encrypt a combat routine if you have not yet specified an email address on the top line of the routine");
+                        }
+
+                        rotationSource = Encryption.Encrypt(contents);
                     }
 
                     using (StreamWriter sw = new StreamWriter(ConfigFile.LastRotation.Replace(".cs", ".enc")))
