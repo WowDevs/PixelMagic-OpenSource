@@ -2,29 +2,14 @@
 {
     public class Aura
     {
-        private int _auraId;
-        private string _auraName;
+        public int AuraId { get; }
 
-        public int AuraId
-        {
-            get
-            {
-                return _auraId;
-            }
-        }
-
-        public string AuraName
-        {
-            get
-            {
-                return _auraName;
-            }
-        }
+        public string AuraName { get; }
 
         public Aura(int auraId, string auraName)
         {
-            _auraId = auraId;
-            _auraName = auraName;
+            AuraId = auraId;
+            AuraName = auraName;
         }
     }
 }

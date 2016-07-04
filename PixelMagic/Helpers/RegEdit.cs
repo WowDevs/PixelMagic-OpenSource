@@ -12,7 +12,7 @@ namespace PixelMagic.Helpers
     {
         public static string HKLMReadKey(string keyName, string valueName)
         {
-            return (string)Registry.LocalMachine.OpenSubKey(keyName).GetValue(valueName);
+            return (string)Registry.LocalMachine.OpenSubKey(keyName)?.GetValue(valueName);
         }
     }
 }

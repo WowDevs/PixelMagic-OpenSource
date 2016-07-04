@@ -1,8 +1,10 @@
 ﻿// Credits: http://stackoverflow.com/questions/2450373/set-global-hotkeys-using-c-sharp
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace PixelMagic.Helpers
 {
@@ -18,14 +20,14 @@ namespace PixelMagic.Helpers
         /// <summary>
         /// Represents the window that is used internally to get the messages.
         /// </summary>
-        private class Window : NativeWindow, IDisposable
+        private sealed class Window : NativeWindow, IDisposable
         {
             private static int WM_HOTKEY = 0x0312;
 
             public Window()
             {
                 // create the handle for the window.
-                this.CreateHandle(new CreateParams());
+                CreateHandle(new CreateParams());
             }
 
             /// <summary>
@@ -46,8 +48,7 @@ namespace PixelMagic.Helpers
                     ModifierKeys modifier = (ModifierKeys)((int)m.LParam & 0xFFFF);
 
                     // invoke the event to notify the parent.
-                    if (KeyPressed != null)
-                        KeyPressed(this, new KeyPressedEventArgs(modifier, key));
+                    KeyPressed?.Invoke(this, new KeyPressedEventArgs(modifier, key));
                 }
             }
 
@@ -57,13 +58,13 @@ namespace PixelMagic.Helpers
 
             public void Dispose()
             {
-                this.DestroyHandle();
+                DestroyHandle();
             }
 
             #endregion
         }
 
-        private Window _window = new Window();
+        private readonly Window _window = new Window();
         private int _currentId;
 
         public KeyboardHook()
@@ -71,8 +72,7 @@ namespace PixelMagic.Helpers
             // register the event of the inner native window.
             _window.KeyPressed += delegate (object sender, KeyPressedEventArgs args)
             {
-                if (KeyPressed != null)
-                    KeyPressed(this, args);
+                KeyPressed?.Invoke(this, args);
             };
         }
 
@@ -81,6 +81,7 @@ namespace PixelMagic.Helpers
         /// </summary>
         /// <param name="modifier">The modifiers that are associated with the hot key.</param>
         /// <param name="key">The key itself that is associated with the hot key.</param>
+        /// <param name="forWhat"></param>
         public void RegisterHotKey(ModifierKeys modifier, Keys key, string forWhat)
         {
             // increment the counter.
@@ -120,24 +121,15 @@ namespace PixelMagic.Helpers
     /// </summary>
     public class KeyPressedEventArgs : EventArgs
     {
-        private ModifierKeys _modifier;
-        private Keys _key;
-
         internal KeyPressedEventArgs(ModifierKeys modifier, Keys key)
         {
-            _modifier = modifier;
-            _key = key;
+            Modifier = modifier;
+            Key = key;
         }
 
-        public ModifierKeys Modifier
-        {
-            get { return _modifier; }
-        }
+        public ModifierKeys Modifier { get; }
 
-        public Keys Key
-        {
-            get { return _key; }
-        }
+        public Keys Key { get; }
     }
 
     public static class Keyboard
@@ -152,75 +144,28 @@ namespace PixelMagic.Helpers
             return (ModifierKeys)Enum.Parse(typeof(ModifierKeys), keystr);
         }
 
-        public static ModifierKeys StartRotationModifierKey
-        {
-            get
-            {
-                return toModifier(ConfigFile.ReadValue("Hotkeys", "cmbStartRotationModifierKey"));
-            }
-        }
+        public static ModifierKeys StartRotationModifierKey => toModifier(ConfigFile.ReadValue("Hotkeys", "cmbStartRotationModifierKey"));
 
-        public static ModifierKeys StopRotationModifierKey
-        {
-            get
-            {
-                return toModifier(ConfigFile.ReadValue("Hotkeys", "cmbStopRotationModifierKey"));
-            }
-        }
+        public static ModifierKeys StopRotationModifierKey => toModifier(ConfigFile.ReadValue("Hotkeys", "cmbStopRotationModifierKey"));
 
-        public static ModifierKeys SingleTargetModifierKey
-        {
-            get
-            {
-                return toModifier(ConfigFile.ReadValue("Hotkeys", "cmbSingleTargetModifierKey"));
-            }
-        }
+        public static ModifierKeys SingleTargetModifierKey => toModifier(ConfigFile.ReadValue("Hotkeys", "cmbSingleTargetModifierKey"));
 
-        public static ModifierKeys AOEModifierKey
-        {
-            get
-            {
-                return toModifier(ConfigFile.ReadValue("Hotkeys", "cmbAOEModifierKey"));
-            }
-        }
+        public static ModifierKeys AOEModifierKey => toModifier(ConfigFile.ReadValue("Hotkeys", "cmbAOEModifierKey"));
 
-        public static Keys StartRotationKey
-        {
-            get
-            {
-                return toKey(ConfigFile.ReadValue("Hotkeys", "cmbStartRotationKey"));
-            }
-        }
+        public static Keys StartRotationKey => toKey(ConfigFile.ReadValue("Hotkeys", "cmbStartRotationKey"));
 
-        public static Keys StopRotationKey
-        {
-            get
-            {
-                return toKey(ConfigFile.ReadValue("Hotkeys", "cmbStopRotationKey"));
-            }
-        }
+        public static Keys StopRotationKey => toKey(ConfigFile.ReadValue("Hotkeys", "cmbStopRotationKey"));
 
-        public static Keys SingleTargetKey
-        {
-            get
-            {
-                return toKey(ConfigFile.ReadValue("Hotkeys", "cmbSingleTargetKey"));
-            }
-        }
+        public static Keys SingleTargetKey => toKey(ConfigFile.ReadValue("Hotkeys", "cmbSingleTargetKey"));
 
-        public static Keys AOEKey
-        {
-            get
-            {
-                return toKey(ConfigFile.ReadValue("Hotkeys", "cmbAOEKey"));
-            }
-        }
+        public static Keys AOEKey => toKey(ConfigFile.ReadValue("Hotkeys", "cmbAOEKey"));
     }
 
     /// <summary>
     /// The enumeration of possible modifiers.
     /// </summary>
     [Flags]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum ModifierKeys : uint
     {
         Alt = 1,

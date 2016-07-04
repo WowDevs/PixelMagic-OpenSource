@@ -1,8 +1,10 @@
 ﻿// Icon Backlink: http://www.aha-soft.com/
 
-using PixelMagic.Helpers;
 using System;
 using System.Windows.Forms;
+using PixelMagic.Helpers;
+
+// ReSharper disable once CheckNamespace
 
 namespace PixelMagic.GUI
 {
@@ -18,14 +20,14 @@ namespace PixelMagic.GUI
             txtAddonAuthor.Text = Environment.UserName;
             txtAddonName.Text = Environment.MachineName;
             txtAddonInterface.Text = "60200";
-            
+
             dgSpells.DataSource = SpellBook.dtSpells;
             dgAuras.DataSource = SpellBook.dtAuras;
         }
 
         private void cmdAddSpell_Click(object sender, EventArgs e)
         {
-            SpellBook.AddSpell(nudSpellId, txtSpellName);            
+            SpellBook.AddSpell(nudSpellId, txtSpellName);
         }
 
         private void cmdRemoveSpell_Click(object sender, EventArgs e)

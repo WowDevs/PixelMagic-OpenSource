@@ -91,13 +91,16 @@
             // 
             // rtbLog
             // 
+            this.rtbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbLog.BackColor = System.Drawing.Color.White;
             this.rtbLog.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.rtbLog.Location = new System.Drawing.Point(3, 29);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
             this.rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.rtbLog.Size = new System.Drawing.Size(645, 498);
+            this.rtbLog.Size = new System.Drawing.Size(816, 531);
             this.rtbLog.TabIndex = 2;
             this.rtbLog.Text = "";
             // 
@@ -188,9 +191,10 @@
             // 
             // cmdDonate
             // 
+            this.cmdDonate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdDonate.BackColor = System.Drawing.Color.White;
             this.cmdDonate.ForeColor = System.Drawing.Color.DimGray;
-            this.cmdDonate.Location = new System.Drawing.Point(668, 482);
+            this.cmdDonate.Location = new System.Drawing.Point(839, 515);
             this.cmdDonate.Name = "cmdDonate";
             this.cmdDonate.Size = new System.Drawing.Size(128, 31);
             this.cmdDonate.TabIndex = 12;
@@ -208,7 +212,7 @@
             this.debuggingToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(815, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(984, 24);
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -263,7 +267,7 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.encryptCombatRoutineToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // encryptCombatRoutineToolStripMenuItem
@@ -299,18 +303,19 @@
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.testToolStripMenuItem.Text = "Test";
             this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.txtPower);
             this.groupBox1.Controls.Add(this.txtHealth);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.ForeColor = System.Drawing.Color.Black;
-            this.groupBox1.Location = new System.Drawing.Point(654, 96);
+            this.groupBox1.Location = new System.Drawing.Point(825, 96);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(151, 74);
             this.groupBox1.TabIndex = 14;
@@ -319,12 +324,13 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.txtTargetHealth);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.txtTargetCasting);
             this.groupBox2.ForeColor = System.Drawing.Color.Black;
-            this.groupBox2.Location = new System.Drawing.Point(654, 175);
+            this.groupBox2.Location = new System.Drawing.Point(825, 175);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(151, 74);
             this.groupBox2.TabIndex = 15;
@@ -333,9 +339,10 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.cmdStartBot);
             this.groupBox3.ForeColor = System.Drawing.Color.Black;
-            this.groupBox3.Location = new System.Drawing.Point(654, 27);
+            this.groupBox3.Location = new System.Drawing.Point(825, 27);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(151, 66);
             this.groupBox3.TabIndex = 16;
@@ -344,11 +351,12 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this.txtMouseXY);
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.ForeColor = System.Drawing.Color.Black;
-            this.groupBox4.Location = new System.Drawing.Point(654, 255);
+            this.groupBox4.Location = new System.Drawing.Point(825, 255);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(151, 51);
             this.groupBox4.TabIndex = 17;
@@ -384,11 +392,12 @@
             // 
             // chkPlayErrorSounds
             // 
+            this.chkPlayErrorSounds.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkPlayErrorSounds.AutoSize = true;
             this.chkPlayErrorSounds.Checked = true;
             this.chkPlayErrorSounds.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPlayErrorSounds.ForeColor = System.Drawing.Color.Black;
-            this.chkPlayErrorSounds.Location = new System.Drawing.Point(669, 391);
+            this.chkPlayErrorSounds.Location = new System.Drawing.Point(840, 391);
             this.chkPlayErrorSounds.Name = "chkPlayErrorSounds";
             this.chkPlayErrorSounds.Size = new System.Drawing.Size(110, 17);
             this.chkPlayErrorSounds.TabIndex = 18;
@@ -398,11 +407,12 @@
             // 
             // chkDisableOverlay
             // 
+            this.chkDisableOverlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkDisableOverlay.AutoSize = true;
             this.chkDisableOverlay.Checked = true;
             this.chkDisableOverlay.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDisableOverlay.ForeColor = System.Drawing.Color.Black;
-            this.chkDisableOverlay.Location = new System.Drawing.Point(669, 414);
+            this.chkDisableOverlay.Location = new System.Drawing.Point(840, 414);
             this.chkDisableOverlay.Name = "chkDisableOverlay";
             this.chkDisableOverlay.Size = new System.Drawing.Size(100, 17);
             this.chkDisableOverlay.TabIndex = 19;
@@ -412,11 +422,12 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Controls.Add(this.txtMouseXYClick);
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.ForeColor = System.Drawing.Color.Black;
-            this.groupBox5.Location = new System.Drawing.Point(654, 309);
+            this.groupBox5.Location = new System.Drawing.Point(825, 309);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(151, 67);
             this.groupBox5.TabIndex = 20;
@@ -454,8 +465,9 @@
             // 
             // nudPulse
             // 
+            this.nudPulse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nudPulse.ForeColor = System.Drawing.Color.Black;
-            this.nudPulse.Location = new System.Drawing.Point(725, 437);
+            this.nudPulse.Location = new System.Drawing.Point(896, 437);
             this.nudPulse.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -478,9 +490,10 @@
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(664, 439);
+            this.label9.Location = new System.Drawing.Point(835, 439);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(55, 13);
             this.label9.TabIndex = 22;
@@ -492,7 +505,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(815, 528);
+            this.ClientSize = new System.Drawing.Size(984, 561);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.nudPulse);
             this.Controls.Add(this.groupBox5);

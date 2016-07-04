@@ -6,25 +6,25 @@ using System.Text;
 
 namespace PixelMagic.Helpers
 {
-    internal class Encryption
+    internal static class Encryption
     {
         private static string E(string plainText, string passPhrase, string saltValue, string hashAlgorithm, int passwordIterations, string initVector, int keySize)
         {
-            byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
-            byte[] saltValueBytes = Encoding.ASCII.GetBytes(saltValue);
-            byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, saltValueBytes, hashAlgorithm, passwordIterations);
-            byte[] keyBytes = password.GetBytes(keySize / 8);
-            RijndaelManaged symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
-            ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
-            MemoryStream memoryStream = new MemoryStream();
-            CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
+            var initVectorBytes = Encoding.ASCII.GetBytes(initVector);
+            var saltValueBytes = Encoding.ASCII.GetBytes(saltValue);
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            var password = new PasswordDeriveBytes(passPhrase, saltValueBytes, hashAlgorithm, passwordIterations);
+            var keyBytes = password.GetBytes(keySize / 8);
+            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
+            var encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
+            var memoryStream = new MemoryStream();
+            var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
             cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
             cryptoStream.FlushFinalBlock();
-            byte[] cipherTextBytes = memoryStream.ToArray();
+            var cipherTextBytes = memoryStream.ToArray();
             memoryStream.Close();
             cryptoStream.Close();
-            string cipherText = Convert.ToBase64String(cipherTextBytes);
+            var cipherText = Convert.ToBase64String(cipherTextBytes);
             return cipherText;
         }
 
@@ -33,20 +33,20 @@ namespace PixelMagic.Helpers
             if (cipherText == string.Empty)
                 return "";
 
-            byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
-            byte[] saltValueBytes = Encoding.ASCII.GetBytes(saltValue);
-            byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
-            PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, saltValueBytes, hashAlgorithm, passwordIterations);
-            byte[] keyBytes = password.GetBytes(keySize / 8);
-            RijndaelManaged symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
-            ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
-            MemoryStream memoryStream = new MemoryStream(cipherTextBytes);
-            CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-            byte[] plainTextBytes = new byte[cipherTextBytes.Length];
-            int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+            var initVectorBytes = Encoding.ASCII.GetBytes(initVector);
+            var saltValueBytes = Encoding.ASCII.GetBytes(saltValue);
+            var cipherTextBytes = Convert.FromBase64String(cipherText);
+            var password = new PasswordDeriveBytes(passPhrase, saltValueBytes, hashAlgorithm, passwordIterations);
+            var keyBytes = password.GetBytes(keySize / 8);
+            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
+            var decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
+            var memoryStream = new MemoryStream(cipherTextBytes);
+            var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
+            var plainTextBytes = new byte[cipherTextBytes.Length];
+            var decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
             memoryStream.Close();
             cryptoStream.Close();
-            string plainText = Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
+            var plainText = Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
             return plainText;
         }
 
@@ -59,7 +59,7 @@ namespace PixelMagic.Helpers
             const string initVector = "@1B2vQ94eZF6g7H1"; // must be 16 bytes
             const int keySize = 256; // can be 192 or 128
 
-            string ret = E(text, passPhrase, saltValue, hashAlgorithm, passwordIterations, initVector, keySize);
+            var ret = E(text, passPhrase, saltValue, hashAlgorithm, passwordIterations, initVector, keySize);
 
             return ret;
         }
@@ -73,7 +73,7 @@ namespace PixelMagic.Helpers
             const string initVector = "@1B2vQ94eZF6g7H1"; // must be 16 bytes
             const int keySize = 256; // can be 192 or 128
 
-            string ret = D(text, passPhrase, saltValue, hashAlgorithm, passwordIterations, initVector, keySize);
+            var ret = D(text, passPhrase, saltValue, hashAlgorithm, passwordIterations, initVector, keySize);
 
             return ret;
         }

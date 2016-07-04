@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PixelMagic.Helpers;
+
+// ReSharper disable once CheckNamespace
 
 namespace PixelMagic.GUI
 {
@@ -41,13 +36,13 @@ namespace PixelMagic.GUI
                 cmbAOEKey.Text = ConfigFile.ReadValue("Hotkeys", cmbAOEKey.Name);
         }
 
-        private void Error(string msg)
+        private static void Error(string msg)
         {
             MessageBox.Show(msg, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void cmdSave_Click(object sender, EventArgs e)
-        {                                       
+        {
             if (cmbStartRotationModifierKey.Text == cmbSingleTargetModifierKey.Text &&
                 cmbStartRotationKey.Text == cmbSingleTargetKey.Text)
             {
@@ -78,10 +73,10 @@ namespace PixelMagic.GUI
 
             ConfigFile.WriteValue("Hotkeys", cmbStartRotationModifierKey.Name, cmbStartRotationModifierKey.Text);
             ConfigFile.WriteValue("Hotkeys", cmbStartRotationKey.Name, cmbStartRotationKey.Text);
-                                                            
+
             ConfigFile.WriteValue("Hotkeys", cmbStopRotationModifierKey.Name, cmbStopRotationModifierKey.Text);
             ConfigFile.WriteValue("Hotkeys", cmbStopRotationKey.Name, cmbStopRotationKey.Text);
-                                                            
+
             ConfigFile.WriteValue("Hotkeys", cmbSingleTargetModifierKey.Name, cmbSingleTargetModifierKey.Text);
             ConfigFile.WriteValue("Hotkeys", cmbSingleTargetKey.Name, cmbSingleTargetKey.Text);
 

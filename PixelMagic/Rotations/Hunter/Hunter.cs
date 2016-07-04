@@ -1,4 +1,6 @@
 ﻿// winifix@gmail.com
+// ReSharper disable UnusedMember.Global
+// ReSharper disable ConvertPropertyToExpressionBody
 
 using PixelMagic.Helpers;
 using System.Drawing;
@@ -8,23 +10,31 @@ namespace PixelMagic.Rotation
 {
     public class Hunter : CombatRoutine
     {
-        public override string Name {  get  {  return "Hunter Sample";  }  }
-        public override string Class { get { return "Hunter"; } }
-		
-        System.Random random;
-		
+        public override string Name
+        {
+            get
+            {
+                return "Hunter Sample";
+            }
+        }
+
+        public override string Class
+        {
+            get
+            {
+                return "Hunter";
+            }
+        } 
+
         public override void Initialize()
         {
             Log.Write("Welcome to Hunter Sample", Color.Green);
-			random = new System.Random();
         }
 
         public override void Stop()
         {
             // Move pet to me
             WoW.SendKeyAtLocation(WoW.Keys.Z, 900, 500);   // Pet Passive and Move To = /petpassive /petmoveto
-
-            //WoW.SendKeyAtLocation(WoW.Keys.Z, 960,  525 + 15);   // Pet Passive and Move To = /petpassive /petmoveto
         }
 
         public override void Pulse()

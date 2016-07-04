@@ -1,18 +1,24 @@
-﻿using PixelMagic.Rotation;
-using System;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Windows.Forms;
 using PixelMagic.Helpers;
+using PixelMagic.Rotation;
+
+// ReSharper disable once CheckNamespace
 
 namespace PixelMagic.GUI
 {
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+    [SuppressMessage("ReSharper", "EventNeverSubscribedTo.Global")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "UnusedMethodReturnValue.Global")]
     public partial class Overlay : Form
     {
         private static Overlay overlay;
         private static bool shown;
-        private bool mouseIsDown = false;
         private Point firstPoint;
-        public static event EventHandler onLocationChanged;
+        private bool mouseIsDown;
 
         public Overlay()
         {
@@ -21,22 +27,23 @@ namespace PixelMagic.GUI
             BackColor = Color.Black;
             TransparencyKey = Color.Black;
         }
-        
+
+        public sealed override Color BackColor
+        {
+            get { return base.BackColor; }
+            set { base.BackColor = value; }
+        }
+
+        public static event EventHandler onLocationChanged;
+
         public static void updateLabels()
         {
             if (overlay == null)
-                return;        
+                return;
 
-            if (frmMain.combatRoutine.Type == CombatRoutine.RotationType.SingleTarget)
-            {
-                overlay.AoELabel.Text = "Single-Target ON!";
-            }
-            else
-            {
-                overlay.AoELabel.Text = "AoE-Target ON!";
-            }
+            overlay.AoELabel.Text = frmMain.combatRoutine.Type == CombatRoutine.RotationType.SingleTarget ? "Single-Target ON!" : "AoE-Target ON!";
         }
-        
+
         public static bool showOverlay(Point p)
         {
             if (ConfigFile.DisableOverlay)
@@ -45,8 +52,7 @@ namespace PixelMagic.GUI
                 return false;
             }
 
-            overlay = new Overlay();
-            overlay.Location = new Point(p.X, p.Y);
+            overlay = new Overlay {Location = new Point(p.X, p.Y)};
             overlay.Show();
             shown = true;
             return shown;
@@ -54,12 +60,8 @@ namespace PixelMagic.GUI
 
         private static void onLocationChange(EventArgs args)
         {
-            EventHandler handler = onLocationChanged;
-            if (handler != null)
-            {
-                handler(null, args);
-            }
-
+            var handler = onLocationChanged;
+            handler?.Invoke(null, args);
         }
 
         public static void closeOverlay()
@@ -70,8 +72,7 @@ namespace PixelMagic.GUI
 
         public static void setLocation(Point p)
         {
-            if (p != null)
-                overlay.Location = p;
+            overlay.Location = p;
         }
 
         public static Point getLocation()
@@ -81,8 +82,7 @@ namespace PixelMagic.GUI
 
         public static bool isShown()
         {
-
-            return (overlay != null && shown) ? true : false;
+            return overlay != null && shown;
         }
 
         private void lblMain_MouseDown(object sender, MouseEventArgs e)
@@ -102,18 +102,14 @@ namespace PixelMagic.GUI
             if (mouseIsDown)
             {
                 // Get the difference between the two points
-                int xDiff = firstPoint.X - e.Location.X;
-                int yDiff = firstPoint.Y - e.Location.Y;
+                var xDiff = firstPoint.X - e.Location.X;
+                var yDiff = firstPoint.Y - e.Location.Y;
 
                 // Set the new point
-                int x = this.Location.X - xDiff;
-                int y = this.Location.Y - yDiff;
-                this.Location = new Point(x, y);
+                var x = Location.X - xDiff;
+                var y = Location.Y - yDiff;
+                Location = new Point(x, y);
             }
-        }
-        private void LabelAoE_click(object sender, EventArgs e)
-        {
-        
         }
 
         internal static void hideOverlay()
@@ -124,8 +120,6 @@ namespace PixelMagic.GUI
 
         private void Overlay_Load(object sender, EventArgs e)
         {
-
         }
     }
-
 }

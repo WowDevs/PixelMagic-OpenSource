@@ -6,549 +6,24 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using System.DirectoryServices.AccountManagement;
-using System.Text;
+
+// ReSharper disable once CheckNamespace
 
 namespace PixelMagic.Helpers
 {
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class WoW
     {
-        internal static Process pWow = null;
-        internal static Random random;
-
-        public static string Version
-        {
-            get
-            {
-                return pWow.MainModule.FileVersionInfo.FileVersion;
-            }
-        }
-
-        public static string InstallPath
-        {
-            get
-            {
-                string wowFolder = ConfigFile.ReadValue<string>("PixelBot", "WoWPath").Trim();
-
-                if (wowFolder == "")
-                {
-                    Log.Write("Finding WoW Install Path...");
-
-                    wowFolder = RegEdit.HKLMReadKey(@"Software\Wow6432Node\Blizzard Entertainment\World of Warcraft", "InstallPath");
-                    ConfigFile.WriteValue("PixelBot", "WoWPath", wowFolder);
-                }
-
-                return wowFolder;
-            }
-        }
-
-        public static string AddonPath
-        {
-            get
-            {
-                return InstallPath + "\\Interface\\AddOns";
-            }
-        }
-
-        private static bool LimitedUserExists
-        {
-            get
-            {
-                using (PrincipalContext pc = new PrincipalContext(ContextType.Machine))
-                {
-                    UserPrincipal up = UserPrincipal.FindByIdentity(pc, IdentityType.SamAccountName, "Limited");
-                    return (up != null);
-                }
-            }
-        }
-
-        public static void Initialize()
-        {
-            Log.Write("Searching for open WoW processes...");
-
-            random = new Random();
-
-            pWow = Process.GetProcessesByName("Wow").FirstOrDefault();
-            if (pWow == null)
-            {
-                pWow = Process.GetProcessesByName("Wow-64").FirstOrDefault();
-            }
-            if (pWow == null)
-            {
-                pWow = Process.GetProcessesByName("WowB-64").FirstOrDefault();
-            }
-
-            if (pWow == null)
-            {
-                Log.Write("Failed to find open wow process, please ensure that x64 WoW is running.", Color.Red);
-
-                DialogResult res = MessageBox.Show("WoW is not running, would you like to launch it now?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (res == DialogResult.Yes)
-                {
-                    string wowFolder = ConfigFile.ReadValue<string>("PixelBot", "WoWPath").Trim();
-                    ProcessStartInfo psi;
-                    
-                    if (LimitedUserExists)  // When running on my PC I like to launch wow as a limited user so that it does not have access to tasklist to                     
-                    {                       // See details of running tasks - it gets access denied messages instead
-                                            // This is just my personal extra layer of anti-warden protection, but most people will say its not needed.
-
-                        // The command we run is
-                        // C:\Windows\System32\runas.exe /user:Limited /savecred /env "C:\Games\World of Warcraft Live\Wow.exe"
-
-                        psi = new ProcessStartInfo(@"C:\Windows\System32\runas.exe")
-                        {
-                            Arguments =  $"/user:Limited /savecred /env \"{wowFolder}\\Wow-64.exe\""
-                        };                       
-                    }
-                    else
-                    {
-                        psi = new ProcessStartInfo(wowFolder + "\\Wow-64.exe");
-                    }
-
-                    psi.WorkingDirectory = wowFolder;
-
-                    pWow = Process.Start(psi);
-
-                    if (LimitedUserExists)
-                    {
-                        bool running = false;
-
-                        while (!running)
-                        {
-                            pWow = Process.GetProcessesByName("Wow-64").FirstOrDefault();
-                            if (pWow != null)
-                            {
-                                running = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        pWow.WaitForInputIdle();
-                    }
-
-                    Log.Write("Successfully launched WoW with process ID: " + pWow.Id);
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            Log.Write("Connecting to process with ID: " + pWow.Id);
-            Log.Write("Successfully connected.", Color.Green);
-
-            bool is64 = (pWow.ProcessName.Contains("64"));
-            
-            Log.Write($"WoW Version: {Version} (x{(is64 ? "64" : "86")})");
-        }
-
-        public static void Dispose()
-        {
-            Log.Write("Disposing of WoW Process...");
-            pWow.Close();
-            pWow = null;
-            Log.Write("Disposing of WoW Process Completed.");
-        }
-
-        public static bool HasTarget
-        {
-            get
-            {
-                Color c = GetBlockColor(2, 3);
-                return ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B));
-            }
-        }
-
-        public static bool PlayerIsCasting
-        {
-            get
-            {
-                Color c = GetBlockColor(3, 3);
-                return ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B));
-            }
-        }
-
-        public static bool TargetIsCasting
-        {
-            get
-            {
-                Color c = GetBlockColor(4, 3);
-                return ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B));
-            }
-        }
-
-        public static bool TargetIsFriend
-        {
-            get
-            {
-                Color c = GetBlockColor(1, 3);                
-                return ((c.R == 0) && (c.G == 255) && (c.B == 0));
-            }
-        }
-
-        public static bool TargetIsEnemy
-        {
-            get
-            {
-                return !TargetIsFriend;
-            }
-        }
-
-        public static int HealthPercent
-        {
-            get
-            {
-                // First we build up the binary string that makes up health
-                // This is read from the 2nd row on the screen of pixel information
-                // It is displayed as binary, so 100% health = 1100100
-                string binaryHealth = "";
-
-                for (int x = 1; x <= 7; x++)
-                {
-                    Color c = GetBlockColor(x, 2);
-                    binaryHealth += ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B)) ? "1" : "0";
-                }
-
-                return Convert.ToInt32(binaryHealth, 2);
-            }
-        }
-
-        public static int TargetHealthPercent
-        {
-            get
-            {
-                // First we build up the binary string that makes up health
-                // This is read from the 2nd row on the screen of pixel information
-                // It is displayed as binary, so 100% health = 1100100
-                string binaryHealth = "";
-
-                for (int x = 1; x <= 7; x++)
-                {
-                    Color c = GetBlockColor(x, 5);
-                    binaryHealth += ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B)) ? "1" : "0";
-                }
-
-                return Convert.ToInt32(binaryHealth, 2);
-            }
-        }
-
-        public static int Power
-        {
-            get
-            {
-                // First we build up the binary string that makes up power
-                // This is read from the 4th row on the screen of pixel information
-                // It is displayed as binary, so 100 power = 1100100
-                string binaryPower = "";
-
-                for (int x = 1; x <= 7; x++)
-                {
-                    Color c = GetBlockColor(x, 4);
-                    binaryPower += ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B)) ? "1" : "0";
-                }
-
-                return Convert.ToInt32(binaryPower, 2);
-            }
-        }
-        public static int Focus
-        {
-            get
-            {
-                return Power;
-            }
-        }
-        public static int Mana
-        {
-            get
-            {
-                return Power;
-            }
-        }
-        public static int Energy
-        {
-            get
-            {
-                return Power;
-            }
-        }
-        public static int Rage
-        {
-            get
-            {
-                return Power;
-            }
-        }
-
-        public static bool IsSpellOnCooldown(int spellNoInArrayOfSpells)  // This will take the spell no from the array of spells, 1, 2, 3 ..... n
-        {
-            Color c = GetBlockColor(5 + spellNoInArrayOfSpells, 1);
-            return ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B));
-        }
-
-        public static bool IsSpellInRange(int spellNoInArrayOfSpells)  // This will take the spell no from the array of spells, 1, 2, 3 ..... n
-        {
-            Color c = GetBlockColor(spellNoInArrayOfSpells, 6);
-            return ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B));
-        }
-
-        public static bool CanCast(int spellNoInArrayOfSpells)
-        {
-            if (PlayerIsCasting == true)
-                return false;
-
-            if (IsSpellOnCooldown(spellNoInArrayOfSpells) == true)
-                return false;
-
-            if (IsSpellInRange(spellNoInArrayOfSpells) == false)
-                return false;
-
-            return true;
-        }
-
-        public static void SendKey(Keys key, int milliseconds = 50)
-        {
-            Log.Write("Sending keypress: " + key, Color.Gray);
-
-            if (milliseconds < 50)
-                milliseconds = 50;
-
-            milliseconds = milliseconds + random.Next(50);
-
-            KeyDown(key);
-            Thread.Sleep(milliseconds);
-            KeyUp(key);
-        }
-
-        public static void SendKeyAtLocation(Keys key, int x, int y)
-        {
-            Log.Write($"Sending keypress {key} at location: x = {x}, y = {y}", Color.Gray);
-                        
-            KeyDown(key);
-            Thread.Sleep(50);
-            KeyUp(key);
-          
-            Mouse.LeftClick(x, y);            
-        }
-
-        //public static void SendKeyAtMe(Keys key)
-        //{
-
-
-        //    Log.Write($"Sending keypress {key} at location: x = {x}, y = {y}", Color.Gray);
-
-        //    KeyDown(key);
-        //    Thread.Sleep(50);
-
-        //    KeyUp(key);
-        //    Thread.Sleep(300);
-
-        //    Mouse.LeftClick(x, y);
-        //}
-
-        public static void SendMacro(string macro)
-        {
-            Log.Write("Sending macro: " + macro, Color.Gray);
-
-            KeyPressRelease(Keys.Enter);
-            Thread.Sleep(100);
-            Write(macro);
-            Thread.Sleep(100);
-            KeyPressRelease(Keys.Enter);
-        }
-
-        private static object thisLock = new object();
-
-        [DllImport("gdi32.dll")]
-        private static extern int BitBlt(IntPtr srchDC, int srcX, int srcY, int srcW, int srcH, IntPtr desthDC, int destX, int destY, int op);
-
-        static Bitmap screenPixel = new Bitmap(1, 1);
-
-        // This is apparently one of the fastest ways to read single pixel color
-        // http://stackoverflow.com/questions/17130138/fastest-way-to-get-screen-pixel-color-in-c-sharp
-
-        public static Color GetBlockColor(int column, int row)
-        {
-            if (pWow == null)
-                return Color.Black;
-
-            if ((column <= 0) || (row <= 0))
-                throw new Exception("x and or y must be >= 1");
-
-            column = ((column - 1) * 7);  // For some unknown reason pixel size of 5x5 in WoW = 7x7 in C#
-            row = ((row - 1) * 7);
-           
-            lock (thisLock)  // We lock the bitmap "screenPixel" here to avoid it from being accessed by multiple threads at the same time and crashing
-            {
-                try
-                {
-                    using (Graphics gdest = Graphics.FromImage(screenPixel))
-                    {
-                        using (Graphics gsrc = Graphics.FromHwnd(pWow.MainWindowHandle))
-                        {
-                            IntPtr hSrcDC = gsrc.GetHdc();
-                            IntPtr hDC = gdest.GetHdc();
-                            int retval = BitBlt(hDC, 0, 0, 1, 1, hSrcDC, column, row, (int)CopyPixelOperation.SourceCopy);
-                            gdest.ReleaseHdc();
-                            gsrc.ReleaseHdc();
-                        }
-                    }
-                    Color temp = screenPixel.GetPixel(0, 0);
-
-                    return temp;
-                }
-                catch (Exception ex)
-                {
-                    Log.Write("Failed to find pixel color from screen, this is usually due to wow closing while", Color.Red);
-                    Log.Write("attempting to find the pixel color", Color.Red);
-                    Log.Write("Error Details: " + ex.Message, Color.Red);
-
-                    throw ex;
-                }
-            }
-        }
-
-        //public Color GetPixelColorAt(int x, int y)
-        //{
-        //    if (pWow == null)
-        //        return Color.Black;
-
-        //    using (Graphics gdest = Graphics.FromImage(screenPixel))
-        //    {
-        //        using (Graphics gsrc = Graphics.FromHwnd(pWow.MainWindowHandle))
-        //        {
-        //            IntPtr hSrcDC = gsrc.GetHdc();
-        //            IntPtr hDC = gdest.GetHdc();
-        //            int retval = BitBlt(hDC, 0, 0, 1, 1, hSrcDC, x, y, (int)CopyPixelOperation.SourceCopy);
-        //            gdest.ReleaseHdc();
-        //            gsrc.ReleaseHdc();
-        //        }
-        //    }
-        //    Color temp = screenPixel.GetPixel(0, 0);
-
-        //    if ((temp.R == Color.White.R) && (temp.G == Color.White.G) && (temp.B == Color.White.B))
-        //    {
-        //        Log.Write($"Color @ (x,y) = ({x},{y}) = {temp.ToString()}", Color.Black);
-        //    }
-        //    else
-        //    {
-        //        Log.Write($"Color @ (x,y) = ({x},{y}) = {temp.ToString()}", temp);
-        //    }
-
-        //    return temp;
-        //}
-
-        //public class Status
-        //{
-        //    public enum GameState
-        //    {
-        //        InGame,
-        //        NotInGame
-        //    }
-        //}
-
-        //public Status.GameState GameState
-        //{
-        //    get
-        //    {
-        //        if (wow.Read<byte>(Offsets.GameState) == 1)
-        //        {
-        //            return Status.GameState.InGame;
-        //        }
-        //        else
-        //        {
-        //            return Status.GameState.NotInGame;
-        //        }
-        //    }
-        //}
-
-        #region Keyboard Input
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [return: MarshalAs(UnmanagedType.Bool)]
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool PostMessage(IntPtr hWnd, uint msg, UIntPtr wParam, UIntPtr lParam);
-
-        private static void KeyDown(Keys Key)
-        {
-            SendMessage(pWow.MainWindowHandle, 0x100, (int)Key, 0);
-        }
-
-        private static void KeyUp(Keys Key)
-        {
-            SendMessage(pWow.MainWindowHandle, 0x101, (int)Key, 0);
-        }
-
-        private static void KeyPressRelease(Keys key)
-        {
-            KeyDown(key);
-            Thread.Sleep(50);
-            KeyUp(key);
-        }
-
-        private static void Write(string text, params object[] args)
-        {
-            foreach (char character in string.Format(text, args))
-            {
-                PostMessage(pWow.MainWindowHandle, 0x0102, new UIntPtr(character), UIntPtr.Zero);
-            }
-        }
-        #endregion
-
-        public static bool HasFocus
-        {
-            get
-            {
-                var activatedHandle = GetForegroundWindow();
-                if (activatedHandle == IntPtr.Zero)
-                {
-                    return false;       // No window is currently activated
-                }
-
-                int activeProcId;
-                GetWindowThreadProcessId(activatedHandle, out activeProcId);
-
-                if (pWow == null)
-                {
-                    throw new Exception("World of warcraft is not detected / running, please login before attempting to restart the bot");
-                }
-
-                return activeProcId == pWow.Id;
-            }
-        }
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        private static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern int GetWindowTextLength(IntPtr hWnd);
-
-        public static string GetText(IntPtr hWnd)
-        {
-            // Allocate correct string length first
-            int length = GetWindowTextLength(hWnd);
-            StringBuilder sb = new StringBuilder(length + 1);
-            GetWindowText(hWnd, sb, sb.Capacity);
-            return sb.ToString();
-        }
-        
         [Flags]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public enum Keys
         {
             A = 0x41,
@@ -746,6 +221,476 @@ namespace PixelMagic.Helpers
             Z = 90,
             Zoom = 0xfb
         }
-    }
 
+        internal static Process pWow;
+        private static Random random;
+
+        private static readonly object thisLock = new object();
+
+        private static readonly Bitmap screenPixel = new Bitmap(1, 1);
+
+        private static string Version => pWow.MainModule.FileVersionInfo.FileVersion;
+
+        public static string InstallPath
+        {
+            get
+            {
+                var wowFolder = ConfigFile.ReadValue<string>("PixelBot", "WoWPath").Trim();
+
+                if (wowFolder == "")
+                {
+                    Log.Write("Finding WoW Install Path...");
+
+                    wowFolder = RegEdit.HKLMReadKey(@"Software\Wow6432Node\Blizzard Entertainment\World of Warcraft", "InstallPath");
+                    ConfigFile.WriteValue("PixelBot", "WoWPath", wowFolder);
+                }
+
+                return wowFolder;
+            }
+        }
+
+        public static string AddonPath => InstallPath + "\\Interface\\AddOns";
+
+        private static bool LimitedUserExists
+        {
+            get
+            {
+                using (var pc = new PrincipalContext(ContextType.Machine))
+                {
+                    var up = UserPrincipal.FindByIdentity(pc, IdentityType.SamAccountName, "Limited");
+                    return up != null;
+                }
+            }
+        }
+
+        public static bool HasTarget
+        {
+            get
+            {
+                var c = GetBlockColor(2, 3);
+                return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
+            }
+        }
+
+        public static bool PlayerIsCasting
+        {
+            get
+            {
+                var c = GetBlockColor(3, 3);
+                return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
+            }
+        }
+
+        public static bool TargetIsCasting
+        {
+            get
+            {
+                var c = GetBlockColor(4, 3);
+                return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
+            }
+        }
+
+        public static bool TargetIsFriend
+        {
+            get
+            {
+                var c = GetBlockColor(1, 3);
+                return (c.R == 0) && (c.G == 255) && (c.B == 0);
+            }
+        }
+
+        public static bool TargetIsEnemy => !TargetIsFriend;
+
+        public static int HealthPercent
+        {
+            get
+            {
+                // First we build up the binary string that makes up health
+                // This is read from the 2nd row on the screen of pixel information
+                // It is displayed as binary, so 100% health = 1100100
+                var binaryHealth = "";
+
+                for (var x = 1; x <= 7; x++)
+                {
+                    var c = GetBlockColor(x, 2);
+                    binaryHealth += (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B) ? "1" : "0";
+                }
+
+                return Convert.ToInt32(binaryHealth, 2);
+            }
+        }
+
+        public static int TargetHealthPercent
+        {
+            get
+            {
+                // First we build up the binary string that makes up health
+                // This is read from the 2nd row on the screen of pixel information
+                // It is displayed as binary, so 100% health = 1100100
+                var binaryHealth = "";
+
+                for (var x = 1; x <= 7; x++)
+                {
+                    var c = GetBlockColor(x, 5);
+                    binaryHealth += (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B) ? "1" : "0";
+                }
+
+                return Convert.ToInt32(binaryHealth, 2);
+            }
+        }
+
+        public static int Power
+        {
+            get
+            {
+                // First we build up the binary string that makes up power
+                // This is read from the 4th row on the screen of pixel information
+                // It is displayed as binary, so 100 power = 1100100
+                var binaryPower = "";
+
+                for (var x = 1; x <= 7; x++)
+                {
+                    var c = GetBlockColor(x, 4);
+                    binaryPower += (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B) ? "1" : "0";
+                }
+
+                return Convert.ToInt32(binaryPower, 2);
+            }
+        }
+
+        public static int Focus => Power;
+
+        public static int Mana => Power;
+
+        public static int Energy => Power;
+
+        public static int Rage => Power;
+
+        public static bool HasFocus
+        {
+            get
+            {
+                var activatedHandle = GetForegroundWindow();
+                if (activatedHandle == IntPtr.Zero)
+                {
+                    return false; // No window is currently activated
+                }
+
+                int activeProcId;
+                GetWindowThreadProcessId(activatedHandle, out activeProcId);
+
+                if (pWow == null)
+                {
+                    throw new Exception("World of warcraft is not detected / running, please login before attempting to restart the bot");
+                }
+
+                return activeProcId == pWow.Id;
+            }
+        }
+
+        public static void Initialize()
+        {
+            Log.Write("Searching for open WoW processes...");
+
+            random = new Random();
+
+            pWow = (Process.GetProcessesByName("Wow").FirstOrDefault() ?? Process.GetProcessesByName("Wow-64").FirstOrDefault()) ?? Process.GetProcessesByName("WowB-64").FirstOrDefault();
+
+            if (pWow == null)
+            {
+                Log.Write("Failed to find open wow process, please ensure that x64 WoW is running.", Color.Red);
+
+                var res = MessageBox.Show("WoW is not running, would you like to launch it now?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (res == DialogResult.Yes)
+                {
+                    var wowFolder = ConfigFile.ReadValue<string>("PixelBot", "WoWPath").Trim();
+                    ProcessStartInfo psi;
+
+                    if (LimitedUserExists) // When running on my PC I like to launch wow as a limited user so that it does not have access to tasklist to                     
+                    {
+                        // See details of running tasks - it gets access denied messages instead
+                        // This is just my personal extra layer of anti-warden protection, but most people will say its not needed.
+
+                        // The command we run is
+                        // C:\Windows\System32\runas.exe /user:Limited /savecred /env "C:\Games\World of Warcraft Live\Wow.exe"
+
+                        psi = new ProcessStartInfo(@"C:\Windows\System32\runas.exe")
+                        {
+                            Arguments = $"/user:Limited /savecred /env \"{wowFolder}\\Wow-64.exe\""
+                        };
+                    }
+                    else
+                    {
+                        psi = new ProcessStartInfo(wowFolder + "\\Wow-64.exe");
+                    }
+
+                    psi.WorkingDirectory = wowFolder;
+
+                    pWow = Process.Start(psi);
+
+                    if (LimitedUserExists)
+                    {
+                        var running = false;
+
+                        while (!running)
+                        {
+                            pWow = Process.GetProcessesByName("Wow-64").FirstOrDefault();
+                            if (pWow != null)
+                            {
+                                running = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        pWow?.WaitForInputIdle();
+                    }
+
+                    if (pWow != null) Log.Write("Successfully launched WoW with process ID: " + pWow.Id);
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            if (pWow == null) return;
+
+            Log.Write("Connecting to process with ID: " + pWow.Id);
+            Log.Write("Successfully connected.", Color.Green);
+
+            var is64 = pWow.ProcessName.Contains("64");
+
+            Log.Write($"WoW Version: {Version} (x{(is64 ? "64" : "86")})");
+        }
+
+        public static void Dispose()
+        {
+            Log.Write("Disposing of WoW Process...");
+            pWow.Close();
+            pWow = null;
+            Log.Write("Disposing of WoW Process Completed.");
+        }
+
+        public static bool IsSpellOnCooldown(int spellNoInArrayOfSpells) // This will take the spell no from the array of spells, 1, 2, 3 ..... n
+        {
+            var c = GetBlockColor(5 + spellNoInArrayOfSpells, 1);
+            return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
+        }
+
+        public static bool IsSpellInRange(int spellNoInArrayOfSpells) // This will take the spell no from the array of spells, 1, 2, 3 ..... n
+        {
+            var c = GetBlockColor(spellNoInArrayOfSpells, 6);
+            return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
+        }
+
+        public static bool CanCast(int spellNoInArrayOfSpells)
+        {
+            if (PlayerIsCasting)
+                return false;
+
+            if (IsSpellOnCooldown(spellNoInArrayOfSpells))
+                return false;
+
+            if (IsSpellInRange(spellNoInArrayOfSpells) == false)
+                return false;
+
+            return true;
+        }
+
+        public static void SendKey(Keys key, int milliseconds = 50)
+        {
+            Log.Write("Sending keypress: " + key, Color.Gray);
+
+            if (milliseconds < 50)
+                milliseconds = 50;
+
+            milliseconds = milliseconds + random.Next(50);
+
+            KeyDown(key);
+            Thread.Sleep(milliseconds);
+            KeyUp(key);
+        }
+
+        public static void SendKeyAtLocation(Keys key, int x, int y)
+        {
+            Log.Write($"Sending keypress {key} at location: x = {x}, y = {y}", Color.Gray);
+
+            KeyDown(key);
+            Thread.Sleep(50);
+            KeyUp(key);
+
+            Mouse.LeftClick(x, y);
+        }
+
+        //public static void SendKeyAtMe(Keys key)
+        //{
+
+
+        //    Log.Write($"Sending keypress {key} at location: x = {x}, y = {y}", Color.Gray);
+
+        //    KeyDown(key);
+        //    Thread.Sleep(50);
+
+        //    KeyUp(key);
+        //    Thread.Sleep(300);
+
+        //    Mouse.LeftClick(x, y);
+        //}
+
+        public static void SendMacro(string macro)
+        {
+            Log.Write("Sending macro: " + macro, Color.Gray);
+
+            KeyPressRelease(Keys.Enter);
+            Thread.Sleep(100);
+            Write(macro);
+            Thread.Sleep(100);
+            KeyPressRelease(Keys.Enter);
+        }
+
+        [DllImport("gdi32.dll")]
+        private static extern int BitBlt(IntPtr srchDC, int srcX, int srcY, int srcW, int srcH, IntPtr desthDC, int destX, int destY, int op);
+
+        // This is apparently one of the fastest ways to read single pixel color
+        // http://stackoverflow.com/questions/17130138/fastest-way-to-get-screen-pixel-color-in-c-sharp
+
+        public static Color GetBlockColor(int column, int row)
+        {
+            if (pWow == null)
+                return Color.Black;
+
+            if ((column <= 0) || (row <= 0))
+                throw new Exception("x and or y must be >= 1");
+
+            column = (column - 1)*7; // For some unknown reason pixel size of 5x5 in WoW = 7x7 in C#
+            row = (row - 1)*7;
+
+            lock (thisLock) // We lock the bitmap "screenPixel" here to avoid it from being accessed by multiple threads at the same time and crashing
+            {
+                try
+                {
+                    using (var gdest = Graphics.FromImage(screenPixel))
+                    {
+                        using (var gsrc = Graphics.FromHwnd(pWow.MainWindowHandle))
+                        {
+                            var hSrcDC = gsrc.GetHdc();
+                            var hDC = gdest.GetHdc();
+                            BitBlt(hDC, 0, 0, 1, 1, hSrcDC, column, row, (int) CopyPixelOperation.SourceCopy);
+                            gdest.ReleaseHdc();
+                            gsrc.ReleaseHdc();
+                        }
+                    }
+                    var temp = screenPixel.GetPixel(0, 0);
+
+                    return temp;
+                }
+                catch (Exception ex)
+                {
+                    Log.Write("Failed to find pixel color from screen, this is usually due to wow closing while", Color.Red);
+                    Log.Write("attempting to find the pixel color", Color.Red);
+                    Log.Write("Error Details: " + ex.Message, Color.Red);
+
+                    throw;
+                }
+            }
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
+
+        //public Color GetPixelColorAt(int x, int y)
+        //{
+        //    if (pWow == null)
+        //        return Color.Black;
+
+        //    using (Graphics gdest = Graphics.FromImage(screenPixel))
+        //    {
+        //        using (Graphics gsrc = Graphics.FromHwnd(pWow.MainWindowHandle))
+        //        {
+        //            IntPtr hSrcDC = gsrc.GetHdc();
+        //            IntPtr hDC = gdest.GetHdc();
+        //            int retval = BitBlt(hDC, 0, 0, 1, 1, hSrcDC, x, y, (int)CopyPixelOperation.SourceCopy);
+        //            gdest.ReleaseHdc();
+        //            gsrc.ReleaseHdc();
+        //        }
+        //    }
+        //    Color temp = screenPixel.GetPixel(0, 0);
+
+        //    if ((temp.R == Color.White.R) && (temp.G == Color.White.G) && (temp.B == Color.White.B))
+        //    {
+        //        Log.Write($"Color @ (x,y) = ({x},{y}) = {temp.ToString()}", Color.Black);
+        //    }
+        //    else
+        //    {
+        //        Log.Write($"Color @ (x,y) = ({x},{y}) = {temp.ToString()}", temp);
+        //    }
+
+        //    return temp;
+        //}
+
+        //public class Status
+        //{
+        //    public enum GameState
+        //    {
+        //        InGame,
+        //        NotInGame
+        //    }
+        //}
+
+        //public Status.GameState GameState
+        //{
+        //    get
+        //    {
+        //        if (wow.Read<byte>(Offsets.GameState) == 1)
+        //        {
+        //            return Status.GameState.InGame;
+        //        }
+        //        else
+        //        {
+        //            return Status.GameState.NotInGame;
+        //        }
+        //    }
+        //}
+
+        #region Keyboard Input
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool PostMessage(IntPtr hWnd, uint msg, UIntPtr wParam, UIntPtr lParam);
+
+        private static void KeyDown(Keys Key)
+        {
+            SendMessage(pWow.MainWindowHandle, 0x100, (int) Key, 0);
+        }
+
+        private static void KeyUp(Keys Key)
+        {
+            SendMessage(pWow.MainWindowHandle, 0x101, (int) Key, 0);
+        }
+
+        private static void KeyPressRelease(Keys key)
+        {
+            KeyDown(key);
+            Thread.Sleep(50);
+            KeyUp(key);
+        }
+
+        private static void Write(string text, params object[] args)
+        {
+            foreach (var character in string.Format(text, args))
+            {
+                PostMessage(pWow.MainWindowHandle, 0x0102, new UIntPtr(character), UIntPtr.Zero);
+            }
+        }
+
+        #endregion
+    }
 }

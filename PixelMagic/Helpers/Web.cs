@@ -9,7 +9,7 @@ using System.Net;
 
 namespace PixelMagic.Helpers
 {
-    public class Web
+    public static class Web
     {
         public static string GetString(string url)
         {
@@ -22,6 +22,7 @@ namespace PixelMagic.Helpers
                 }
                 catch (Exception)
                 {
+                    // ignored
                 }
 
                 return stringData;

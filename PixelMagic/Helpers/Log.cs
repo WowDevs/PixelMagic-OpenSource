@@ -9,9 +9,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Media;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace PixelMagic.Helpers
 {
@@ -19,24 +21,20 @@ namespace PixelMagic.Helpers
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public static class Log
     {
-        private static bool Initialized = false;
+        private const int WM_VSCROLL = 277;
+        private const int SB_PAGEBOTTOM = 7;
+        private static bool Initialized;
         private static StreamWriter _sw;
         private static RichTextBox _rtbLogWindow;
-        private readonly static Color _errorColor = Color.Red;
+        private static readonly Color _errorColor = Color.Red;
         private static Form _parent;
         private static bool _clearHistory;
 
-        private static int _lineCount;
-
-        public static int LineCount
-        {
-            get
-            {
-                return _lineCount;
-            }
-        }
-
         public static string HorizontalLine = "------------";
+
+        private static string lastMessage;
+
+        public static int LineCount { get; private set; }
 
         private static void SetDoubleBuffered(Control c)
         {
@@ -45,7 +43,7 @@ namespace PixelMagic.Helpers
             if (SystemInformation.TerminalServerSession)
                 return;
 
-            PropertyInfo aProp = typeof(Control).GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance);
+            var aProp = typeof(Control).GetProperty("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance);
 
             aProp.SetValue(c, true, null);
         }
@@ -67,16 +65,6 @@ namespace PixelMagic.Helpers
             SetDoubleBuffered(rtbLogWindow);
 
             Initialized = true;
-        }
-
-        private static void LogActivityWithoutLineFeed(string activity, Color c)
-        {
-            _parent.Invoke(
-                new Action(() =>
-                {
-                    InternalWrite(c, activity, false, false);
-                    WriteDirectlyToLogFile(activity);
-                }));
         }
 
         private static void LogActivityWithoutLineFeedOrTime(string activity, Color c, bool noSound = false)
@@ -179,10 +167,7 @@ namespace PixelMagic.Helpers
         {
             try
             {
-                if (_sw != null)
-                {
-                    _sw.WriteLine("[" + DateTime.Now.ToString(CultureInfo.InvariantCulture) + "] " + format, args);
-                }
+                _sw?.WriteLine("[" + DateTime.Now.ToString(CultureInfo.InvariantCulture) + "] " + format, args);
             }
             catch (Exception ex)
             {
@@ -219,13 +204,11 @@ namespace PixelMagic.Helpers
 
         internal static void WritePixelMagic(string text, Color c)
         {
-            char[] delimiterChars = { ' ', ',', '.', ':', '\t' };
-            string[] words = text.Split(delimiterChars);
+            char[] delimiterChars = {' ', ',', '.', ':', '\t'};
+            var words = text.Split(delimiterChars);
 
-            for (int i = 0; i < words.Length; i++)
+            foreach (var s in words)
             {
-                string s = words[i];
-            
                 if (s == "PixelMagic")
                 {
                     LogActivityWithoutLineFeedOrTime("P", Color.Red, true);
@@ -261,7 +244,7 @@ namespace PixelMagic.Helpers
                 Application.Exit();
             }
 
-            _parent.Invoke(
+            _parent?.Invoke(
                 new Action(() =>
                 {
                     InternalWrite(c, text);
@@ -301,11 +284,6 @@ namespace PixelMagic.Helpers
                 }));
         }
 
-        private static string lastMessage;
-
-        [DllImport("user32.dll")]
-        private static extern bool LockWindowUpdate(IntPtr hWndLock);
-
         private static void InternalWrite(Color color, string text, bool noTime = false, bool lineFeed = true, bool noSound = false)
         {
             try
@@ -314,11 +292,11 @@ namespace PixelMagic.Helpers
                 {
                     if (!noSound)
                     {
-                        System.Media.SystemSounds.Hand.Play();
+                        SystemSounds.Hand.Play();
                     }
                 }
 
-                RichTextBox rtb = _rtbLogWindow;
+                var rtb = _rtbLogWindow;
 
                 rtb.SuspendLayout();
 
@@ -332,26 +310,19 @@ namespace PixelMagic.Helpers
                     rtb.SelectedText = "";
                 }
 
-                _lineCount = rtb.Lines.Length;
+                LineCount = rtb.Lines.Length;
 
                 rtb.SelectionStart = rtb.Text.Length;
                 rtb.SelectionLength = 0;
-                
+
                 if (!noTime)
                 {
                     rtb.SelectionColor = Color.Gray;
-                    rtb.AppendText(string.Format("[{0}] ", DateTime.Now.ToString("HH:mm:ss")));
+                    rtb.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] ");
                 }
 
                 rtb.SelectionColor = color;
-                if (lineFeed)
-                {
-                    rtb.AppendText(string.Format("{0}\r", text));
-                }
-                else
-                {
-                    rtb.AppendText(string.Format("{0}", text));
-                }
+                rtb.AppendText(lineFeed ? $"{text}\r" : $"{text}");
 
                 rtb.ClearUndo();
 
@@ -367,12 +338,10 @@ namespace PixelMagic.Helpers
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
-        private const int WM_VSCROLL = 277;
-        private const int SB_PAGEBOTTOM = 7;
 
         public static void ScrollToBottom(RichTextBox MyRichTextBox)
         {
-            SendMessage(MyRichTextBox.Handle, WM_VSCROLL, (IntPtr)SB_PAGEBOTTOM, IntPtr.Zero);
+            SendMessage(MyRichTextBox.Handle, WM_VSCROLL, (IntPtr) SB_PAGEBOTTOM, IntPtr.Zero);
         }
     }
 }

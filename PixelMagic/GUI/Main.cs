@@ -6,92 +6,74 @@
 
 // Icon Backlink: http://icons8.com/ (http://www.iconarchive.com/show/ios7-icons-by-icons8/Animals-Ant-icon.html)
 
-using Microsoft.CSharp;
-using PixelMagic.Helpers;
-using PixelMagic.Rotation;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.CSharp;
+using PixelMagic.Helpers;
+using PixelMagic.Rotation;
 
+// ReSharper disable once CheckNamespace
 namespace PixelMagic.GUI
 {
     public partial class frmMain : Form
     {
         internal static CombatRoutine combatRoutine;
-        internal KeyboardHook hook;
-        internal Dictionary<int, string> classes;
+        private readonly Dictionary<int, string> classes;
+        private KeyboardHook hook;
+
+        private readonly int LocalVersion = int.Parse(Application.ProductVersion.Split('.')[0]);
 
         internal frmMain()
         {
             InitializeComponent();
 
-            classes = new Dictionary<int, string>();
-            classes.Add(1, "Warrior");
-            classes.Add(2, "Paladin");
-            classes.Add(3, "Hunter");
-            classes.Add(4, "Rogue");
-            classes.Add(5, "Priest");
-            classes.Add(6, "DeathKnight");
-            classes.Add(7, "Shaman");
-            classes.Add(8, "Mage");
-            classes.Add(9, "Warlock");
-            classes.Add(10, "Monk");
-            classes.Add(11, "Druid");
-            classes.Add(12, "DemonHunter");
+            classes = new Dictionary<int, string>
+            {
+                { 1, "Warrior"},
+                { 2, "Paladin"},
+                { 3, "Hunter"},
+                { 4, "Rogue"},
+                { 5, "Priest"},
+                { 6, "DeathKnight"},
+                { 7, "Shaman"},
+                { 8, "Mage"},
+                { 9, "Warlock"},
+                { 10, "Monk"},
+                { 11, "Druid"},
+                { 12, "DemonHunter"}
+            };
         }
 
-        #region Get GIT Version
-        private int _gitVersion = 0;
-
-        private int GitHubVersion
+        private static string OperatingSystem
         {
             get
             {
-                if (_gitVersion == 0)
+                var result = string.Empty;
+
+                var moc = new ManagementObjectSearcher(@"SELECT * FROM Win32_OperatingSystem ");
+                foreach (var managementBaseObject in moc.Get())
                 {
-                    try
-                    {
-                        string versionInfo = Web.GetString("https://raw.githubusercontent.com/winifix/Pixel-Bot-Sample-Application/master/AntiVirusBeta/Properties/AssemblyInfo.cs").
-                            Split('\r').
-                            FirstOrDefault(r => r.Contains("AssemblyFileVersion")).
-                            Replace("\n", "").
-                            Replace("[assembly: AssemblyFileVersion(\"", "").
-                            Replace("\")]", "").
-                            Split('.')[0];
-
-                        _gitVersion = int.Parse(versionInfo);
-                    }
-                    catch
-                    {
-                        _gitVersion = 0;
-                    }
+                    var o = (ManagementObject) managementBaseObject;
+                    var x64 = Environment.Is64BitOperatingSystem ? "(x64)" : "(x86)";
+                    result = $@"{o["Caption"]} {x64} Version {o["Version"]} SP {o["ServicePackMajorVersion"]}.{o["ServicePackMinorVersion"]}";
+                    break;
                 }
-                return _gitVersion;
-            }
-        }
-        #endregion
 
-        int LocalVersion = int.Parse(Application.ProductVersion.Split('.')[0].ToString());
-
-        public bool PlayErrorSounds
-        {
-            get
-            {
-                return chkPlayErrorSounds.Checked;
+                return result.Replace("Microsoft", "").Trim();
             }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            debuggingToolStripMenuItem.Visible = System.Diagnostics.Debugger.IsAttached;
+            debuggingToolStripMenuItem.Visible = Debugger.IsAttached;
 
             FormClosing += FrmMain_FormClosing;
             Shown += FrmMain_Shown;
@@ -120,7 +102,7 @@ namespace PixelMagic.GUI
                 Log.Write("Cleanup Completed.");
                 e.Cancel = false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Write(ex.Message, Color.Red);
             }
@@ -153,44 +135,20 @@ namespace PixelMagic.GUI
             {
                 // Defaults - Hotkeys not setup
 
-                hook.RegisterHotKey(PixelMagic.Helpers.ModifierKeys.Ctrl, Keys.S, "Start / Stop Rotation");
-                hook.RegisterHotKey(PixelMagic.Helpers.ModifierKeys.Alt, Keys.S, "Single Target");
-                hook.RegisterHotKey(PixelMagic.Helpers.ModifierKeys.Alt, Keys.A, "AOE Targets");
+                hook.RegisterHotKey(Helpers.ModifierKeys.Ctrl, Keys.S, "Start / Stop Rotation");
+                hook.RegisterHotKey(Helpers.ModifierKeys.Alt, Keys.S, "Single Target");
+                hook.RegisterHotKey(Helpers.ModifierKeys.Alt, Keys.A, "AOE Targets");
             }
         }
 
         private void MouseHook_MouseClick(object sender, MouseEventArgs e)
         {
-            //if (e.X > 1920)
-            //    return;
+            txtMouseXYClick.Text = $"{e.X}, {e.Y}";
 
-            //if (WoW.HasFocus)
+            //if (Debugger.IsAttached)
             //{
-                txtMouseXYClick.Text = $"{e.X}, {e.Y}";
+            //    Log.Write($"Cursor clicked at (x, y) = {e.X}, {e.Y}");
             //}
-
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                Log.Write($"Cursor clicked at (x, y) = {e.X}, {e.Y}");
-            }
-        }
-
-        public static string OperatingSystem
-        {
-            get
-            {
-                string result = string.Empty;
-                
-                var moc = new ManagementObjectSearcher(@"SELECT * FROM Win32_OperatingSystem ");
-                foreach (ManagementObject o in moc.Get())
-                {
-                    var x64 = (Environment.Is64BitOperatingSystem ? "(x64)" : "(x86)");
-                    result = $@"{o["Caption"]} {x64} Version {o["Version"]} SP {o["ServicePackMajorVersion"]}.{o["ServicePackMinorVersion"]}";
-                    break;
-                }
-
-                return result.Replace("Microsoft", "").Trim();
-            }
         }
 
         private void FrmMain_Shown(object sender, EventArgs e)
@@ -200,31 +158,31 @@ namespace PixelMagic.GUI
                 ConfigFile.Initialize();
                 SpellBook.Initialize();
 
-                Thread mousePos = new Thread(delegate ()
+                var mousePos = new Thread(delegate()
                 {
-                    while(true)
+                    while (true)
                     {
                         Threads.UpdateTextBox(txtMouseXY, Cursor.Position.X + "," + Cursor.Position.Y);
                         Thread.Sleep(10);
                     }
-                });
-                mousePos.IsBackground = true;
+                    // ReSharper disable once FunctionNeverReturns
+                }) {IsBackground = true};
                 mousePos.Start();
 
                 Log.Write(OperatingSystem);
                 Log.Write("WoW Path: " + WoW.InstallPath, Color.Black);
                 Log.Write("AddOn Path: " + WoW.AddonPath, Color.Black);
-                
+
                 foreach (var item in classes)
                 {
                     if (!Directory.Exists(Application.StartupPath + "\\Rotations\\" + item.Value))
                         Directory.CreateDirectory(Application.StartupPath + "\\Rotations\\" + item.Value);
                 }
-                
+
                 ReloadHotkeys();
 
                 nudPulse.Value = ConfigFile.Pulse;
-                
+
                 WoW.Initialize();
 
                 if (ConfigFile.LastRotation == "")
@@ -235,10 +193,9 @@ namespace PixelMagic.GUI
                 {
                     Log.Write("Current Rotation: " + ConfigFile.LastRotation, Color.Green);
 
-                    if (!LoadProfile(ConfigFile.LastRotation, txtHealth, txtPower, txtTargetCasting, txtTargetHealth))
+                    if (!LoadProfile(ConfigFile.LastRotation))
                     {
                         Log.Write("Failed to load profile, please select a valid file.", Color.Red);
-                        return;
                     }
                 }
 
@@ -254,7 +211,7 @@ namespace PixelMagic.GUI
 
         private void Hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-            lblHotkeyInfo.Text = e.Modifier.ToString() + " + " + e.Key.ToString();
+            lblHotkeyInfo.Text = e.Modifier + " + " + e.Key;
 
             if (ConfigFile.ReadValue("Hotkeys", "cmbStartRotationKey") != "")
             {
@@ -279,7 +236,7 @@ namespace PixelMagic.GUI
                     {
                         combatRoutine.ChangeType(CombatRoutine.RotationType.SingleTarget);
                         return;
-                    }                    
+                    }
                 }
 
                 if (e.Modifier == Keyboard.AOEModifierKey && e.Key == Keyboard.AOEKey)
@@ -287,13 +244,12 @@ namespace PixelMagic.GUI
                     if (combatRoutine.Type != CombatRoutine.RotationType.AOE)
                     {
                         combatRoutine.ChangeType(CombatRoutine.RotationType.AOE);
-                        return;
                     }
                 }
             }
             else
             {
-                if (e.Modifier == PixelMagic.Helpers.ModifierKeys.Ctrl)
+                if (e.Modifier == Helpers.ModifierKeys.Ctrl)
                 {
                     if (e.Key == Keys.S)
                     {
@@ -301,7 +257,7 @@ namespace PixelMagic.GUI
                     }
                 }
 
-                if (e.Modifier == PixelMagic.Helpers.ModifierKeys.Alt)
+                if (e.Modifier == Helpers.ModifierKeys.Alt)
                 {
                     if (e.Key == Keys.S)
                     {
@@ -325,7 +281,7 @@ namespace PixelMagic.GUI
             }
 
             if (combatRoutine.State == CombatRoutine.RotationState.Stopped)
-            {             
+            {
                 combatRoutine.Start();
 
                 if (combatRoutine.State == CombatRoutine.RotationState.Running)
@@ -334,15 +290,15 @@ namespace PixelMagic.GUI
                 }
             }
             else
-            {             
+            {
                 combatRoutine.Pause();
                 cmdStartBot.Text = "Start bot";
-            }            
+            }
         }
 
         private void cmdDonate_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CPDNWHKSVWGKA");
+            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CPDNWHKSVWGKA");
         }
 
         private void loadRotationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -352,17 +308,18 @@ namespace PixelMagic.GUI
                 combatRoutine?.Pause();
             }
 
-            OpenFileDialog fileBrowser = new OpenFileDialog();
-            fileBrowser.Filter = "CS (*.cs)|*.cs|ENC (*.enc)|*.enc";
-            fileBrowser.InitialDirectory = Application.StartupPath + "\\Rotations";
-            DialogResult res = fileBrowser.ShowDialog();
+            var fileBrowser = new OpenFileDialog
+            {
+                Filter = "CS (*.cs)|*.cs|ENC (*.enc)|*.enc",
+                InitialDirectory = Application.StartupPath + "\\Rotations"
+            };
+            var res = fileBrowser.ShowDialog();
 
             if (res == DialogResult.OK)
             {
-                if (!LoadProfile(fileBrowser.FileName, txtHealth, txtPower, txtTargetCasting, txtTargetHealth))
+                if (!LoadProfile(fileBrowser.FileName))
                 {
                     Log.Write("Failed to load profile, please select a valid file.", Color.Red);
-                    return;
                 }
                 else
                 {
@@ -372,11 +329,11 @@ namespace PixelMagic.GUI
             }
         }
 
-        private bool LoadProfile(string fileName, TextBox txtHealth, TextBox txtPower, TextBox txtTargetHealth, TextBox txtTargetCasting)
+        private bool LoadProfile(string fileName)
         {
-            using (StreamReader sr = new StreamReader(fileName))
+            using (var sr = new StreamReader(fileName))
             {
-                string code = sr.ReadToEnd();
+                var code = sr.ReadToEnd();
 
                 if (code.Trim() == "")
                 {
@@ -402,12 +359,12 @@ namespace PixelMagic.GUI
 
                 Log.Write($"Compiling profile [{fileName}]...", Color.Black);
 
-                CSharpCodeProvider provider = new CSharpCodeProvider();
-                CompilerParameters parameters = new CompilerParameters();
+                var provider = new CSharpCodeProvider();
+                var parameters = new CompilerParameters();
 
-                parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");    // For Windows Forms use
-                parameters.ReferencedAssemblies.Add("System.Drawing.dll");          // For System.Drawing.Point and System.Drawing.Color use
-                parameters.ReferencedAssemblies.Add("System.Data.dll");             
+                parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll"); // For Windows Forms use
+                parameters.ReferencedAssemblies.Add("System.Drawing.dll"); // For System.Drawing.Point and System.Drawing.Color use
+                parameters.ReferencedAssemblies.Add("System.Data.dll");
                 parameters.ReferencedAssemblies.Add("System.Xml.dll");
                 parameters.ReferencedAssemblies.Add("System.Linq.dll");
                 parameters.ReferencedAssemblies.Add("System.dll");
@@ -416,12 +373,10 @@ namespace PixelMagic.GUI
                 parameters.GenerateInMemory = true;
                 parameters.GenerateExecutable = false;
 
-                CompilerResults results = provider.CompileAssemblyFromSource(parameters, code);
+                var results = provider.CompileAssemblyFromSource(parameters, code);
 
                 if (results.Errors.HasErrors)
                 {
-                    StringBuilder sb = new StringBuilder();
-
                     foreach (CompilerError error in results.Errors)
                     {
                         Log.Write($"Error ({error.ErrorNumber}): {error.ErrorText}", Color.Red);
@@ -430,19 +385,19 @@ namespace PixelMagic.GUI
                     return false;
                 }
 
-                Assembly assembly = results.CompiledAssembly;
+                var assembly = results.CompiledAssembly;
 
-                foreach (Type t in assembly.GetTypes())
+                foreach (var t in assembly.GetTypes())
                 {
                     if (t.IsClass)
                     {
-                        object obj = Activator.CreateInstance(t);
-                        combatRoutine = (CombatRoutine)obj;
-                        
+                        var obj = Activator.CreateInstance(t);
+                        combatRoutine = (CombatRoutine) obj;
+
                         combatRoutine.Load(this);
 
                         Log.Write("Successfully loaded combat routine: " + combatRoutine.Name, Color.Green);
-                        
+
                         Overlay.showOverlay(new Point(20, 680));
 
                         return true;
@@ -487,13 +442,13 @@ namespace PixelMagic.GUI
             {
                 try
                 {
-                    string rotationSource = "";
+                    string rotationSource;
 
-                    using (StreamReader sr = new StreamReader(ConfigFile.LastRotation))
+                    using (var sr = new StreamReader(ConfigFile.LastRotation))
                     {
-                        string contents = sr.ReadToEnd();
+                        var contents = sr.ReadToEnd();
 
-                        string line1 = contents.Split('\r')[0].Trim();
+                        var line1 = contents.Split('\r')[0].Trim();
 
                         if (!line1.Contains("@"))
                         {
@@ -503,7 +458,7 @@ namespace PixelMagic.GUI
                         rotationSource = Encryption.Encrypt(contents);
                     }
 
-                    using (StreamWriter sw = new StreamWriter(ConfigFile.LastRotation.Replace(".cs", ".enc")))
+                    using (var sw = new StreamWriter(ConfigFile.LastRotation.Replace(".cs", ".enc")))
                     {
                         sw.Write(rotationSource);
                         sw.Flush();
@@ -512,7 +467,7 @@ namespace PixelMagic.GUI
                     Log.Write("File has beem encrypted successfully.", Color.Green);
                     Log.Write("Encrypted name: " + ConfigFile.LastRotation.Replace(".cs", ".enc"), Color.Green);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Log.Write(ex.Message, Color.Red);
                 }
@@ -521,7 +476,7 @@ namespace PixelMagic.GUI
 
         private void hotkeysToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetupHotkeys f = new SetupHotkeys();
+            var f = new SetupHotkeys();
             f.ShowDialog();
 
             ReloadHotkeys();
@@ -534,13 +489,13 @@ namespace PixelMagic.GUI
 
         private void spellbookToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetupSpellBook f = new SetupSpellBook();
+            var f = new SetupSpellBook();
             f.ShowDialog();
         }
 
         private void chkPlayErrorSounds_CheckedChanged(object sender, EventArgs e)
         {
-            ConfigFile.PlayErrorSounds = chkPlayErrorSounds.Checked;            
+            ConfigFile.PlayErrorSounds = chkPlayErrorSounds.Checked;
         }
 
         private void chkDisableOverlay_CheckedChanged(object sender, EventArgs e)
@@ -554,5 +509,38 @@ namespace PixelMagic.GUI
 
             combatRoutine?.ForcePulseUpdate();
         }
+
+        #region Get GIT Version
+
+        private int _gitVersion;
+
+        private int GitHubVersion
+        {
+            get
+            {
+                if (_gitVersion == 0)
+                {
+                    try
+                    {
+                        var versionInfo = Web.GetString("https://raw.githubusercontent.com/winifix/Pixel-Bot-Sample-Application/master/AntiVirusBeta/Properties/AssemblyInfo.cs").
+                            Split('\r').
+                            FirstOrDefault(r => r.Contains("AssemblyFileVersion"))?.
+                            Replace("\n", "").
+                            Replace("[assembly: AssemblyFileVersion(\"", "").
+                            Replace("\")]", "").
+                            Split('.')[0];
+
+                        if (versionInfo != null) _gitVersion = int.Parse(versionInfo);
+                    }
+                    catch
+                    {
+                        _gitVersion = 0;
+                    }
+                }
+                return _gitVersion;
+            }
+        }
+
+        #endregion
     }
 }
