@@ -99,6 +99,9 @@ namespace PixelMagic.GUI
                 Log.Write(" - WoW Pixel Reading System...");
                 WoW.Dispose();
                 Log.Write(" - Done");
+                Log.Write(" - Mouse Hook");
+                MouseHook.ForceUnsunscribeFromGlobalMouseEvents();
+                Log.Write(" - Done");
                 Log.Write("Cleanup Completed.");
                 e.Cancel = false;
             }

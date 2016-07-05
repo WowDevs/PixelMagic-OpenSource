@@ -422,26 +422,27 @@ namespace PixelMagic.Helpers
         private static extern int UnhookWindowsHookEx(int idHook);
 
 
-        private static void ForceUnsunscribeFromGlobalMouseEvents()
+        public static void ForceUnsunscribeFromGlobalMouseEvents()
         {
-            if (s_MouseHookHandle != 0)
-            {
-                //uninstall hook
-                var result = UnhookWindowsHookEx(s_MouseHookHandle);
-                //reset invalid handle
-                s_MouseHookHandle = 0;
-                //Free up for GC
-                s_MouseDelegate = null;
+            if (s_MouseHookHandle == 0) return;
 
-                //if failed and exception must be thrown
-                if (result == 0)
-                {
-                    //Returns the error code returned by the last unmanaged function called using platform invoke that has the DllImportAttribute.SetLastError flag set. 
-                    var errorCode = Marshal.GetLastWin32Error();
-                    //Initializes and throws a new instance of the Win32Exception class with the specified error. 
-                    throw new Win32Exception(errorCode);
-                }
-            }
+            //uninstall hook
+            var result = UnhookWindowsHookEx(s_MouseHookHandle);
+
+            //reset invalid handle
+            s_MouseHookHandle = 0;
+
+            //Free up for GC
+            s_MouseDelegate = null;
+
+            //if failed and exception must be thrown
+            if (result != 0) return;
+
+            //Returns the error code returned by the last unmanaged function called using platform invoke that has the DllImportAttribute.SetLastError flag set. 
+            var errorCode = Marshal.GetLastWin32Error();
+
+            //Initializes and throws a new instance of the Win32Exception class with the specified error. 
+            throw new Win32Exception(errorCode);
         }
 
         private delegate int HookProc(int nCode, int wParam, IntPtr lParam);
