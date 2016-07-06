@@ -23,9 +23,11 @@ namespace PixelMagic.Helpers
             Spells = new List<Spell>();
             Auras = new List<Aura>();
 
-            dtSpells = new DataTable();
+            dtSpells = new DataTable();            
             dtSpells.Columns.Add("Spell Id");
             dtSpells.Columns.Add("Spell Name");
+            dtSpells.Columns.Add("Key Bind");
+            dtSpells.Columns.Add("InternalNo"); // This stores the spell no in the array of spells that will be used on the addon
 
             dtAuras = new DataTable();
             dtAuras.Columns.Add("Aura Id");
@@ -34,17 +36,32 @@ namespace PixelMagic.Helpers
             Load();
         }
 
-        public static void AddSpell(NumericUpDown spellId, TextBox spellName)
+        public static void AddSpell(NumericUpDown spellId, TextBox spellName, TextBox keyBind)
         {
-            AddSpell(int.Parse(spellId.Value.ToString()), spellName.Text);
+            AddSpell(int.Parse(spellId.Value.ToString()), spellName.Text, keyBind.Text);
         }
 
-        public static void AddSpell(int spellId, string spellName)
+        private static void RenumberSpells()
+        {
+            int i = 1;
+
+            foreach(DataRow dr in dtSpells.Rows)
+            {
+                dr["InternalNo"] = i;
+                i++;
+            }
+        }
+
+        public static void AddSpell(int spellId, string spellName, string keyBind)
         {
             if (dtSpells != null && dtSpells.Select($"[Spell Id] = {spellId}").Length == 0)
             {
-                dtSpells.Rows.Add(spellId, spellName);
-                Spells.Add(new Spell(spellId, spellName));
+                dtSpells.Rows.Add(spellId, spellName, keyBind, 0);
+                RenumberSpells();
+
+                int newSpellId = int.Parse(dtSpells.Select($"[Spell Id] = {spellId}")[0]["InternalNo"].ToString());
+
+                Spells.Add(new Spell(spellId, spellName, keyBind, newSpellId));                
             }
             else
             {
@@ -81,6 +98,8 @@ namespace PixelMagic.Helpers
             {
                 dtSpells.Rows.Remove(dtSpells.Select($"[Spell Id] = {spellId}").FirstOrDefault());
                 Spells.Remove(Spells.FirstOrDefault(s => s.SpellId == spellId));
+
+                RenumberSpells();
             }
             else
             {
@@ -121,9 +140,9 @@ namespace PixelMagic.Helpers
 
                     if (split[0] == "Spell")
                     {
-                        AddSpell(int.Parse(split[1]), split[2]);
+                        AddSpell(int.Parse(split[1]), split[2], split[3]);
                     }
-
+                    
                     if (split[0] == "Aura")
                     {
                         AddAura(int.Parse(split[1]), split[2]);
@@ -131,18 +150,28 @@ namespace PixelMagic.Helpers
                 }
 
                 sr.Close();
+
+                RenumberSpells();
             }
         }
 
-        public static void Save()
+        private static string AddonAuthor;
+        private static string InterfaceVersion;
+        private static string AddonName;
+
+        public static void Save(TextBox author, TextBox interfaceVersion, TextBox addonName)
         {
+            AddonAuthor = author.Text;
+            InterfaceVersion = interfaceVersion.Text;
+            AddonName = addonName.Text;
+
             try
             {
                 using (var sw = new StreamWriter(Application.StartupPath + "\\SpellBook.db"))
                 {
                     foreach (var spell in Spells)
                     {
-                        sw.WriteLine($"Spell,{spell.SpellId},{spell.SpellName}");
+                        sw.WriteLine($"Spell,{spell.SpellId},{spell.SpellName},{spell.KeyBind}");
                     }
                     foreach (var aura in Auras)
                     {
@@ -161,8 +190,65 @@ namespace PixelMagic.Helpers
             }
         }
 
+        private static string AddonPath
+        {
+            get
+            {
+                return $"{WoW.AddonPath}\\{AddonName}";
+            }
+        }
+
         public static void GenerateLUAFile()
         {
+            if (!Directory.Exists(AddonPath))
+                Directory.CreateDirectory(AddonPath);
+
+            using (StreamWriter sr = new StreamWriter($"{AddonPath}\\{AddonName}.toc"))
+            {
+                //  ## Author: WiNiFiX
+                //  ## Interface: 60200
+                //  ## Title: DoIt
+                //  ## Version: 1.0.0
+                //  ## SavedVariablesPerCharacter: DoItOptions
+                //  DoItBase.lua
+
+                sr.WriteLine($"## Author: {AddonAuthor}");
+                sr.WriteLine($"## Interface: {InterfaceVersion}");
+                sr.WriteLine($"## Title: {AddonName}");
+                sr.WriteLine($"## Version: {Application.ProductVersion}");
+                sr.WriteLine($"## SavedVariablesPerCharacter: {AddonName}_settings");
+                sr.WriteLine($"{AddonName}.lua");                
+                sr.Close();
+            }
+
+            using (StreamWriter sr = new StreamWriter($"{AddonPath}\\{AddonName}.lua"))
+            {
+                //local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns
+                //    56641,    -- Steadyshot
+                //    3044,     -- Arcane Shot
+                //    34026     -- Kill Command
+                //}
+
+                string cooldowns = "local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns" + Environment.NewLine;
+
+                foreach (Spell spell in Spells)
+                {
+                    if (spell.InternalSpellNo == Spells.Count)  // We are adding the last spell, dont include the comma
+                    {
+                        cooldowns += $"    {spell.SpellId} \t -- {spell.SpellName}" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        cooldowns += $"    {spell.SpellId},\t -- {spell.SpellName}" + Environment.NewLine;
+                    }
+                }
+
+                cooldowns += "}" + Environment.NewLine;
+
+                sr.Write(cooldowns);
+                sr.WriteLine(Addon.LuaContents);
+                sr.Close();
+            }
         }
     }
 }

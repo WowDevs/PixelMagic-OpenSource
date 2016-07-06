@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupSpellBook));
             this.dgSpells = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -57,6 +56,12 @@
             this.dgAuras = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtKeyBind = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.InternalNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgSpells)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpellId)).BeginInit();
@@ -77,7 +82,9 @@
             this.dgSpells.ColumnHeadersVisible = false;
             this.dgSpells.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
-            this.Column2});
+            this.Column2,
+            this.Column3,
+            this.InternalNo});
             this.dgSpells.Location = new System.Drawing.Point(6, 65);
             this.dgSpells.Name = "dgSpells";
             this.dgSpells.RowHeadersVisible = false;
@@ -86,25 +93,10 @@
             this.dgSpells.Size = new System.Drawing.Size(346, 277);
             this.dgSpells.TabIndex = 0;
             // 
-            // Column1
-            // 
-            this.Column1.DataPropertyName = "Spell Id";
-            this.Column1.HeaderText = "Spell Id";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // Column2
-            // 
-            this.Column2.DataPropertyName = "Spell Name";
-            this.Column2.HeaderText = "Spell Name";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column2.Width = 200;
-            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.txtKeyBind);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.cmdRemoveSpell);
@@ -174,7 +166,7 @@
             // 
             this.txtSpellName.Location = new System.Drawing.Point(110, 42);
             this.txtSpellName.Name = "txtSpellName";
-            this.txtSpellName.Size = new System.Drawing.Size(196, 20);
+            this.txtSpellName.Size = new System.Drawing.Size(150, 20);
             this.txtSpellName.TabIndex = 8;
             // 
             // groupBox3
@@ -361,6 +353,58 @@
             this.dataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn2.Width = 200;
             // 
+            // txtKeyBind
+            // 
+            this.txtKeyBind.Location = new System.Drawing.Point(262, 42);
+            this.txtKeyBind.Name = "txtKeyBind";
+            this.txtKeyBind.Size = new System.Drawing.Size(43, 20);
+            this.txtKeyBind.TabIndex = 7;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(260, 25);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(49, 13);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Key Bind";
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "Spell Id";
+            this.Column1.HeaderText = "Spell Id";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "Spell Name";
+            this.Column2.HeaderText = "Spell Name";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column2.Width = 155;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "Key Bind";
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Column3.HeaderText = "Key Bind";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column3.Width = 43;
+            // 
+            // InternalNo
+            // 
+            this.InternalNo.DataPropertyName = "InternalNo";
+            this.InternalNo.HeaderText = "Column4";
+            this.InternalNo.Name = "InternalNo";
+            this.InternalNo.ReadOnly = true;
+            this.InternalNo.Visible = false;
+            // 
             // SetupSpellBook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -415,9 +459,13 @@
         private System.Windows.Forms.NumericUpDown nudAuraId;
         private System.Windows.Forms.TextBox txtAuraName;
         private System.Windows.Forms.DataGridView dgAuras;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtKeyBind;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn InternalNo;
     }
 }

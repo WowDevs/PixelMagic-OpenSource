@@ -550,6 +550,18 @@ namespace PixelMagic.Helpers
             KeyPressRelease(Keys.Enter);
         }
 
+        public static bool CanCast(string spellBookSpellName)
+        {
+            var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
+            return CanCast(spell.InternalSpellNo);
+        }
+
+        public static void CastSpellByName(string spellBookSpellName)
+        {
+            var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
+            SendKey(spell.Key);
+        }
+
         [DllImport("gdi32.dll")]
         private static extern int BitBlt(IntPtr srchDC, int srcX, int srcY, int srcW, int srcH, IntPtr desthDC, int destX, int destY, int op);
 

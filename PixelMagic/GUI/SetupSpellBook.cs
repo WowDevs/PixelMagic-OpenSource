@@ -27,7 +27,7 @@ namespace PixelMagic.GUI
 
         private void cmdAddSpell_Click(object sender, EventArgs e)
         {
-            SpellBook.AddSpell(nudSpellId, txtSpellName);
+            SpellBook.AddSpell(nudSpellId, txtSpellName, txtKeyBind);
         }
 
         private void cmdRemoveSpell_Click(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace PixelMagic.GUI
 
         private void cmdSave_Click(object sender, EventArgs e)
         {
-            SpellBook.Save();
+            SpellBook.Save(txtAddonAuthor, txtAddonInterface, txtAddonName);
         }
     }
 }
