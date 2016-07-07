@@ -43,7 +43,7 @@ namespace PixelMagic.Helpers
 
         private static void RenumberSpells()
         {
-            int i = 1;
+            var i = 1;
 
             foreach(DataRow dr in dtSpells.Rows)
             {
@@ -59,7 +59,7 @@ namespace PixelMagic.Helpers
                 dtSpells.Rows.Add(spellId, spellName, keyBind, 0);
                 RenumberSpells();
 
-                int newSpellId = int.Parse(dtSpells.Select($"[Spell Id] = {spellId}")[0]["InternalNo"].ToString());
+                var newSpellId = int.Parse(dtSpells.Select($"[Spell Id] = {spellId}")[0]["InternalNo"].ToString());
 
                 Spells.Add(new Spell(spellId, spellName, keyBind, newSpellId));                
             }
@@ -159,10 +159,10 @@ namespace PixelMagic.Helpers
         private static string InterfaceVersion;
         private static string AddonName;
 
-        public static void Save(TextBox author, TextBox interfaceVersion, TextBox addonName)
+        public static void Save(TextBox author, string interfaceVersion, TextBox addonName)
         {
             AddonAuthor = author.Text;
-            InterfaceVersion = interfaceVersion.Text;
+            InterfaceVersion = interfaceVersion;
             AddonName = addonName.Text;
 
             try
@@ -203,7 +203,7 @@ namespace PixelMagic.Helpers
             if (!Directory.Exists(AddonPath))
                 Directory.CreateDirectory(AddonPath);
 
-            using (StreamWriter sr = new StreamWriter($"{AddonPath}\\{AddonName}.toc"))
+            using (var sr = new StreamWriter($"{AddonPath}\\{AddonName}.toc"))
             {
                 //  ## Author: WiNiFiX
                 //  ## Interface: 60200
@@ -221,7 +221,7 @@ namespace PixelMagic.Helpers
                 sr.Close();
             }
 
-            using (StreamWriter sr = new StreamWriter($"{AddonPath}\\{AddonName}.lua"))
+            using (var sr = new StreamWriter($"{AddonPath}\\{AddonName}.lua"))
             {
                 //local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns
                 //    56641,    -- Steadyshot
@@ -229,9 +229,9 @@ namespace PixelMagic.Helpers
                 //    34026     -- Kill Command
                 //}
 
-                string cooldowns = "local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns" + Environment.NewLine;
+                var cooldowns = "local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns" + Environment.NewLine;
 
-                foreach (Spell spell in Spells)
+                foreach (var spell in Spells)
                 {
                     if (spell.InternalSpellNo == Spells.Count)  // We are adding the last spell, dont include the comma
                     {
@@ -246,7 +246,15 @@ namespace PixelMagic.Helpers
                 cooldowns += "}" + Environment.NewLine;
 
                 sr.Write(cooldowns);
-                sr.WriteLine(Addon.LuaContents);
+
+                var luaContents = Addon.LuaContents;
+
+                if (InterfaceVersion == "70000") // Legion
+                {
+                    luaContents = luaContents.Replace("SetTexture", "SetColorTexture");
+                }
+
+                sr.WriteLine(luaContents);
                 sr.Close();
             }
         }

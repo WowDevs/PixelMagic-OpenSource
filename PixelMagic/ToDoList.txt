@@ -1,25 +1,15 @@
 ﻿Items to do
 -.  Fishing Bot and Anti-AFK bot
 -.  Interrupt only bot - pick interrupt key and spell id's you would like to interrupt, specify interrupt delay (min/max ms)
--.  Make LUA file automatically from "Setup Spell Book"
 -.  Investigate using hex for numbers, 1 - 100 will only take up 2 pixel blocks, vs the current 7 (10 000 will take up 4 pixels)
     - I will need to assign 16 colors, one to each of 0-9 and A-F
     Reference: https://en.wikipedia.org/wiki/Hexadecimal
--. Allow users to pick expansion level and correct LUA syntax to match it, instead of asking the user to type in "Interface Version"
 -. Optimise the LUA addon and remove un-nessecary repitition of re-checking something another function just checked
--. Make a hotkey to display / hide the overlay
 -. Update LUA addon to track Auras (like its tracking spells)
--. Investigate color-blind mode and different resolutions and non-windowed modes, see if it affects the bot in any way
--. Allow users to change opacity of Overlay and customise what is put on it - perhaps let them design a windows form and read the layout from it
-    and apply that layout to the overlay, also specify background image it uses (if any) or background color 
 -. Add in ticketing / support system to allow user to email support queries to winifix@gmail.com directly - include things like
   - What class are you playing?
   - What spec are you playing?
-  - Confirm you are playing in full screen-windowed 1920x1080 resolution (I have not tested others, but they should work.)
-  - Paste your Lua addon and rotation.cs files here
-  - What version of WoW you playing?
-  - What version of Windows is installed?
-  - What are your keybindings? (For the spells you testing with)
+  - Paste your Spellbook.db and <rotation>.cs files here
+  - What are your keybindings? (Do they match your Spell Book setup)
 -. Check LOS 
--. Allow user to specify where the pixels the addon reads from are positioned on the screen, and investigate if 1x1 pixels are possible to get 
-    accurate colors from.
+-. Allow user to specify where the pixels the addon reads from are positioned on the screen, and investigate if 1x1 pixels are possible to get accurate colors from.

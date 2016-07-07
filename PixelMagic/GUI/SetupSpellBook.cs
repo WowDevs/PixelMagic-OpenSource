@@ -3,6 +3,8 @@
 using System;
 using System.Windows.Forms;
 using PixelMagic.Helpers;
+using System.Globalization;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 
@@ -15,11 +17,15 @@ namespace PixelMagic.GUI
             InitializeComponent();
         }
 
+        private string AddonInterfaceVersion => cmbWowVersion.Text.Split('-')[1].Trim();
+
         private void SetupSpellBook_Load(object sender, EventArgs e)
         {
-            txtAddonAuthor.Text = Environment.UserName;
-            txtAddonName.Text = Environment.MachineName;
-            txtAddonInterface.Text = "60200";
+            var ti = new CultureInfo("en-ZA", false).TextInfo;
+            txtAddonAuthor.Text = ti.ToTitleCase(Environment.UserName);
+
+            var machineName = new string(Environment.MachineName.Where(char.IsLetter).ToArray()).ToLower();
+            txtAddonName.Text = ti.ToTitleCase(machineName);
 
             dgSpells.DataSource = SpellBook.dtSpells;
             dgAuras.DataSource = SpellBook.dtAuras;
@@ -47,7 +53,13 @@ namespace PixelMagic.GUI
 
         private void cmdSave_Click(object sender, EventArgs e)
         {
-            SpellBook.Save(txtAddonAuthor, txtAddonInterface, txtAddonName);
+            if (cmbWowVersion.Text == "")
+            {
+                MessageBox.Show("Please select a valid wow version", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            SpellBook.Save(txtAddonAuthor, AddonInterfaceVersion, txtAddonName);
         }
     }
 }

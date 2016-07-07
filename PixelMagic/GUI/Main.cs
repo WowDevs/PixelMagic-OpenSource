@@ -11,6 +11,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -74,6 +75,11 @@ namespace PixelMagic.GUI
         private void frmMain_Load(object sender, EventArgs e)
         {
             debuggingToolStripMenuItem.Visible = Debugger.IsAttached;
+
+            // Its annoying as hell when people use incorrect culture info, this will force it to use the correct number and date formats.
+            var ci = new CultureInfo("en-ZA") { DateTimeFormat = {ShortDatePattern = "yyyy/MM/dd"}, NumberFormat = { NumberDecimalSeparator = ".", CurrencyDecimalSeparator = "." } };
+            Thread.CurrentThread.CurrentCulture = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
 
             FormClosing += FrmMain_FormClosing;
             Shown += FrmMain_Shown;
@@ -173,6 +179,14 @@ namespace PixelMagic.GUI
                 mousePos.Start();
 
                 Log.Write(OperatingSystem);
+
+                var i = 0;
+                foreach (var screen in Screen.AllScreens)
+                {
+                    i++;
+                    Log.Write($"Screen [{i}] - depth: {screen.BitsPerPixel}bit - resolution: {screen.Bounds.Width}x{screen.Bounds.Height}");
+                }
+
                 Log.Write("WoW Path: " + WoW.InstallPath, Color.Black);
                 Log.Write("AddOn Path: " + WoW.AddonPath, Color.Black);
 

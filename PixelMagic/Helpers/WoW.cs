@@ -463,7 +463,14 @@ namespace PixelMagic.Helpers
             var is64 = pWow.ProcessName.Contains("64");
 
             Log.Write($"WoW Version: {Version} (x{(is64 ? "64" : "86")})");
+
+            var wowRectangle = new Rectangle();
+            GetWindowRect(pWow.MainWindowHandle, ref wowRectangle);
+            Log.Write($"WoW Screen Resolution: {wowRectangle.Width}x{wowRectangle.Height}");
         }
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hWnd, ref Rectangle rect);
 
         public static void Dispose()
         {
