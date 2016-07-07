@@ -560,12 +560,26 @@ namespace PixelMagic.Helpers
         public static bool CanCast(string spellBookSpellName)
         {
             var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
+
+            if (spell == null)
+            {
+                Log.Write($"[CanCast] Unable to find spell with name '{spellBookSpellName}' in Spell Book");
+                return false;
+            }
+
             return CanCast(spell.InternalSpellNo);
         }
 
         public static void CastSpellByName(string spellBookSpellName)
         {
             var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
+
+            if (spell == null)
+            {
+                Log.Write($"[CastSpellByName] Unable to find spell with name '{spellBookSpellName}' in Spell Book");
+                return;
+            }
+
             SendKey(spell.Key);
         }
 

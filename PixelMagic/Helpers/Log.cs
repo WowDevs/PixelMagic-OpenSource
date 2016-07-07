@@ -192,14 +192,14 @@ namespace PixelMagic.Helpers
 
         public static void Write(string text)
         {
-            if (text == lastMessage) // We want to avoid spamming, so we dont display duplicate messages
-            {
-                return;
-            }
+            //if (text == lastMessage) // We want to avoid spamming, so we dont display duplicate messages
+            //{
+            //    return;
+            //}
 
             Write(text, Color.Black);
 
-            lastMessage = text;
+            //lastMessage = text;
         }
 
         internal static void WritePixelMagic(string text, Color c)
@@ -233,10 +233,10 @@ namespace PixelMagic.Helpers
 
         public static void Write(string text, Color c)
         {
-            if (text == lastMessage) // We want to avoid spamming, so we dont display duplicate messages
-            {
-                return;
-            }
+            //if (text == lastMessage) // We want to avoid spamming, so we dont display duplicate messages
+            //{
+            //    return;
+            //}
 
             if (_parent == null)
             {
@@ -251,7 +251,7 @@ namespace PixelMagic.Helpers
                     WriteDirectlyToLogFile(text);
                 }));
 
-            lastMessage = text;
+            //lastMessage = text;
         }
 
         public static void WriteNewLine()
