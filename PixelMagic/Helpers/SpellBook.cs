@@ -249,6 +249,8 @@ namespace PixelMagic.Helpers
 
                 var luaContents = Addon.LuaContents;
 
+                luaContents = luaContents.Replace("DoIt", AddonName);
+
                 if (InterfaceVersion == "70000") // Legion
                 {
                     luaContents = luaContents.Replace("SetTexture", "SetColorTexture");
