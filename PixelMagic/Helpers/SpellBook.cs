@@ -32,6 +32,7 @@ namespace PixelMagic.Helpers
             dtAuras = new DataTable();
             dtAuras.Columns.Add("Aura Id");
             dtAuras.Columns.Add("Aura Name");
+            dtAuras.Columns.Add("InternalNo"); // This stores the aura no in the array of auras that will be used on the addon
 
             Load();
         }
@@ -46,6 +47,17 @@ namespace PixelMagic.Helpers
             var i = 1;
 
             foreach(DataRow dr in dtSpells.Rows)
+            {
+                dr["InternalNo"] = i;
+                i++;
+            }
+        }
+
+        private static void RenumberAuras()
+        {
+            var i = 1;
+
+            foreach (DataRow dr in dtAuras.Rows)
             {
                 dr["InternalNo"] = i;
                 i++;
@@ -79,7 +91,11 @@ namespace PixelMagic.Helpers
             if (dtAuras != null && dtAuras.Select($"[Aura Id] = {auraId}").Length == 0)
             {
                 dtAuras.Rows.Add(auraId, auraName);
-                Auras.Add(new Aura(auraId, auraName));
+                RenumberAuras();
+
+                var newAuraId = int.Parse(dtAuras.Select($"[Aura Id] = {auraId}")[0]["InternalNo"].ToString());
+
+                Auras.Add(new Aura(auraId, auraName, newAuraId));
             }
             else
             {
@@ -246,6 +262,24 @@ namespace PixelMagic.Helpers
                 cooldowns += "}" + Environment.NewLine;
 
                 sr.Write(cooldowns);
+
+                var auras = "local auras = { --These should be auraIDs for the spell you want to track " + Environment.NewLine;
+
+                foreach (var aura in Auras)
+                {
+                    if (aura.InternalAuraNo == Auras.Count)  // We are adding the last aura, dont include the comma
+                    {
+                        auras += $"    {aura.AuraId} \t -- {aura.AuraName}" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        auras += $"    {aura.AuraId},\t -- {aura.AuraName}" + Environment.NewLine;
+                    }
+                }
+
+                auras += "}" + Environment.NewLine;
+
+                sr.Write(auras);
 
                 var luaContents = Addon.LuaContents;
 

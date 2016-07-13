@@ -3,6 +3,7 @@
     public static class Addon
     {
         public static string LuaContents = @"
+-- Configurable Variables
 local size = 5;	-- this is the size of the ""pixels"" at the top of the screen that will show stuff, currently 5x5 because its easier to see and debug with
 
 -- Actual Addon Code below
@@ -13,6 +14,7 @@ f:RegisterEvent(""ADDON_LOADED"")
 
 local hpframes = {}
 local cooldownframes = {}
+local auraFrames = {}
 local spellInRangeFrames = {}
 local healthFrames = {}
 local targetHealthFrames = {}
@@ -84,6 +86,42 @@ local function updateCD()
 				end
 			end				
 		end
+	end
+end
+
+local function updateAuras() 
+	for _, auraId in pairs(auras) do
+		local auraName = GetSpellInfo(auraId)
+		local name, _, _, _, _, duration, expirationTime, _, _, _, _ = UnitBuff(""player"", auraName)
+		
+		if (name == auraName) then -- We have Aura up and Aura ID is matching our list
+			local expiretime = select(7, UnitBuff(""player"", auraName))
+			local getTime = GetTime()
+			
+			local remainingdebuff = expiretime - GetTime()
+					
+			if (lastBuffState[auraId] ~= ""BuffOn"") then				
+				auraFrames[auraId].t:SetColorTexture(255, 0, 0, 1)
+				auraFrames[auraId].t:SetAllPoints(false)
+				lastBuffState[auraId] = ""BuffOn""
+			end
+			if(remainingdebuff >= 3) then
+				auraFrames[auraId].t:SetColorTexture(255, 0, 0, 1)
+				auraFrames[auraId].t:SetAllPoints(false)
+				lastBuffState[auraId] = ""BuffOn""
+			end
+			if(remainingdebuff <= 3) then
+				auraFrames[auraId].t:SetColorTexture(0, 255, 0, 1)
+				auraFrames[auraId].t:SetAllPoints(false)
+				lastBuffState[auraId] = ""BuffOn""
+			end
+			else 
+				if (lastBuffState[auraId] ~= ""BuffOff"") then
+					auraFrames[auraId].t:SetColorTexture(255, 255, 255, 1)
+					auraFrames[auraId].t:SetAllPoints(false)
+					lastBuffState[auraId] = ""BuffOff""
+				end
+		end				
 	end
 end
 
@@ -448,6 +486,21 @@ local function initFrames()
 		
 	targetIsCastingFrame:SetScript(""OnUpdate"", updateTargetIsCasting)
 	
+	print (""Initialising Aura Frames"")
+	local i = 5
+	for _, auraId in pairs(auras) do
+		auraFrames[auraId] = CreateFrame(""frame"")
+		auraFrames[auraId]:SetSize(size, size)
+		auraFrames[auraId]:SetPoint(""TOPLEFT"", i * size, -10) 
+		auraFrames[auraId].t = auraFrames[auraId]:CreateTexture()        
+		auraFrames[auraId].t:SetColorTexture(255, 255, 255, 1)
+		auraFrames[auraId].t:SetAllPoints(auraFrames[auraId])
+		auraFrames[auraId]:Show()
+		               
+		auraFrames[auraId]:SetScript(""OnUpdate"", updateAuras)
+		i = i + 1
+	end
+	
 	print (""Initialization Complete"")
 end
 
@@ -462,6 +515,6 @@ local function eventHandler(self, event, ...)
 	end
 end	
 
-f:SetScript(""OnEvent"", eventHandler)";
+f:SetScript(""OnEvent"", eventHandler) ";
     }
 }
