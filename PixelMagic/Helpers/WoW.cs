@@ -272,6 +272,15 @@ namespace PixelMagic.Helpers
             }
         }
 
+        //public static bool HasBossTarget
+        //{
+        //    get
+        //    {
+        //        Color c = GetBlockColor(2, 3);
+        //        return ((c.R == Color.Blue.R) && (c.G == Color.Blue.G) && (c.B == Color.Blue.B));
+        //    }
+        //}
+
         public static bool PlayerIsCasting
         {
             get
@@ -357,13 +366,9 @@ namespace PixelMagic.Helpers
                 return Convert.ToInt32(binaryPower, 2);
             }
         }
-
         public static int Focus => Power;
-
         public static int Mana => Power;
-
         public static int Energy => Power;
-
         public static int Rage => Power;
 
         public static bool HasFocus
@@ -555,6 +560,45 @@ namespace PixelMagic.Helpers
             Write(macro);
             Thread.Sleep(100);
             KeyPressRelease(Keys.Enter);
+        }
+
+        public static bool HasAura(int auraNoInArrayOfAuras)
+        {
+            var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
+            return ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B));
+        }
+
+
+
+        //public static int CurrentRunes
+        //{
+        //    get
+        //    {
+        //        int CurrentRunes = 0;
+        //        for (int x = 1; x <= 7; x++)
+        //        {
+        //            Color c = GetBlockColor(x, 8);
+        //            if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
+        //            {
+        //                CurrentRunes++;
+        //            }
+        //        }
+        //        return CurrentRunes;
+        //    }
+        //}
+
+
+        public static bool HasAura(string auraName)
+        {
+            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == auraName);
+
+            if (aura == null)
+            {
+                Log.Write($"[HasAura] Unable to find aura with name '{auraName}' in Spell Book");
+                return false;
+            }
+
+            return HasAura(aura.InternalAuraNo);
         }
 
         public static bool CanCast(string spellBookSpellName)

@@ -26,6 +26,7 @@ local targetIsCastingFrame = nil
 
 local hpPrev = 0
 local lastCooldownState = {}
+local lastBuffState = {}
 
 local function updateHP()
 	local power = UnitPower(""player"", 9)
@@ -101,23 +102,23 @@ local function updateAuras()
 			local remainingdebuff = expiretime - GetTime()
 					
 			if (lastBuffState[auraId] ~= ""BuffOn"") then				
-				auraFrames[auraId].t:SetColorTexture(255, 0, 0, 1)
+				auraFrames[auraId].t:SetTexture(255, 0, 0, 1)
 				auraFrames[auraId].t:SetAllPoints(false)
 				lastBuffState[auraId] = ""BuffOn""
 			end
 			if(remainingdebuff >= 3) then
-				auraFrames[auraId].t:SetColorTexture(255, 0, 0, 1)
+				auraFrames[auraId].t:SetTexture(255, 0, 0, 1)
 				auraFrames[auraId].t:SetAllPoints(false)
 				lastBuffState[auraId] = ""BuffOn""
 			end
 			if(remainingdebuff <= 3) then
-				auraFrames[auraId].t:SetColorTexture(0, 255, 0, 1)
+				auraFrames[auraId].t:SetTexture(0, 255, 0, 1)
 				auraFrames[auraId].t:SetAllPoints(false)
 				lastBuffState[auraId] = ""BuffOn""
 			end
 			else 
 				if (lastBuffState[auraId] ~= ""BuffOff"") then
-					auraFrames[auraId].t:SetColorTexture(255, 255, 255, 1)
+					auraFrames[auraId].t:SetTexture(255, 255, 255, 1)
 					auraFrames[auraId].t:SetAllPoints(false)
 					lastBuffState[auraId] = ""BuffOff""
 				end
@@ -493,7 +494,7 @@ local function initFrames()
 		auraFrames[auraId]:SetSize(size, size)
 		auraFrames[auraId]:SetPoint(""TOPLEFT"", i * size, -10) 
 		auraFrames[auraId].t = auraFrames[auraId]:CreateTexture()        
-		auraFrames[auraId].t:SetColorTexture(255, 255, 255, 1)
+		auraFrames[auraId].t:SetTexture(255, 255, 255, 1)
 		auraFrames[auraId].t:SetAllPoints(auraFrames[auraId])
 		auraFrames[auraId]:Show()
 		               
