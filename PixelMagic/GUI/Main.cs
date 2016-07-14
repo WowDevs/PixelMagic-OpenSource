@@ -508,6 +508,8 @@ namespace PixelMagic.GUI
         {
             var f = new SetupSpellBook();
             f.ShowDialog();
+
+            WoW.SendMacro("/reload");
         }
 
         private void chkPlayErrorSounds_CheckedChanged(object sender, EventArgs e)
@@ -559,5 +561,10 @@ namespace PixelMagic.GUI
         }
 
         #endregion
+
+        private void reloadAddonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WoW.SendMacro("/reload");
+        }
     }
 }

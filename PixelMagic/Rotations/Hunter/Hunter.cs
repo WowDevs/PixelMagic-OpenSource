@@ -66,6 +66,8 @@ namespace PixelMagic.Rotation
             if (combatRoutine.Type == RotationType.AOE)
             {
                 // Do AOE Stuff here
+
+                Log.Write("Has Aura: " + WoW.HasAura("Furious Howl"));
             }            
         }
     }
@@ -76,7 +78,6 @@ SpellBook.db
 Spell,56641,Steady Shot, T
 Spell,3044,Arcane Shot, Y
 Spell,34026,Kill Command, S
-Aura,1,Testing
-Aura,2,Testing 2
+Aura,24604,Furious Howl
 */
 

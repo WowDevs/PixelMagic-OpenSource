@@ -100,29 +100,19 @@ local function updateAuras()
 			local getTime = GetTime()
 			
 			local remainingdebuff = expiretime - GetTime()
-					
+
 			if (lastBuffState[auraId] ~= ""BuffOn"") then				
-				auraFrames[auraId].t:SetTexture(255, 0, 0, 1)
-				auraFrames[auraId].t:SetAllPoints(false)
-				lastBuffState[auraId] = ""BuffOn""
-			end
-			if(remainingdebuff >= 3) then
-				auraFrames[auraId].t:SetTexture(255, 0, 0, 1)
-				auraFrames[auraId].t:SetAllPoints(false)
-				lastBuffState[auraId] = ""BuffOn""
-			end
-			if(remainingdebuff <= 3) then
 				auraFrames[auraId].t:SetTexture(0, 255, 0, 1)
 				auraFrames[auraId].t:SetAllPoints(false)
 				lastBuffState[auraId] = ""BuffOn""
 			end
-			else 
-				if (lastBuffState[auraId] ~= ""BuffOff"") then
-					auraFrames[auraId].t:SetTexture(255, 255, 255, 1)
-					auraFrames[auraId].t:SetAllPoints(false)
-					lastBuffState[auraId] = ""BuffOff""
-				end
-		end				
+        else
+            if (lastBuffState[auraId] ~= ""BuffOff"") then
+				auraFrames[auraId].t:SetTexture(255, 255, 255, 1)
+				auraFrames[auraId].t:SetAllPoints(false)
+				lastBuffState[auraId] = ""BuffOff""
+			end		
+        end		
 	end
 end
 
@@ -488,11 +478,11 @@ local function initFrames()
 	targetIsCastingFrame:SetScript(""OnUpdate"", updateTargetIsCasting)
 	
 	print (""Initialising Aura Frames"")
-	local i = 5
+	local i = 4
 	for _, auraId in pairs(auras) do
 		auraFrames[auraId] = CreateFrame(""frame"")
 		auraFrames[auraId]:SetSize(size, size)
-		auraFrames[auraId]:SetPoint(""TOPLEFT"", i * size, -10) 
+		auraFrames[auraId]:SetPoint(""TOPLEFT"", i * size, -(size * 2)) 
 		auraFrames[auraId].t = auraFrames[auraId]:CreateTexture()        
 		auraFrames[auraId].t:SetTexture(255, 255, 255, 1)
 		auraFrames[auraId].t:SetAllPoints(auraFrames[auraId])

@@ -511,9 +511,16 @@ namespace PixelMagic.Helpers
             return true;
         }
 
-        public static void SendKey(Keys key, int milliseconds = 50)
+        public static void SendKey(Keys key, int milliseconds = 50, string spellName = null)
         {
-            Log.Write("Sending keypress: " + key, Color.Gray);
+            if (spellName == null)
+            {
+                Log.Write("Sending keypress: " + key, Color.Gray);
+            }
+            else
+            {
+                Log.Write("Casting spell: " + spellName, Color.Gray);
+            }
 
             if (milliseconds < 50)
                 milliseconds = 50;
@@ -536,21 +543,6 @@ namespace PixelMagic.Helpers
             Mouse.LeftClick(x, y);
         }
 
-        //public static void SendKeyAtMe(Keys key)
-        //{
-
-
-        //    Log.Write($"Sending keypress {key} at location: x = {x}, y = {y}", Color.Gray);
-
-        //    KeyDown(key);
-        //    Thread.Sleep(50);
-
-        //    KeyUp(key);
-        //    Thread.Sleep(300);
-
-        //    Mouse.LeftClick(x, y);
-        //}
-
         public static void SendMacro(string macro)
         {
             Log.Write("Sending macro: " + macro, Color.Gray);
@@ -564,12 +556,10 @@ namespace PixelMagic.Helpers
 
         public static bool HasAura(int auraNoInArrayOfAuras)
         {
-            var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
-            return ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B));
+            var c = GetBlockColor(4 + auraNoInArrayOfAuras, 3);
+            return ((c.R == 0) && (c.G == 255) && (c.B == 0));
         }
-
-
-
+        
         //public static int CurrentRunes
         //{
         //    get
@@ -586,7 +576,6 @@ namespace PixelMagic.Helpers
         //        return CurrentRunes;
         //    }
         //}
-
 
         public static bool HasAura(string auraName)
         {
@@ -624,7 +613,7 @@ namespace PixelMagic.Helpers
                 return;
             }
 
-            SendKey(spell.Key);
+            SendKey(spell.Key, 50, spellBookSpellName);
         }
 
         [DllImport("gdi32.dll")]
