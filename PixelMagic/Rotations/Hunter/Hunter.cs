@@ -70,3 +70,12 @@ namespace PixelMagic.Rotation
         }
     }
 }
+
+/*
+SpellBook.db
+Spell,56641,Steady Shot, T
+Spell,3044,Arcane Shot, Y
+Spell,34026,Kill Command, S
+Aura,1,Testing
+Aura,2,Testing 2
+*/

@@ -12,14 +12,18 @@ namespace PixelMagic.Helpers
 {
     public static class SpellBook
     {
+        private static string FullRotationFilePath = "";
+
         public static List<Spell> Spells;
         public static List<Aura> Auras;
 
         public static DataTable dtSpells;
         public static DataTable dtAuras;
 
-        public static void Initialize()
+        public static void Initialize(string fullRotationFilePath)
         {
+            FullRotationFilePath = fullRotationFilePath;
+
             Spells = new List<Spell>();
             Auras = new List<Aura>();
 
@@ -143,25 +147,34 @@ namespace PixelMagic.Helpers
 
         public static void Load()
         {
-            if (!File.Exists(Application.StartupPath + "\\SpellBook.db"))
-                return;
-
-            using (var sr = new StreamReader(Application.StartupPath + "\\SpellBook.db"))
+            using (var sr = new StreamReader(FullRotationFilePath))
             {
+                bool readLines = false;
                 string line;
 
                 while ((line = sr.ReadLine()) != null)
                 {
-                    var split = line.Split(',');
-
-                    if (split[0] == "Spell")
+                    if (line.Contains("SpellBook.db"))
                     {
-                        AddSpell(int.Parse(split[1]), split[2], split[3]);
+                        readLines = true;
                     }
-                    
-                    if (split[0] == "Aura")
+
+                    if (readLines)
                     {
-                        AddAura(int.Parse(split[1]), split[2]);
+                        if (line.Contains("SpellBook.db"))
+                            continue;
+
+                        var split = line.Split(',');
+
+                        if (split[0] == "Spell")
+                        {
+                            AddSpell(int.Parse(split[1]), split[2], split[3]);
+                        }
+
+                        if (split[0] == "Aura")
+                        {
+                            AddAura(int.Parse(split[1]), split[2]);
+                        }
                     }
                 }
 
@@ -183,8 +196,41 @@ namespace PixelMagic.Helpers
 
             try
             {
-                using (var sw = new StreamWriter(Application.StartupPath + "\\SpellBook.db"))
+                string fullRotationText = "";
+
+                using (var sr = new StreamReader(FullRotationFilePath))
                 {
+                    bool readLines = true;
+                    string line;
+
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (line.Contains("SpellBook.db"))
+                        {
+                            readLines = false;
+                        }
+
+                        if (readLines)
+                        {
+                            if (line.StartsWith("/*"))
+                            {
+                                fullRotationText += line;
+                            }
+                            else
+                            {
+                                fullRotationText += line + Environment.NewLine;
+                            }
+                        }
+                    }
+
+                    sr.Close();
+                }
+
+                using (var sw = new StreamWriter(FullRotationFilePath, false))
+                {
+                    sw.WriteLine(fullRotationText);
+                    sw.WriteLine("SpellBook.db");
+
                     foreach (var spell in Spells)
                     {
                         sw.WriteLine($"Spell,{spell.SpellId},{spell.SpellName},{spell.KeyBind}");
@@ -193,6 +239,9 @@ namespace PixelMagic.Helpers
                     {
                         sw.WriteLine($"Aura,{aura.AuraId},{aura.AuraName}");
                     }
+
+                    sw.WriteLine("*/");
+
                     sw.Close();
                 }
 

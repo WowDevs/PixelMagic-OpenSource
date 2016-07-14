@@ -165,8 +165,7 @@ namespace PixelMagic.GUI
             try
             {
                 ConfigFile.Initialize();
-                SpellBook.Initialize();
-
+                
                 var mousePos = new Thread(delegate()
                 {
                     while (true)
@@ -211,6 +210,7 @@ namespace PixelMagic.GUI
                     Log.Write("Current Rotation: " + ConfigFile.LastRotation, Color.Green);
 
                     combatRoutine = Compiler.Compile<CombatRoutine>(ConfigFile.LastRotation);
+                    SpellBook.Initialize(ConfigFile.LastRotation);
 
                     Log.Write("Successfully compiled and loaded profile: " + combatRoutine.Name, Color.Green);
                 }
