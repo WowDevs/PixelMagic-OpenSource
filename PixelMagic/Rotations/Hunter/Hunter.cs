@@ -67,7 +67,9 @@ namespace PixelMagic.Rotation
             {
                 // Do AOE Stuff here
 
-                Log.Write("Has Aura: " + WoW.HasAura("Furious Howl"));
+                //Log.Write("Has Aura: " + WoW.HasAura("Furious Howl"));
+                //Log.Write("Aura Count: " + WoW.GetAuraCount("Furious Howl"));
+                Log.Write("Aura Count: " + WoW.GetAuraCount("Taste for Blood"));
             }            
         }
     }
@@ -79,5 +81,6 @@ Spell,56641,Steady Shot, T
 Spell,3044,Arcane Shot, Y
 Spell,34026,Kill Command, S
 Aura,24604,Furious Howl
+Aura,159714,Taste for Blood
 */
 

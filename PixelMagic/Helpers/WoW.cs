@@ -235,17 +235,19 @@ namespace PixelMagic.Helpers
         {
             get
             {
-                var wowFolder = ConfigFile.ReadValue<string>("PixelBot", "WoWPath").Trim();
+                return System.IO.Path.GetDirectoryName(pWow?.MainModule.FileName);
 
-                if (wowFolder == "")
-                {
-                    Log.Write("Finding WoW Install Path...");
+                //var wowFolder = ConfigFile.ReadValue<string>("PixelBot", "WoWPath").Trim();
 
-                    wowFolder = RegEdit.HKLMReadKey(@"Software\Wow6432Node\Blizzard Entertainment\World of Warcraft", "InstallPath");
-                    ConfigFile.WriteValue("PixelBot", "WoWPath", wowFolder);
-                }
+                //if (wowFolder == "")
+                //{
+                //    Log.Write("Finding WoW Install Path...");
 
-                return wowFolder;
+                //    wowFolder = RegEdit.HKLMReadKey(@"Software\Wow6432Node\Blizzard Entertainment\World of Warcraft", "InstallPath");
+                //    ConfigFile.WriteValue("PixelBot", "WoWPath", wowFolder);
+                //}
+
+                //return wowFolder;
             }
         }
 
@@ -399,7 +401,7 @@ namespace PixelMagic.Helpers
 
             random = new Random();
 
-            pWow = (Process.GetProcessesByName("Wow").FirstOrDefault() ?? Process.GetProcessesByName("Wow-64").FirstOrDefault()) ?? Process.GetProcessesByName("WowB-64").FirstOrDefault();
+            pWow = (Process.GetProcessesByName("Wow").FirstOrDefault() ?? Process.GetProcessesByName("Wow-64").FirstOrDefault()) ?? Process.GetProcessesByName("WowB-64").FirstOrDefault() ?? Process.GetProcessesByName("WowT-64").FirstOrDefault();
 
             if (pWow == null)
             {
@@ -557,7 +559,34 @@ namespace PixelMagic.Helpers
         public static bool HasAura(int auraNoInArrayOfAuras)
         {
             var c = GetBlockColor(4 + auraNoInArrayOfAuras, 3);
-            return ((c.R == 0) && (c.G == 255) && (c.B == 0));
+            return ((c.R != 255) && (c.G != 255) && (c.B != 255));
+        }
+
+        public static int GetAuraCount(int auraNoInArrayOfAuras)
+        {
+            var c = GetBlockColor(4 + auraNoInArrayOfAuras, 3);
+
+            if (c.G == 255) return 0;
+            if (c.G == 255 - 20) return 1;
+            if (c.G == 255 - 40) return 2;
+            if (c.G == 255 - 60) return 3;
+            if (c.G == 255 - 80) return 4;
+            if (c.G == 255 - 100) return 5;
+
+            return -99;
+        }
+
+        public static int GetAuraCount(string auraName)
+        {
+            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == auraName);
+
+            if (aura == null)
+            {
+                Log.Write($"[GetAuraCount] Unable to find aura with name '{auraName}' in Spell Book");
+                return -1;
+            }
+
+            return GetAuraCount(aura.InternalAuraNo);
         }
         
         //public static int CurrentRunes

@@ -93,18 +93,16 @@ end
 local function updateAuras() 
 	for _, auraId in pairs(auras) do
 		local auraName = GetSpellInfo(auraId)
-		local name, _, _, _, _, duration, expirationTime, _, _, _, _ = UnitBuff(""player"", auraName)
+		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitBuff(""player"", auraName)
 		
-		if (name == auraName) then -- We have Aura up and Aura ID is matching our list
-			local expiretime = select(7, UnitBuff(""player"", auraName))
-			local getTime = GetTime()
-			
-			local remainingdebuff = expiretime - GetTime()
-
-			if (lastBuffState[auraId] ~= ""BuffOn"") then				
-				auraFrames[auraId].t:SetTexture(0, 255, 0, 1)
+		if (name == auraName) then -- We have Aura up and Aura ID is matching our list					
+			if (lastBuffState[auraId] ~= ""BuffOn"") then				                
+				auraFrames[auraId].t:SetTexture(0, 255 - (count * 20), 0, 1)
 				auraFrames[auraId].t:SetAllPoints(false)
-				lastBuffState[auraId] = ""BuffOn""
+    
+                print(auraName .. "" "" .. count)
+
+				lastBuffState[auraId] = ""BuffOn""            
 			end
         else
             if (lastBuffState[auraId] ~= ""BuffOff"") then

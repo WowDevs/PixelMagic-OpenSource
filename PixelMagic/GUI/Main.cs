@@ -265,8 +265,7 @@ namespace PixelMagic.GUI
                     Log.Write($"Screen [{i}] - depth: {screen.BitsPerPixel}bit - resolution: {screen.Bounds.Width}x{screen.Bounds.Height}");
                 }
 
-                Log.Write("WoW Path: " + WoW.InstallPath, Color.Black);
-                Log.Write("AddOn Path: " + WoW.AddonPath, Color.Black);
+
 
                 foreach (var item in classes)
                 {
@@ -279,6 +278,9 @@ namespace PixelMagic.GUI
                 nudPulse.Value = ConfigFile.Pulse;
 
                 WoW.Initialize();
+
+                Log.Write("WoW Path: " + WoW.InstallPath, Color.Black);
+                Log.Write("AddOn Path: " + WoW.AddonPath, Color.Black);
 
                 if (ConfigFile.LastRotation == "")
                 {
