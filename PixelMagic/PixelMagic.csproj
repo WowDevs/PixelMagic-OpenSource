@@ -97,7 +97,6 @@
     </Compile>
     <Compile Include="Helpers\Addon.cs" />
     <Compile Include="Helpers\Aura.cs" />
-    <Compile Include="Helpers\Compiler.cs" />
     <Compile Include="Helpers\ConfigFile.cs" />
     <Compile Include="Helpers\Encryption.cs" />
     <Compile Include="Helpers\KeyboardHook.cs" />

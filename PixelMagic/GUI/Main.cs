@@ -91,6 +91,85 @@ namespace PixelMagic.GUI
             Log.DrawHorizontalLine();
         }
 
+        private bool LoadProfile(string fileName)
+        {
+            using (var sr = new StreamReader(fileName))
+            {
+                var code = sr.ReadToEnd();
+
+                if (code.Trim() == "")
+                {
+                    MessageBox.Show("Please select a non blank file", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                if (fileName.EndsWith(".enc"))
+                {
+                    Log.Write("Decrypting profile...", Color.Black);
+
+                    try
+                    {
+                        code = Encryption.Decrypt(code);
+
+                        Log.Write("Profile has been decrypted successfully", Color.Green);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Write(ex.Message, Color.Red);
+                    }
+                }
+
+                Log.Write($"Compiling profile [{fileName}]...", Color.Black);
+
+                var provider = new CSharpCodeProvider();
+                var parameters = new CompilerParameters();
+
+                parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll"); // For Windows Forms use
+                parameters.ReferencedAssemblies.Add("System.Drawing.dll"); // For System.Drawing.Point and System.Drawing.Color use
+                parameters.ReferencedAssemblies.Add("System.Data.dll");
+                parameters.ReferencedAssemblies.Add("System.Xml.dll");
+                parameters.ReferencedAssemblies.Add("System.Linq.dll");
+                parameters.ReferencedAssemblies.Add("System.dll");
+                parameters.ReferencedAssemblies.Add("System.Threading.dll");
+                parameters.ReferencedAssemblies.Add(Application.ExecutablePath);
+                parameters.GenerateInMemory = true;
+                parameters.GenerateExecutable = false;
+
+                var results = provider.CompileAssemblyFromSource(parameters, code);
+
+                if (results.Errors.HasErrors)
+                {
+                    foreach (CompilerError error in results.Errors)
+                    {
+                        Log.Write($"Error ({error.ErrorNumber}): {error.ErrorText}", Color.Red);
+                    }
+
+                    return false;
+                }
+
+                var assembly = results.CompiledAssembly;
+
+                foreach (var t in assembly.GetTypes())
+                {
+                    if (t.IsClass)
+                    {
+                        var obj = Activator.CreateInstance(t);
+                        combatRoutine = (CombatRoutine)obj;
+
+                        combatRoutine.Load(this);
+
+                        Log.Write("Successfully loaded combat routine: " + combatRoutine.Name, Color.Green);
+
+                        Overlay.showOverlay(new Point(20, 680));
+
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             try
@@ -209,7 +288,12 @@ namespace PixelMagic.GUI
                 {
                     Log.Write("Current Rotation: " + ConfigFile.LastRotation, Color.Green);
 
-                    combatRoutine = Compiler.Compile<CombatRoutine>(ConfigFile.LastRotation);
+                    if (!LoadProfile(ConfigFile.LastRotation))
+                    {
+                        Log.Write("Failed to load profile, please select a valid file.", Color.Red);
+                        return;
+                    }
+
                     SpellBook.Initialize(ConfigFile.LastRotation);
 
                     Log.Write("Successfully compiled and loaded profile: " + combatRoutine.Name, Color.Green);
@@ -329,16 +413,17 @@ namespace PixelMagic.GUI
 
             if (res == DialogResult.OK)
             {
-                combatRoutine = Compiler.Compile<CombatRoutine>(ConfigFile.LastRotation);
-
-                Log.Write("Successfully compiled and loaded profile: " + combatRoutine.Name, Color.Green);
-
-                // We loaded the profile successfully, save it as the current profile
-                ConfigFile.WriteValue("PixelMagic", "LastProfile", fileBrowser.FileName);                
+                if (!LoadProfile(fileBrowser.FileName))
+                {
+                    Log.Write("Failed to load profile, please select a valid file.", Color.Red);
+                }
+                else
+                {
+                    // We loaded the profile successfully, save it as the current profile
+                    ConfigFile.WriteValue("PixelMagic", "LastProfile", fileBrowser.FileName);
+                }
             }
-        }
-
-        
+        }        
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
