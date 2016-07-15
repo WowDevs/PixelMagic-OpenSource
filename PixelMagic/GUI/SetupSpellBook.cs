@@ -27,6 +27,10 @@ namespace PixelMagic.GUI
             var machineName = new string(Environment.MachineName.Where(char.IsLetter).ToArray()).ToLower();
             txtAddonName.Text = ti.ToTitleCase(machineName);
 
+            txtAddonAuthor.Text = SpellBook.AddonAuthor;
+            txtAddonName.Text = SpellBook.AddonName;
+            cmbWowVersion.Text = SpellBook.InterfaceVersion;
+
             dgSpells.DataSource = SpellBook.dtSpells;
             dgAuras.DataSource = SpellBook.dtAuras;
         }

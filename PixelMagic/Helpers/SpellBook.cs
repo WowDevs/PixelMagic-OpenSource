@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -20,7 +21,7 @@ namespace PixelMagic.Helpers
         public static DataTable dtSpells;
         public static DataTable dtAuras;
 
-        public static void Initialize(string fullRotationFilePath)
+        public static bool Initialize(string fullRotationFilePath)
         {
             FullRotationFilePath = fullRotationFilePath;
 
@@ -38,7 +39,7 @@ namespace PixelMagic.Helpers
             dtAuras.Columns.Add("Aura Name");
             dtAuras.Columns.Add("InternalNo"); // This stores the aura no in the array of auras that will be used on the addon
 
-            Load();
+            return Load();
         }
 
         public static void AddSpell(NumericUpDown spellId, TextBox spellName, TextBox keyBind)
@@ -145,18 +146,47 @@ namespace PixelMagic.Helpers
             }
         }
 
-        public static void Load()
+        public static bool Load()
         {
             using (var sr = new StreamReader(FullRotationFilePath))
             {
+                bool addonLines = false;
                 bool readLines = false;
                 string line;
-
+                
                 while ((line = sr.ReadLine()) != null)
                 {
+                    if (line.Contains("AddonDetails.db"))
+                    {
+                        addonLines = true;
+                    }
+
                     if (line.Contains("SpellBook.db"))
                     {
                         readLines = true;
+                    }
+
+                    if (addonLines)
+                    {
+                        if (line.Contains("AddonLines.db"))
+                            continue;
+
+                        var split = line.Split('=');
+
+                        if (split[0] == "AddonAuthor")
+                        {
+                            AddonAuthor = split[1];
+                        }
+
+                        if (split[0] == "AddonName")
+                        {
+                            AddonName = split[1];
+                        }
+
+                        if (split[0] == "WoWVersion")
+                        {
+                            InterfaceVersion = split[1];
+                        }
                     }
 
                     if (readLines)
@@ -180,13 +210,33 @@ namespace PixelMagic.Helpers
 
                 sr.Close();
 
-                RenumberSpells();
+                if (addonLines && readLines)  // If the word "AddonDetails.db" and "SpellBook.db" exists in the rotation.cs file
+                {
+                    RenumberSpells();
+                    Log.Write($"Found {Spells.Count} spells defined", Color.Gray);
+                    Log.Write($"Found {Auras.Count} auras defined", Color.Gray);
+                    Log.Write("SpellBook loaded.");
+
+                    if (!File.Exists(AddonPath + "\\" + AddonName + "\\" + AddonName + ".toc"))
+                    {
+                        return GenerateLUAFile();
+                    }
+                }
+                else
+                {                    
+                    Log.Write("Failed to load addon details or spellbook from rotation file, please ensure that it is not missing.", Color.Red);
+                    Log.Write("you can see the file: " + Application.StartupPath + "\\Rotations\\Hunter\\Hunter.cs for reference", Color.Red);
+
+                    return false;
+                }
             }
+
+            return false;
         }
 
-        private static string AddonAuthor;
-        private static string InterfaceVersion;
-        private static string AddonName;
+        public static string AddonAuthor;
+        public static string InterfaceVersion;
+        public static string AddonName;
 
         public static void Save(TextBox author, string interfaceVersion, TextBox addonName)
         {
@@ -205,7 +255,7 @@ namespace PixelMagic.Helpers
 
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (line.Contains("SpellBook.db"))
+                        if (line.Contains("AddonDetails.db"))
                         {
                             readLines = false;
                         }
@@ -229,7 +279,12 @@ namespace PixelMagic.Helpers
                 using (var sw = new StreamWriter(FullRotationFilePath, false))
                 {
                     sw.WriteLine(fullRotationText);
-                    sw.WriteLine("SpellBook.db");
+                    sw.WriteLine("[AddonDetails.db]");
+                    sw.WriteLine($"AddonAuthor={AddonAuthor}");
+                    sw.WriteLine($"AddonName={AddonName}");
+                    sw.WriteLine($"WoWVersion={InterfaceVersion}");
+
+                    sw.WriteLine("[SpellBook.db]");
 
                     foreach (var spell in Spells)
                     {
@@ -263,84 +318,109 @@ namespace PixelMagic.Helpers
             }
         }
 
-        public static void GenerateLUAFile()
+        public static bool GenerateLUAFile()
         {
-            if (!Directory.Exists(AddonPath))
-                Directory.CreateDirectory(AddonPath);
-
-            using (var sr = new StreamWriter($"{AddonPath}\\{AddonName}.toc"))
+            try
             {
-                //  ## Author: WiNiFiX
-                //  ## Interface: 60200
-                //  ## Title: DoIt
-                //  ## Version: 1.0.0
-                //  ## SavedVariablesPerCharacter: DoItOptions
-                //  DoItBase.lua
+                if (!Directory.Exists(AddonPath))
+                    Directory.CreateDirectory(AddonPath);
 
-                sr.WriteLine($"## Author: {AddonAuthor}");
-                sr.WriteLine($"## Interface: {InterfaceVersion}");
-                sr.WriteLine($"## Title: {AddonName}");
-                sr.WriteLine($"## Version: {Application.ProductVersion}");
-                sr.WriteLine($"## SavedVariablesPerCharacter: {AddonName}_settings");
-                sr.WriteLine($"{AddonName}.lua");                
-                sr.Close();
+                Log.Write($"Creating Addon from SpellBook, AddonName will be [{AddonName}]...");
+
+                Log.Write($"Creating file: [{AddonName}.toc]", Color.Gray);
+
+                using (var sr = new StreamWriter($"{AddonPath}\\{AddonName}.toc"))
+                {
+                    //  ## Author: WiNiFiX
+                    //  ## Interface: 60200
+                    //  ## Title: DoIt
+                    //  ## Version: 1.0.0
+                    //  ## SavedVariablesPerCharacter: DoItOptions
+                    //  DoItBase.lua
+
+                    sr.WriteLine($"## Author: {AddonAuthor}");
+                    sr.WriteLine($"## Interface: {InterfaceVersion}");
+                    sr.WriteLine($"## Title: {AddonName}");
+                    sr.WriteLine($"## Version: {Application.ProductVersion}");
+                    sr.WriteLine($"## SavedVariablesPerCharacter: {AddonName}_settings");
+                    sr.WriteLine($"{AddonName}.lua");
+                    sr.Close();
+                }
+
+                Log.Write($"Creating file: [{AddonName}.lua]", Color.Gray);
+
+                using (var sr = new StreamWriter($"{AddonPath}\\{AddonName}.lua"))
+                {
+                    //local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns
+                    //    56641,    -- Steadyshot
+                    //    3044,     -- Arcane Shot
+                    //    34026     -- Kill Command
+                    //}
+
+                    var cooldowns = "local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns" + Environment.NewLine;
+
+                    foreach (var spell in Spells)
+                    {
+                        if (spell.InternalSpellNo == Spells.Count)  // We are adding the last spell, dont include the comma
+                        {
+                            cooldowns += $"    {spell.SpellId} \t -- {spell.SpellName}" + Environment.NewLine;
+                        }
+                        else
+                        {
+                            cooldowns += $"    {spell.SpellId},\t -- {spell.SpellName}" + Environment.NewLine;
+                        }
+                    }
+
+                    cooldowns += "}" + Environment.NewLine;
+
+                    sr.Write(cooldowns);
+
+                    var auras = "local auras = { --These should be auraIDs for the spell you want to track " + Environment.NewLine;
+
+                    foreach (var aura in Auras)
+                    {
+                        if (aura.InternalAuraNo == Auras.Count)  // We are adding the last aura, dont include the comma
+                        {
+                            auras += $"    {aura.AuraId} \t -- {aura.AuraName}" + Environment.NewLine;
+                        }
+                        else
+                        {
+                            auras += $"    {aura.AuraId},\t -- {aura.AuraName}" + Environment.NewLine;
+                        }
+                    }
+
+                    auras += "}" + Environment.NewLine;
+
+                    sr.Write(auras);
+
+                    var luaContents = Addon.LuaContents;
+
+                    luaContents = luaContents.Replace("DoIt", AddonName);
+
+                    if (InterfaceVersion == "70000") // Legion changes as per http://www.wowinterface.com/forums/showthread.php?t=53248
+                    {
+                        luaContents = luaContents.Replace("SetTexture", "SetColorTexture");
+
+                        // For now the below are disabled till further testing is done
+                        // luaContents = luaContents.Replace(@"UnitPower(""player"");", @"UnitPower(""player"", UnitPowerType(""player""))");
+                        // luaContents = luaContents.Replace(@"UnitPowerMax(""player"");", @"UnitPowerMax(""player"", UnitPowerType(""player""))");
+                    }
+
+                    sr.WriteLine(luaContents);
+                    sr.Close();
+                }
+
+                Log.Write("Addon file generated.", Color.Green);
+                Log.Write($"Make sure that the addon: [{AddonName}] is enabled in your list of WoW Addons or the rotation bot will fail to work", Color.Black);
+
+                return true;
             }
-
-            using (var sr = new StreamWriter($"{AddonPath}\\{AddonName}.lua"))
+            catch(Exception ex)
             {
-                //local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns
-                //    56641,    -- Steadyshot
-                //    3044,     -- Arcane Shot
-                //    34026     -- Kill Command
-                //}
+                Log.Write("Failed to generate addon file:", Color.Red);
+                Log.Write(ex.Message, Color.Red);
 
-                var cooldowns = "local cooldowns = { --These should be spellIDs for the spell you want to track for cooldowns" + Environment.NewLine;
-
-                foreach (var spell in Spells)
-                {
-                    if (spell.InternalSpellNo == Spells.Count)  // We are adding the last spell, dont include the comma
-                    {
-                        cooldowns += $"    {spell.SpellId} \t -- {spell.SpellName}" + Environment.NewLine;
-                    }
-                    else
-                    {
-                        cooldowns += $"    {spell.SpellId},\t -- {spell.SpellName}" + Environment.NewLine;
-                    }
-                }
-
-                cooldowns += "}" + Environment.NewLine;
-
-                sr.Write(cooldowns);
-
-                var auras = "local auras = { --These should be auraIDs for the spell you want to track " + Environment.NewLine;
-
-                foreach (var aura in Auras)
-                {
-                    if (aura.InternalAuraNo == Auras.Count)  // We are adding the last aura, dont include the comma
-                    {
-                        auras += $"    {aura.AuraId} \t -- {aura.AuraName}" + Environment.NewLine;
-                    }
-                    else
-                    {
-                        auras += $"    {aura.AuraId},\t -- {aura.AuraName}" + Environment.NewLine;
-                    }
-                }
-
-                auras += "}" + Environment.NewLine;
-
-                sr.Write(auras);
-
-                var luaContents = Addon.LuaContents;
-
-                luaContents = luaContents.Replace("DoIt", AddonName);
-
-                if (InterfaceVersion == "70000") // Legion
-                {
-                    luaContents = luaContents.Replace("SetTexture", "SetColorTexture");
-                }
-
-                sr.WriteLine(luaContents);
-                sr.Close();
+                return false;
             }
         }
     }

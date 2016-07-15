@@ -30,12 +30,20 @@ namespace PixelMagic.GUI
         private readonly Dictionary<int, string> classes;
         private KeyboardHook hook;
 
+        public static string Exe_Version
+        {
+            get
+            {
+                return System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetEntryAssembly().Location).ToString("yyyy.MM.dd");
+            }
+        }
+
         private readonly int LocalVersion = int.Parse(Application.ProductVersion.Split('.')[0]);
 
         internal frmMain()
         {
             InitializeComponent();
-
+            
             classes = new Dictionary<int, string>
             {
                 { 1, "Warrior"},
@@ -74,7 +82,7 @@ namespace PixelMagic.GUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            debuggingToolStripMenuItem.Visible = Debugger.IsAttached;
+            toolStripStatusLabel1.Text = string.Format(toolStripStatusLabel1.Text, Exe_Version);
 
             // Its annoying as hell when people use incorrect culture info, this will force it to use the correct number and date formats.
             var ci = new CultureInfo("en-ZA") { DateTimeFormat = {ShortDatePattern = "yyyy/MM/dd"}, NumberFormat = { NumberDecimalSeparator = ".", CurrencyDecimalSeparator = "." } };
@@ -87,7 +95,8 @@ namespace PixelMagic.GUI
 
             Log.WritePixelMagic("Welcome to PixelMagic Premium Edition developed by WiNiFiX (BETA)", Color.Blue);
             Log.WriteNoTime("For support please visit: http://goo.gl/0AqNxv");
-            Log.HorizontalLine = "-".PadLeft(124, '-');
+            Log.WriteNoTime("To view a sample rotation see the file: " + Application.StartupPath + "\\Rotations\\Hunter\\Hunter.cs", Color.Gray);
+            Log.HorizontalLine = "-".PadLeft(136, '-');
             Log.DrawHorizontalLine();
         }
 
@@ -162,7 +171,19 @@ namespace PixelMagic.GUI
 
                         Overlay.showOverlay(new Point(20, 680));
 
-                        return true;
+                        spellbookToolStripMenuItem.Enabled = true;
+                        if (SpellBook.Initialize(fileName))
+                        {
+                            cmdStartBot.Enabled = true;
+                            cmdStartBot.BackColor = Color.LightGreen;
+                            return true;
+                        }
+                        else
+                        {
+                            cmdStartBot.Enabled = false;
+                            cmdStartBot.BackColor = Color.WhiteSmoke;
+                            return false;
+                        }                        
                     }
                 }
 
@@ -239,22 +260,15 @@ namespace PixelMagic.GUI
             //}
         }
 
+        public Process process;
+
         private void FrmMain_Shown(object sender, EventArgs e)
         {
             try
             {
                 ConfigFile.Initialize();
-                
-                var mousePos = new Thread(delegate()
-                {
-                    while (true)
-                    {
-                        Threads.UpdateTextBox(txtMouseXY, Cursor.Position.X + "," + Cursor.Position.Y);
-                        Thread.Sleep(10);
-                    }
-                    // ReSharper disable once FunctionNeverReturns
-                }) {IsBackground = true};
-                mousePos.Start();
+
+
 
                 Log.Write(OperatingSystem);
 
@@ -264,9 +278,7 @@ namespace PixelMagic.GUI
                     i++;
                     Log.Write($"Screen [{i}] - depth: {screen.BitsPerPixel}bit - resolution: {screen.Bounds.Width}x{screen.Bounds.Height}");
                 }
-
-
-
+                
                 foreach (var item in classes)
                 {
                     if (!Directory.Exists(Application.StartupPath + "\\Rotations\\" + item.Value))
@@ -277,29 +289,33 @@ namespace PixelMagic.GUI
 
                 nudPulse.Value = ConfigFile.Pulse;
 
-                WoW.Initialize();
-
-                Log.Write("WoW Path: " + WoW.InstallPath, Color.Black);
-                Log.Write("AddOn Path: " + WoW.AddonPath, Color.Black);
-
-                if (ConfigFile.LastRotation == "")
+                GUI.SelectWoWProcessToAttachTo f = new GUI.SelectWoWProcessToAttachTo(this);
+                f.ShowDialog();
+                
+                if (process == null)
                 {
-                    Log.Write("Please select a rotation to load from 'File' -> 'Load Rotation...'", Color.Green);
+                    Close();
                 }
-                else
-                {
-                    Log.Write("Current Rotation: " + ConfigFile.LastRotation, Color.Green);
 
-                    if (!LoadProfile(ConfigFile.LastRotation))
+                WoW.Initialize(process);
+
+                Log.Write("WoW Path: " + WoW.InstallPath, Color.Gray);
+                Log.Write("AddOn Path: " + WoW.AddonPath, Color.Gray);
+
+                var mousePos = new Thread(delegate ()
+                {
+                    while (true)
                     {
-                        Log.Write("Failed to load profile, please select a valid file.", Color.Red);
-                        return;
+                        Threads.UpdateTextBox(txtMouseXY, Cursor.Position.X + "," + Cursor.Position.Y);
+                        Thread.Sleep(10);
                     }
-
-                    SpellBook.Initialize(ConfigFile.LastRotation);
-
-                    Log.Write("Successfully compiled and loaded profile: " + combatRoutine.Name, Color.Green);
-                }
+                    // ReSharper disable once FunctionNeverReturns
+                })
+                { IsBackground = true };
+                mousePos.Start();
+                                
+                Log.Write("Please select a rotation to load from 'File' -> 'Load Rotation...'", Color.Green);
+                Log.Write("Please note that you can only start bot or setup spellbook once you have loaded a rotation", Color.Black);
             }
             catch (Exception ex)
             {
@@ -385,12 +401,14 @@ namespace PixelMagic.GUI
                 if (combatRoutine.State == CombatRoutine.RotationState.Running)
                 {
                     cmdStartBot.Text = "Stop bot";
+                    cmdStartBot.BackColor = Color.Salmon;
                 }
             }
             else
             {
                 combatRoutine.Pause();
                 cmdStartBot.Text = "Start bot";
+                cmdStartBot.BackColor = Color.LightGreen;
             }
         }
 
@@ -567,6 +585,16 @@ namespace PixelMagic.GUI
         private void reloadAddonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             WoW.SendMacro("/reload");
+        }
+
+        private void rtbLog_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

@@ -42,18 +42,6 @@
             this.txtTargetCasting = new System.Windows.Forms.TextBox();
             this.cmdDonate = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadRotationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.spellbookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.encryptCombatRoutineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.debuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -69,7 +57,20 @@
             this.label7 = new System.Windows.Forms.Label();
             this.nudPulse = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadRotationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.spellbookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadAddonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.encryptCombatRoutineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -77,10 +78,12 @@
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPulse)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmdStartBot
             // 
+            this.cmdStartBot.Enabled = false;
             this.cmdStartBot.ForeColor = System.Drawing.Color.Black;
             this.cmdStartBot.Location = new System.Drawing.Point(13, 21);
             this.cmdStartBot.Name = "cmdStartBot";
@@ -97,13 +100,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbLog.BackColor = System.Drawing.Color.White;
             this.rtbLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.rtbLog.Location = new System.Drawing.Point(3, 29);
+            this.rtbLog.Location = new System.Drawing.Point(0, 27);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
             this.rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.rtbLog.Size = new System.Drawing.Size(816, 531);
+            this.rtbLog.Size = new System.Drawing.Size(816, 513);
             this.rtbLog.TabIndex = 2;
             this.rtbLog.Text = "";
+            this.rtbLog.TextChanged += new System.EventHandler(this.rtbLog_TextChanged);
             // 
             // lblHotkeyInfo
             // 
@@ -195,7 +199,7 @@
             this.cmdDonate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdDonate.BackColor = System.Drawing.Color.White;
             this.cmdDonate.ForeColor = System.Drawing.Color.DimGray;
-            this.cmdDonate.Location = new System.Drawing.Point(839, 515);
+            this.cmdDonate.Location = new System.Drawing.Point(838, 493);
             this.cmdDonate.Name = "cmdDonate";
             this.cmdDonate.Size = new System.Drawing.Size(128, 31);
             this.cmdDonate.TabIndex = 12;
@@ -209,105 +213,12 @@
             this.fileToolStripMenuItem,
             this.setupToolStripMenuItem,
             this.toolsToolStripMenuItem,
-            this.helpToolStripMenuItem,
-            this.debuggingToolStripMenuItem});
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(984, 24);
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadRotationToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // loadRotationToolStripMenuItem
-            // 
-            this.loadRotationToolStripMenuItem.Name = "loadRotationToolStripMenuItem";
-            this.loadRotationToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.loadRotationToolStripMenuItem.Text = "Load Rotation...";
-            this.loadRotationToolStripMenuItem.Click += new System.EventHandler(this.loadRotationToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // setupToolStripMenuItem
-            // 
-            this.setupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hotkeysToolStripMenuItem,
-            this.spellbookToolStripMenuItem,
-            this.reloadAddonToolStripMenuItem});
-            this.setupToolStripMenuItem.Name = "setupToolStripMenuItem";
-            this.setupToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
-            this.setupToolStripMenuItem.Text = "Setup";
-            // 
-            // hotkeysToolStripMenuItem
-            // 
-            this.hotkeysToolStripMenuItem.Name = "hotkeysToolStripMenuItem";
-            this.hotkeysToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.hotkeysToolStripMenuItem.Text = "Hotkeys";
-            this.hotkeysToolStripMenuItem.Click += new System.EventHandler(this.hotkeysToolStripMenuItem_Click);
-            // 
-            // spellbookToolStripMenuItem
-            // 
-            this.spellbookToolStripMenuItem.Name = "spellbookToolStripMenuItem";
-            this.spellbookToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.spellbookToolStripMenuItem.Text = "Spellbook";
-            this.spellbookToolStripMenuItem.Click += new System.EventHandler(this.spellbookToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.encryptCombatRoutineToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // encryptCombatRoutineToolStripMenuItem
-            // 
-            this.encryptCombatRoutineToolStripMenuItem.Name = "encryptCombatRoutineToolStripMenuItem";
-            this.encryptCombatRoutineToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.encryptCombatRoutineToolStripMenuItem.Text = "Encrypt Combat Routine";
-            this.encryptCombatRoutineToolStripMenuItem.Click += new System.EventHandler(this.encryptCombatRoutineToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkForUpdatesToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // checkForUpdatesToolStripMenuItem
-            // 
-            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
-            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
-            // 
-            // debuggingToolStripMenuItem
-            // 
-            this.debuggingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.testToolStripMenuItem});
-            this.debuggingToolStripMenuItem.Name = "debuggingToolStripMenuItem";
-            this.debuggingToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
-            this.debuggingToolStripMenuItem.Text = "Debugging";
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
-            this.testToolStripMenuItem.Text = "Test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -501,12 +412,126 @@
             this.label9.TabIndex = 22;
             this.label9.Text = "Pulse (ms)";
             // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadRotationToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.Project_16x16;
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // loadRotationToolStripMenuItem
+            // 
+            this.loadRotationToolStripMenuItem.Name = "loadRotationToolStripMenuItem";
+            this.loadRotationToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.loadRotationToolStripMenuItem.Text = "Load Rotation...";
+            this.loadRotationToolStripMenuItem.Click += new System.EventHandler(this.loadRotationToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // setupToolStripMenuItem
+            // 
+            this.setupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hotkeysToolStripMenuItem,
+            this.spellbookToolStripMenuItem,
+            this.reloadAddonToolStripMenuItem});
+            this.setupToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.PageSetup_16x16;
+            this.setupToolStripMenuItem.Name = "setupToolStripMenuItem";
+            this.setupToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.setupToolStripMenuItem.Text = "Setup";
+            // 
+            // hotkeysToolStripMenuItem
+            // 
+            this.hotkeysToolStripMenuItem.Name = "hotkeysToolStripMenuItem";
+            this.hotkeysToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hotkeysToolStripMenuItem.Text = "Hotkeys";
+            this.hotkeysToolStripMenuItem.Click += new System.EventHandler(this.hotkeysToolStripMenuItem_Click);
+            // 
+            // spellbookToolStripMenuItem
+            // 
+            this.spellbookToolStripMenuItem.Enabled = false;
+            this.spellbookToolStripMenuItem.Name = "spellbookToolStripMenuItem";
+            this.spellbookToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.spellbookToolStripMenuItem.Text = "Spellbook";
+            this.spellbookToolStripMenuItem.Click += new System.EventHandler(this.spellbookToolStripMenuItem_Click);
+            // 
             // reloadAddonToolStripMenuItem
             // 
             this.reloadAddonToolStripMenuItem.Name = "reloadAddonToolStripMenuItem";
             this.reloadAddonToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.reloadAddonToolStripMenuItem.Text = "Reload Addon";
             this.reloadAddonToolStripMenuItem.Click += new System.EventHandler(this.reloadAddonToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.encryptCombatRoutineToolStripMenuItem});
+            this.toolsToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.Version_16x16;
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // encryptCombatRoutineToolStripMenuItem
+            // 
+            this.encryptCombatRoutineToolStripMenuItem.Name = "encryptCombatRoutineToolStripMenuItem";
+            this.encryptCombatRoutineToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.encryptCombatRoutineToolStripMenuItem.Text = "Encrypt Combat Routine";
+            this.encryptCombatRoutineToolStripMenuItem.Click += new System.EventHandler(this.encryptCombatRoutineToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkForUpdatesToolStripMenuItem});
+            this.helpToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.help;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel2,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 537);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(984, 24);
+            this.statusStrip1.TabIndex = 23;
+            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(69, 19);
+            this.toolStripStatusLabel1.Text = "Version: {0}";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabel2.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(195, 19);
+            this.toolStripStatusLabel2.Text = "PixelMagic (developed by WiNiFiX)";
             // 
             // frmMain
             // 
@@ -515,6 +540,7 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(984, 561);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.nudPulse);
             this.Controls.Add(this.groupBox5);
@@ -545,6 +571,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPulse)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -576,8 +604,6 @@
         private System.Windows.Forms.ToolStripMenuItem encryptCombatRoutineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hotkeysToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem debuggingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spellbookToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.TextBox txtMouseXY;
@@ -592,6 +618,9 @@
         private System.Windows.Forms.NumericUpDown nudPulse;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ToolStripMenuItem reloadAddonToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
 

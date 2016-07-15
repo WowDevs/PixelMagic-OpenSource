@@ -24,7 +24,11 @@ local powerFrames = {}
 local playerIsCastingFrame = nil
 local targetIsCastingFrame = nil
 
+local runePrev = 0
+local ssPrev = 0
+local ccPrev = 0
 local hpPrev = 0
+
 local lastCooldownState = {}
 local lastBuffState = {}
 
@@ -51,6 +55,86 @@ local function updateHP()
 		hpPrev = power
 	 end
  end
+
+local function updateCC()
+    local playerClass, englishClass, classIndex = UnitClass(""player"");
+    local power = UnitPower(""player"", 4)
+
+    -- http://wowwiki.wikia.com/wiki/API_GetTalentInfo
+    -- local ATalent = select(4, GetTalentInfo(3, 2, 1))   -- Anticipation (You may have a max of 8 combo points)
+    -- local DSTalent = select(4, GetTalentInfo(3, 1, 1))  -- Deeper Stratgem (You may have a max of 6 combo points)
+
+    if power ~= ccPrev then	
+        local i = 1
+
+        print(""Combo Points: "" .. power)
+
+        while i <= power do                             -- update all power frames to red (this should update all 8, need to confirm)
+            hpframes[i].t:SetTexture(255, 0, 0, 1)
+            hpframes[i].t:SetAllPoints(false)
+            i = 1 + i
+        end		
+    end
+  
+    while i <= 8 do                                     -- mark the remaining frames in color 255,255,0
+        hpframes[i].t:SetTexture(0, 255, 255, 1)
+        hpframes[i].t:SetAllPoints(false)
+        i = 1 + i
+    end    
+
+    ccPrev = power
+    end
+end
+
+local function updateSS()
+    local power = UnitPower(""player"", 4)
+	
+    if power ~= ssPrev then	    
+        local i = 1
+
+        while i <= power do
+            hpframes[i].t:SetTexture(255, 0, 0, 1)
+            hpframes[i].t:SetAllPoints(false)
+            i = 1 + i
+        end
+		    
+        while i <= 5 do
+            hpframes[i].t:SetTexture(255, 255, 0, 1)
+            hpframes[i].t:SetAllPoints(false)
+            i = 1 + i
+        end
+
+        ssPrev = power
+    end
+end
+
+local function updateRunes()
+    local CurrentMaxRunes = UnitPower(""player"", SPELL_POWER_RUNES);
+    local selRune = 6
+    local i = 1
+    for i = 1, CurrentMaxRunes do
+        local RuneReady = select(3, GetRuneCooldown(i))
+        if not RuneReady then
+            selRune = selRune - 1
+        end
+    end
+    if selRune ~= runePrev then	
+
+        while i <= selRune do
+            hpframes[i].t:SetTexture(255, 0, 0, 1)
+            hpframes[i].t:SetAllPoints(false)
+            i = 1 + i
+        end
+    
+        while i <= 6 do
+            hpframes[i].t:SetTexture(255, 255, 255, 1)
+            hpframes[i].t:SetAllPoints(false)
+            i = i + 1
+		end
+
+        runePrev = selRune     
+    end
+end
 
 local function updateCD() 
 	for _, spellId in pairs(cooldowns) do
@@ -348,18 +432,52 @@ local function updateTargetIsCasting()
 end
  
 local function initFrames()
-	print (""Initialising Holy Power Frames"")
-	for i = 1, 5 do
-		hpframes[i] = CreateFrame(""frame"");
-		hpframes[i]:SetSize(size, size)
-		hpframes[i]:SetPoint(""TOPLEFT"", (i - 1) * size, 0)        
-		hpframes[i].t = hpframes[i]:CreateTexture()        
-		hpframes[i].t:SetTexture(0, 255, 255, 1)
-		hpframes[i].t:SetAllPoints(hpframes[i])
-		hpframes[i]:Show()
+
+    local playerClass, englishClass, classIndex = UnitClass(""player"");
+
+    if classIndex == 2 then
+        print (""Initialising Holy Power Frames"")
+	    for i = 1, 5 do
+		    hpframes[i] = CreateFrame(""frame"");
+		    hpframes[i]:SetSize(size, size)
+		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)      
+		    hpframes[i].t = hpframes[i]:CreateTexture()        
+		    hpframes[i].t:SetTexture(0, 255, 255, 1)
+		    hpframes[i].t:SetAllPoints(hpframes[i])
+		    hpframes[i]:Show()
 		
-		hpframes[i]:SetScript(""OnUpdate"", updateHP)
-	end
+		    hpframes[i]:SetScript(""OnUpdate"", updateHP)
+	    end
+    end
+
+    if classIndex == 9 then
+        print (""Initialising Soulshard Frames"")
+	    for i = 1, 5 do
+		    hpframes[i] = CreateFrame(""frame"");
+		    hpframes[i]:SetSize(size, size)
+		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)      
+		    hpframes[i].t = hpframes[i]:CreateTexture()        
+		    hpframes[i].t:SetTexture(0, 255, 255, 1)
+		    hpframes[i].t:SetAllPoints(hpframes[i])
+		    hpframes[i]:Show()
+		
+		    hpframes[i]:SetScript(""OnUpdate"", updateCC)
+	    end
+    end
+
+    if classIndex == 6 then
+        print (""Initialising Runes Frames"")
+	    for i = 1, 6 do
+		    hpframes[i] = CreateFrame(""frame"");
+		    hpframes[i]:SetSize(size, size)
+		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)       
+		    hpframes[i].t = hpframes[i]:CreateTexture()        
+		    hpframes[i].t:SetTexture(0, 255, 255, 1)
+		    hpframes[i].t:SetAllPoints(hpframes[i])
+		    hpframes[i]:Show()	
+		    hpframes[i]:SetScript(""OnUpdate"", updateRunes)
+	    end
+    end
 	
 	print (""Initialising Cooldown Frames"")
 	local i = 5

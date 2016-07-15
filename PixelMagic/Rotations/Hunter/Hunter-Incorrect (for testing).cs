@@ -8,13 +8,13 @@ using System.Threading;
 
 namespace PixelMagic.Rotation
 {
-    public class Hunter : CombatRoutine
+    public class HunterIncorrect : CombatRoutine
     {
         public override string Name
         {
             get
             {
-                return "Hunter Sample";
+                return "Hunter Incorrect Sample";
             }
         }
 
@@ -22,9 +22,9 @@ namespace PixelMagic.Rotation
         {
             get
             {
-                return "Hunter";
+                return "Hunter-Incorrect";
             }
-        } 
+        }
 
         public override void Initialize()
         {
@@ -38,8 +38,8 @@ namespace PixelMagic.Rotation
         }
 
         public override void Pulse()
-        {   
-			if (combatRoutine.Type == RotationType.SingleTarget)  // Do Single Target Stuff here
+        {
+            if (combatRoutine.Type == RotationType.SingleTarget)  // Do Single Target Stuff here
             {
                 if (WoW.HasTarget && WoW.TargetIsEnemy)
                 {
@@ -70,20 +70,8 @@ namespace PixelMagic.Rotation
                 // Log.Write("Has Aura: " + WoW.HasAura("Furious Howl"));
                 // Log.Write("Aura Count: " + WoW.GetAuraCount("Furious Howl"));
                 // Log.Write("Aura Count: " + WoW.GetAuraCount("Taste for Blood"));
-            }            
+            }
         }
     }
 }
-
-/*
-[AddonDetails.db]
-AddonAuthor=Hunter
-AddonName=PixelMagic
-WoWVersion=Legion - 70000
-[SpellBook.db]
-Spell,56641,Steady Shot, T
-Spell,3044,Arcane Shot, Y
-Spell,34026,Kill Command, S
-Aura,24604,Furious Howl
-*/
 

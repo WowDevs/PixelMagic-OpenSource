@@ -233,10 +233,10 @@ namespace PixelMagic.Helpers
 
         public static void Write(string text, Color c)
         {
-            //if (text == lastMessage) // We want to avoid spamming, so we dont display duplicate messages
-            //{
-            //    return;
-            //}
+            if (text == lastMessage && text == "Rotation paused until WoW Window has focus again.") // We want to avoid spamming, so we dont display duplicate messages
+            {
+                return;
+            }
 
             if (_parent == null)
             {
@@ -244,14 +244,20 @@ namespace PixelMagic.Helpers
                 Application.Exit();
             }
 
-            _parent?.Invoke(
-                new Action(() =>
-                {
-                    InternalWrite(c, text);
-                    WriteDirectlyToLogFile(text);
-                }));
+            try
+            {
+                _parent?.Invoke(
+                    new Action(() =>
+                    {
+                        InternalWrite(c, text);
+                        WriteDirectlyToLogFile(text);
+                    }));
+            }
+            catch
+            {
 
-            //lastMessage = text;
+            }
+            lastMessage = text;
         }
 
         public static void WriteNewLine()

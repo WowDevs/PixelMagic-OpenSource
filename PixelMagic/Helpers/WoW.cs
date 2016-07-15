@@ -236,18 +236,6 @@ namespace PixelMagic.Helpers
             get
             {
                 return System.IO.Path.GetDirectoryName(pWow?.MainModule.FileName);
-
-                //var wowFolder = ConfigFile.ReadValue<string>("PixelBot", "WoWPath").Trim();
-
-                //if (wowFolder == "")
-                //{
-                //    Log.Write("Finding WoW Install Path...");
-
-                //    wowFolder = RegEdit.HKLMReadKey(@"Software\Wow6432Node\Blizzard Entertainment\World of Warcraft", "InstallPath");
-                //    ConfigFile.WriteValue("PixelBot", "WoWPath", wowFolder);
-                //}
-
-                //return wowFolder;
             }
         }
 
@@ -307,6 +295,23 @@ namespace PixelMagic.Helpers
             {
                 var c = GetBlockColor(1, 3);
                 return (c.R == 0) && (c.G == 255) && (c.B == 0);
+            }
+        }
+
+        public static int CurrentRunes
+        {
+            get
+            {
+                int CurrentRunes = 0;
+                for (int x = 1; x <= 7; x++)
+                {
+                    Color c = GetBlockColor(x, 8);
+                    if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
+                    {
+                        CurrentRunes++;
+                    }
+                }
+                return CurrentRunes;
             }
         }
 
@@ -395,85 +400,21 @@ namespace PixelMagic.Helpers
             }
         }
 
-        public static void Initialize()
-        {
-            Log.Write("Searching for open WoW processes...");
-
+        public static void Initialize(Process wowProcess)
+        {   
             random = new Random();
 
-            pWow = (Process.GetProcessesByName("Wow").FirstOrDefault() ?? Process.GetProcessesByName("Wow-64").FirstOrDefault()) ?? Process.GetProcessesByName("WowB-64").FirstOrDefault() ?? Process.GetProcessesByName("WowT-64").FirstOrDefault();
-
-            if (pWow == null)
-            {
-                Log.Write("Failed to find open wow process, please ensure that x64 WoW is running.", Color.Red);
-
-                var res = MessageBox.Show("WoW is not running, would you like to launch it now?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (res == DialogResult.Yes)
-                {
-                    var wowFolder = ConfigFile.ReadValue<string>("PixelBot", "WoWPath").Trim();
-                    ProcessStartInfo psi;
-
-                    if (LimitedUserExists) // When running on my PC I like to launch wow as a limited user so that it does not have access to tasklist to                     
-                    {
-                        // See details of running tasks - it gets access denied messages instead
-                        // This is just my personal extra layer of anti-warden protection, but most people will say its not needed.
-
-                        // The command we run is
-                        // C:\Windows\System32\runas.exe /user:Limited /savecred /env "C:\Games\World of Warcraft Live\Wow.exe"
-
-                        psi = new ProcessStartInfo(@"C:\Windows\System32\runas.exe")
-                        {
-                            Arguments = $"/user:Limited /savecred /env \"{wowFolder}\\Wow-64.exe\""
-                        };
-                    }
-                    else
-                    {
-                        psi = new ProcessStartInfo(wowFolder + "\\Wow-64.exe");
-                    }
-
-                    psi.WorkingDirectory = wowFolder;
-
-                    pWow = Process.Start(psi);
-
-                    if (LimitedUserExists)
-                    {
-                        var running = false;
-
-                        while (!running)
-                        {
-                            pWow = Process.GetProcessesByName("Wow-64").FirstOrDefault();
-                            if (pWow != null)
-                            {
-                                running = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        pWow?.WaitForInputIdle();
-                    }
-
-                    if (pWow != null) Log.Write("Successfully launched WoW with process ID: " + pWow.Id);
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            if (pWow == null) return;
-
-            Log.Write("Connecting to process with ID: " + pWow.Id);
-            Log.Write("Successfully connected.", Color.Green);
+            pWow = wowProcess;           
+                        
+            Log.Write("Successfully connected to WoW with process ID: " + pWow.Id, Color.Green);
 
             var is64 = pWow.ProcessName.Contains("64");
 
-            Log.Write($"WoW Version: {Version} (x{(is64 ? "64" : "86")})");
+            Log.Write($"WoW Version: {Version} (x{(is64 ? "64" : "86")})", Color.Gray);
 
             var wowRectangle = new Rectangle();
             GetWindowRect(pWow.MainWindowHandle, ref wowRectangle);
-            Log.Write($"WoW Screen Resolution: {wowRectangle.Width}x{wowRectangle.Height}");
+            Log.Write($"WoW Screen Resolution: {wowRectangle.Width}x{wowRectangle.Height}", Color.Gray);
         }
 
         [DllImport("user32.dll")]
