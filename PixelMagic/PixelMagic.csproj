@@ -71,6 +71,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\frmSubmitTicket.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmSubmitTicket.Designer.cs">
+      <DependentUpon>frmSubmitTicket.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +138,9 @@
     <None Include="Resources\Close_16x16.png" />
     <None Include="Resources\Register.png" />
     <Content Include="ToDoList.txt" />
+    <EmbeddedResource Include="GUI\frmSubmitTicket.resx">
+      <DependentUpon>frmSubmitTicket.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>

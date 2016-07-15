@@ -166,20 +166,27 @@ namespace PixelMagic.GUI
                         combatRoutine = (CombatRoutine)obj;
 
                         combatRoutine.Load(this);
+                        combatRoutine.FileName = fileName;
 
                         Log.Write("Successfully loaded combat routine: " + combatRoutine.Name, Color.Green);
 
                         Overlay.showOverlay(new Point(20, 680));
+                                              
 
-                        spellbookToolStripMenuItem.Enabled = true;
                         if (SpellBook.Initialize(fileName))
                         {
+                            spellbookToolStripMenuItem.Enabled = true;
+                            submitTicketToolStripMenuItem.Enabled = true;
+
                             cmdStartBot.Enabled = true;
                             cmdStartBot.BackColor = Color.LightGreen;
                             return true;
                         }
                         else
                         {
+                            spellbookToolStripMenuItem.Enabled = false;
+                            submitTicketToolStripMenuItem.Enabled = false;
+
                             cmdStartBot.Enabled = false;
                             cmdStartBot.BackColor = Color.WhiteSmoke;
                             return false;
@@ -595,6 +602,12 @@ namespace PixelMagic.GUI
         private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void submitTicketToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GUI.frmSubmitTicket f = new GUI.frmSubmitTicket();
+            f.ShowDialog();
         }
     }
 }

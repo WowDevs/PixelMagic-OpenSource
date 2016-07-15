@@ -289,6 +289,15 @@ namespace PixelMagic.Helpers
             }
         }
 
+        public static bool TargetIsVisible
+        {
+            get
+            {
+                var c = GetBlockColor(5, 3);
+                return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
+            }
+        }
+
         public static bool TargetIsFriend
         {
             get
@@ -449,6 +458,9 @@ namespace PixelMagic.Helpers
                 return false;
 
             if (IsSpellInRange(spellNoInArrayOfSpells) == false)
+                return false;
+
+            if (TargetIsVisible == false)
                 return false;
 
             return true;

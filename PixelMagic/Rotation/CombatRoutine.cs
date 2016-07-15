@@ -129,6 +129,8 @@ namespace PixelMagic.Rotation
             Initialize();
         }
 
+        public string FileName = "";
+
         internal void Dispose()
         {
             Log.Write("Stopping Character Info Thread...");

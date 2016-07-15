@@ -9,5 +9,4 @@
   - What spec are you playing?
   - Paste your Spellbook.db and <rotation>.cs files here
   - What are your keybindings? (Do they match your Spell Book setup)
--. Check LOS 
 -. Allow user to specify where the pixels the addon reads from are positioned on the screen, and investigate if 1x1 pixels are possible to get accurate colors from.

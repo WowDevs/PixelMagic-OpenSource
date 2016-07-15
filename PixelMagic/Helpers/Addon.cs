@@ -23,6 +23,7 @@ local hasTargetFrame = nil
 local powerFrames = {}
 local playerIsCastingFrame = nil
 local targetIsCastingFrame = nil
+local unitIsVisibleFrame = nil
 
 local runePrev = 0
 local ssPrev = 0
@@ -430,6 +431,28 @@ local function updateTargetIsCasting()
 		end	
 	end
 end
+
+local lastVis = nil
+
+local function updateUnitIsVisible()	
+	local vis = UnitIsVisible(""target"")
+		
+	if vis == nil then			
+        if (vis ~= lastVis) then
+		    print(""Target Is Not Visible"")		
+
+	        unitIsVisibleFrame.t:SetTexture(255, 255, 255, 1)
+		    lastVis = vis				
+        end
+	else
+		if vis ~= lastVis then
+			print(""Target Is Visible"")			
+
+			unitIsVisibleFrame.t:SetTexture(255, 0, 0, 1)			
+			lastVis = vis		
+		end	
+	end
+end
  
 local function initFrames()
 
@@ -508,7 +531,7 @@ local function initFrames()
 		spellInRangeFrames[spellId]:SetScript(""OnUpdate"", updateSpellInRangeFrames)
 		i = i + 1
 	end
-	
+
 	print (""Initialising Health Frames"")
 	for i = 1, 7 do
 		healthFrames[i] = CreateFrame(""frame"")
@@ -563,7 +586,7 @@ local function initFrames()
 	print (""Initialising HasTarget Frame"")
 	hasTargetFrame = CreateFrame(""frame"");
 	hasTargetFrame:SetSize(size, size);
-	hasTargetFrame:SetPoint(""TOPLEFT"", size, -(size * 2))    
+	hasTargetFrame:SetPoint(""TOPLEFT"", size, -(size * 2))                 -- column 2 row 3
 	hasTargetFrame.t = hasTargetFrame:CreateTexture()        
 	hasTargetFrame.t:SetTexture(0, 255, 0, 1)
 	hasTargetFrame.t:SetAllPoints(hasTargetFrame)
@@ -574,7 +597,7 @@ local function initFrames()
 	print (""Initialising PlayerIsCasting Frame"")
 	playerIsCastingFrame = CreateFrame(""frame"");
 	playerIsCastingFrame:SetSize(size, size);
-	playerIsCastingFrame:SetPoint(""TOPLEFT"", size * 2, -(size * 2))    
+	playerIsCastingFrame:SetPoint(""TOPLEFT"", size * 2, -(size * 2))       -- column 3 row 3
 	playerIsCastingFrame.t = playerIsCastingFrame:CreateTexture()        
 	playerIsCastingFrame.t:SetTexture(255, 255, 255, 1)
 	playerIsCastingFrame.t:SetAllPoints(playerIsCastingFrame)
@@ -585,14 +608,25 @@ local function initFrames()
 	print (""Initialising TargetIsCasting Frame"")
 	targetIsCastingFrame = CreateFrame(""frame"");
 	targetIsCastingFrame:SetSize(size, size);
-	targetIsCastingFrame:SetPoint(""TOPLEFT"", size * 3, -(size * 2))    
+	targetIsCastingFrame:SetPoint(""TOPLEFT"", size * 3, -(size * 2))       -- column 4 row 3
 	targetIsCastingFrame.t = targetIsCastingFrame:CreateTexture()        
 	targetIsCastingFrame.t:SetTexture(255, 255, 255, 1)
 	targetIsCastingFrame.t:SetAllPoints(targetIsCastingFrame)
 	targetIsCastingFrame:Show()		
 		
 	targetIsCastingFrame:SetScript(""OnUpdate"", updateTargetIsCasting)
-	
+
+	print (""Initialising Unit Is Visible Frame"")
+	unitIsVisibleFrame = CreateFrame(""frame"");
+	unitIsVisibleFrame:SetSize(size, size);
+	unitIsVisibleFrame:SetPoint(""TOPLEFT"", size * 4, -(size * 2))         -- column 5 row 3
+	unitIsVisibleFrame.t = unitIsVisibleFrame:CreateTexture()        
+	unitIsVisibleFrame.t:SetTexture(0, 255, 0, 1)
+	unitIsVisibleFrame.t:SetAllPoints(unitIsVisibleFrame)
+	unitIsVisibleFrame:Show()		
+		
+	unitIsVisibleFrame:SetScript(""OnUpdate"", updateUnitIsVisible)
+		
 	print (""Initialising Aura Frames"")
 	local i = 4
 	for _, auraId in pairs(auras) do
