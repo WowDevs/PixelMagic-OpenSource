@@ -126,6 +126,9 @@
     <Compile Include="Rotations\Hunter\Hunter-Incorrect %28for testing%29.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Rotations\Warrior\Warrior.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Rotation\CombatRoutine.cs" />
     <Compile Include="Rotations\Hunter\Hunter.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

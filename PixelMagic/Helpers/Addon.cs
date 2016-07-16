@@ -84,7 +84,6 @@ local function updateCC()
     end    
 
     ccPrev = power
-    end
 end
 
 local function updateSS()
@@ -178,25 +177,26 @@ end
 local function updateAuras() 
 	for _, auraId in pairs(auras) do
 		local auraName = GetSpellInfo(auraId)
-		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitBuff(""player"", auraName)
+		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitBuff(""player"", auraName)		
 		
 		if (name == auraName) then -- We have Aura up and Aura ID is matching our list					
-			if (lastBuffState[auraId] ~= ""BuffOn"") then				                
-				auraFrames[auraId].t:SetTexture(0, 255 - (count * 20), 0, 1)
-				auraFrames[auraId].t:SetAllPoints(false)
-    
-                print(auraName .. "" "" .. count)
+			if (lastBuffState[auraId] ~= ""BuffOn"" .. count) then
+                local green = 255 - (count * 50);
 
-				lastBuffState[auraId] = ""BuffOn""            
-			end
+                auraFrames[auraId].t:SetColorTexture(0, green, 0, 1)
+				auraFrames[auraId].t:SetAllPoints(false)
+                print(auraName.. "" "" .. count .. ""Green:"" .. green)
+                lastBuffState[auraId] = ""BuffOn"" .. count 
+            end
         else
             if (lastBuffState[auraId] ~= ""BuffOff"") then
-				auraFrames[auraId].t:SetTexture(255, 255, 255, 1)
-				auraFrames[auraId].t:SetAllPoints(false)
-				lastBuffState[auraId] = ""BuffOff""
-			end		
-        end		
-	end
+                auraFrames[auraId].t:SetColorTexture(255, 255, 255, 1)
+                auraFrames[auraId].t:SetAllPoints(false)
+                lastBuffState[auraId] = ""BuffOff""
+                print(auraName.. "" Off"")
+            end
+        end
+    end
 end
 
 local lastSpellInRange = {}
