@@ -208,7 +208,6 @@
   <PropertyGroup>
     <PostBuildEvent>cd $(ConfigurationName)
 del *.xml
-del *.config
 rmdir Logs /s /q</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
