@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.cmdStartBot = new System.Windows.Forms.Button();
-            rtbLog = new System.Windows.Forms.RichTextBox();
+            this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.lblHotkeyInfo = new System.Windows.Forms.Label();
             this.txtHealth = new System.Windows.Forms.TextBox();
             this.txtPower = new System.Windows.Forms.TextBox();
@@ -54,16 +54,16 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.submitTicketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.grpPlayer = new System.Windows.Forms.GroupBox();
+            this.grpTarget = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.grpMousePosition = new System.Windows.Forms.GroupBox();
             this.txtMouseXY = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.chkPlayErrorSounds = new System.Windows.Forms.CheckBox();
             this.chkDisableOverlay = new System.Windows.Forms.CheckBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.grpMouseClickPosition = new System.Windows.Forms.GroupBox();
             this.txtMouseXYClick = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.nudPulse = new System.Windows.Forms.NumericUpDown();
@@ -72,11 +72,11 @@
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.grpPlayer.SuspendLayout();
+            this.grpTarget.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.grpMousePosition.SuspendLayout();
+            this.grpMouseClickPosition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPulse)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -95,19 +95,19 @@
             // 
             // rtbLog
             // 
-            rtbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.rtbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            rtbLog.BackColor = System.Drawing.Color.White;
-            rtbLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            rtbLog.Location = new System.Drawing.Point(0, 27);
-            rtbLog.Name = "rtbLog";
-            rtbLog.ReadOnly = true;
-            rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            rtbLog.Size = new System.Drawing.Size(816, 513);
-            rtbLog.TabIndex = 2;
-            rtbLog.Text = "";
-            rtbLog.TextChanged += new System.EventHandler(this.rtbLog_TextChanged);
+            this.rtbLog.BackColor = System.Drawing.Color.White;
+            this.rtbLog.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.rtbLog.Location = new System.Drawing.Point(0, 27);
+            this.rtbLog.Name = "rtbLog";
+            this.rtbLog.ReadOnly = true;
+            this.rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.rtbLog.Size = new System.Drawing.Size(816, 513);
+            this.rtbLog.TabIndex = 2;
+            this.rtbLog.Text = "";
+            this.rtbLog.TextChanged += new System.EventHandler(this.rtbLog_TextChanged);
             // 
             // lblHotkeyInfo
             // 
@@ -318,35 +318,37 @@
             this.submitTicketToolStripMenuItem.Text = "Submit Ticket";
             this.submitTicketToolStripMenuItem.Click += new System.EventHandler(this.submitTicketToolStripMenuItem_Click);
             // 
-            // groupBox1
+            // grpPlayer
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.txtPower);
-            this.groupBox1.Controls.Add(this.txtHealth);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.ForeColor = System.Drawing.Color.Black;
-            this.groupBox1.Location = new System.Drawing.Point(825, 96);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(151, 74);
-            this.groupBox1.TabIndex = 14;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Player";
+            this.grpPlayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpPlayer.Controls.Add(this.txtPower);
+            this.grpPlayer.Controls.Add(this.txtHealth);
+            this.grpPlayer.Controls.Add(this.label2);
+            this.grpPlayer.Controls.Add(this.label3);
+            this.grpPlayer.ForeColor = System.Drawing.Color.Black;
+            this.grpPlayer.Location = new System.Drawing.Point(825, 96);
+            this.grpPlayer.Name = "grpPlayer";
+            this.grpPlayer.Size = new System.Drawing.Size(151, 74);
+            this.grpPlayer.TabIndex = 14;
+            this.grpPlayer.TabStop = false;
+            this.grpPlayer.Text = "Player";
+            this.grpPlayer.Visible = false;
             // 
-            // groupBox2
+            // grpTarget
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.txtTargetHealth);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.txtTargetCasting);
-            this.groupBox2.ForeColor = System.Drawing.Color.Black;
-            this.groupBox2.Location = new System.Drawing.Point(825, 175);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(151, 74);
-            this.groupBox2.TabIndex = 15;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Target";
+            this.grpTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpTarget.Controls.Add(this.txtTargetHealth);
+            this.grpTarget.Controls.Add(this.label1);
+            this.grpTarget.Controls.Add(this.label4);
+            this.grpTarget.Controls.Add(this.txtTargetCasting);
+            this.grpTarget.ForeColor = System.Drawing.Color.Black;
+            this.grpTarget.Location = new System.Drawing.Point(825, 175);
+            this.grpTarget.Name = "grpTarget";
+            this.grpTarget.Size = new System.Drawing.Size(151, 74);
+            this.grpTarget.TabIndex = 15;
+            this.grpTarget.TabStop = false;
+            this.grpTarget.Text = "Target";
+            this.grpTarget.Visible = false;
             // 
             // groupBox3
             // 
@@ -360,19 +362,20 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Pixel Magic";
             // 
-            // groupBox4
+            // grpMousePosition
             // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.txtMouseXY);
-            this.groupBox4.Controls.Add(this.label5);
-            this.groupBox4.Controls.Add(this.label6);
-            this.groupBox4.ForeColor = System.Drawing.Color.Black;
-            this.groupBox4.Location = new System.Drawing.Point(825, 255);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(151, 51);
-            this.groupBox4.TabIndex = 17;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Mouse Position";
+            this.grpMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpMousePosition.Controls.Add(this.txtMouseXY);
+            this.grpMousePosition.Controls.Add(this.label5);
+            this.grpMousePosition.Controls.Add(this.label6);
+            this.grpMousePosition.ForeColor = System.Drawing.Color.Black;
+            this.grpMousePosition.Location = new System.Drawing.Point(825, 255);
+            this.grpMousePosition.Name = "grpMousePosition";
+            this.grpMousePosition.Size = new System.Drawing.Size(151, 51);
+            this.grpMousePosition.TabIndex = 17;
+            this.grpMousePosition.TabStop = false;
+            this.grpMousePosition.Text = "Mouse Position";
+            this.grpMousePosition.Visible = false;
             // 
             // txtMouseXY
             // 
@@ -431,18 +434,19 @@
             this.chkDisableOverlay.UseVisualStyleBackColor = true;
             this.chkDisableOverlay.CheckedChanged += new System.EventHandler(this.chkDisableOverlay_CheckedChanged);
             // 
-            // groupBox5
+            // grpMouseClickPosition
             // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox5.Controls.Add(this.txtMouseXYClick);
-            this.groupBox5.Controls.Add(this.label7);
-            this.groupBox5.ForeColor = System.Drawing.Color.Black;
-            this.groupBox5.Location = new System.Drawing.Point(825, 309);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(151, 51);
-            this.groupBox5.TabIndex = 20;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Last Mouse Click Position";
+            this.grpMouseClickPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpMouseClickPosition.Controls.Add(this.txtMouseXYClick);
+            this.grpMouseClickPosition.Controls.Add(this.label7);
+            this.grpMouseClickPosition.ForeColor = System.Drawing.Color.Black;
+            this.grpMouseClickPosition.Location = new System.Drawing.Point(825, 309);
+            this.grpMouseClickPosition.Name = "grpMouseClickPosition";
+            this.grpMouseClickPosition.Size = new System.Drawing.Size(151, 51);
+            this.grpMouseClickPosition.TabIndex = 20;
+            this.grpMouseClickPosition.TabStop = false;
+            this.grpMouseClickPosition.Text = "Last Mouse Click Position";
+            this.grpMouseClickPosition.Visible = false;
             // 
             // txtMouseXYClick
             // 
@@ -541,15 +545,15 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.nudPulse);
-            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.grpMouseClickPosition);
             this.Controls.Add(this.chkDisableOverlay);
             this.Controls.Add(this.chkPlayErrorSounds);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.grpMousePosition);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.grpTarget);
+            this.Controls.Add(this.grpPlayer);
             this.Controls.Add(this.cmdDonate);
-            this.Controls.Add(rtbLog);
+            this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.lblHotkeyInfo);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -559,15 +563,15 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.grpPlayer.ResumeLayout(false);
+            this.grpPlayer.PerformLayout();
+            this.grpTarget.ResumeLayout(false);
+            this.grpTarget.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
+            this.grpMousePosition.ResumeLayout(false);
+            this.grpMousePosition.PerformLayout();
+            this.grpMouseClickPosition.ResumeLayout(false);
+            this.grpMouseClickPosition.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPulse)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -578,7 +582,6 @@
 
         #endregion
         private System.Windows.Forms.Button cmdStartBot;
-        internal static System.Windows.Forms.RichTextBox rtbLog;
         private System.Windows.Forms.Label lblHotkeyInfo;
         public System.Windows.Forms.TextBox txtHealth;
         public System.Windows.Forms.TextBox txtPower;
@@ -593,8 +596,8 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadRotationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox grpPlayer;
+        private System.Windows.Forms.GroupBox grpTarget;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
@@ -603,13 +606,13 @@
         private System.Windows.Forms.ToolStripMenuItem setupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hotkeysToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spellbookToolStripMenuItem;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox grpMousePosition;
         private System.Windows.Forms.TextBox txtMouseXY;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.CheckBox chkPlayErrorSounds;
         public System.Windows.Forms.CheckBox chkDisableOverlay;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox grpMouseClickPosition;
         private System.Windows.Forms.TextBox txtMouseXYClick;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown nudPulse;
@@ -619,6 +622,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripMenuItem submitTicketToolStripMenuItem;
+        internal System.Windows.Forms.RichTextBox rtbLog;
     }
 }
 

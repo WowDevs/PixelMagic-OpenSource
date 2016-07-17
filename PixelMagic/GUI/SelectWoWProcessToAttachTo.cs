@@ -58,9 +58,21 @@ namespace PixelMagic.GUI
 
         private void SelectWoWProcessToAttachTo_Load(object sender, EventArgs e)
         {
-            refreshProcessList();
+            cmbWoW.KeyDown += CmbWoW_KeyDown;
+
+            cmbWoW.Focus();
+
+            refreshProcessList();            
         }
 
+        private void CmbWoW_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                cmdConnect.PerformClick();
+            }
+        }
+        
         private void cmdConnect_Click(object sender, EventArgs e)
         {
             if (cmbWoW.Text.Contains(">"))

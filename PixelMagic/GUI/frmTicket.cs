@@ -15,10 +15,12 @@ namespace PixelMagic.GUI
     public partial class frmTicket : Form
     {
         private string text;
+        private string logText;
 
-        public frmTicket(string text)
+        public frmTicket(string text, string logText)
         {
             this.text = text;
+            this.logText = logText;
             InitializeComponent();
         }
         
@@ -35,7 +37,7 @@ namespace PixelMagic.GUI
             Ticket.WriteNoTime(SpellBook.RotationFileContents, Color.Gray);
             Ticket.WriteNoTime(" ");
             Ticket.WriteNoTime("[B]Log File Contents[/B]");
-            Ticket.WriteNoTime(frmMain.rtbLog.Text);
+            Ticket.WriteNoTime(logText);
         }
 
         private void cmdOpenWebsite_Click(object sender, EventArgs e)

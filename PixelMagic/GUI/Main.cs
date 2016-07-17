@@ -282,9 +282,7 @@ namespace PixelMagic.GUI
                     if (!Directory.Exists(Application.StartupPath + "\\Rotations\\" + item.Value))
                         Directory.CreateDirectory(Application.StartupPath + "\\Rotations\\" + item.Value);
                 }
-
-                ReloadHotkeys();
-
+                
                 nudPulse.Value = ConfigFile.Pulse;
 
                 SelectWoWProcessToAttachTo f = new SelectWoWProcessToAttachTo(this);
@@ -294,6 +292,8 @@ namespace PixelMagic.GUI
                 {
                     Close();
                 }
+
+                ReloadHotkeys();
 
                 WoW.Initialize(process);
 
@@ -401,6 +401,11 @@ namespace PixelMagic.GUI
                 {
                     cmdStartBot.Text = "Stop bot";
                     cmdStartBot.BackColor = Color.Salmon;
+
+                    grpPlayer.Visible = true;
+                    grpTarget.Visible = true;
+                    grpMousePosition.Visible = true;
+                    grpMouseClickPosition.Visible = true;
                 }
             }
             else
@@ -408,6 +413,11 @@ namespace PixelMagic.GUI
                 combatRoutine.Pause();
                 cmdStartBot.Text = "Start bot";
                 cmdStartBot.BackColor = Color.LightGreen;
+
+                grpPlayer.Visible = false;
+                grpTarget.Visible = false;
+                grpMousePosition.Visible = false;
+                grpMouseClickPosition.Visible = false;
             }
         }
 
@@ -604,7 +614,7 @@ namespace PixelMagic.GUI
 
         private void submitTicketToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmSubmitTicket f = new frmSubmitTicket();
+            frmSubmitTicket f = new frmSubmitTicket(rtbLog.Text);
             f.ShowDialog();
         }
     }

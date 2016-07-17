@@ -40,7 +40,7 @@
             this.cmbWoW.Location = new System.Drawing.Point(12, 13);
             this.cmbWoW.Name = "cmbWoW";
             this.cmbWoW.Size = new System.Drawing.Size(173, 21);
-            this.cmbWoW.TabIndex = 2;
+            this.cmbWoW.TabIndex = 1;
             // 
             // cmdCancel
             // 
@@ -60,7 +60,7 @@
             this.cmdConnect.Location = new System.Drawing.Point(216, 12);
             this.cmdConnect.Name = "cmdConnect";
             this.cmdConnect.Size = new System.Drawing.Size(75, 23);
-            this.cmdConnect.TabIndex = 1;
+            this.cmdConnect.TabIndex = 2;
             this.cmdConnect.Text = "Connect";
             this.cmdConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.cmdConnect.UseVisualStyleBackColor = true;
@@ -72,7 +72,8 @@
             this.cmdRefresh.Location = new System.Drawing.Point(189, 12);
             this.cmdRefresh.Name = "cmdRefresh";
             this.cmdRefresh.Size = new System.Drawing.Size(23, 23);
-            this.cmdRefresh.TabIndex = 0;
+            this.cmdRefresh.TabIndex = 5;
+            this.cmdRefresh.TabStop = false;
             this.cmdRefresh.UseVisualStyleBackColor = true;
             this.cmdRefresh.Click += new System.EventHandler(this.cmdRefresh_Click);
             // 

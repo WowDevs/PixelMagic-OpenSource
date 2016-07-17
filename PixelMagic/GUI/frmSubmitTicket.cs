@@ -15,8 +15,11 @@ namespace PixelMagic.GUI
 {
     public partial class frmSubmitTicket : Form
     {
-        public frmSubmitTicket()
+        private string logText = "";
+
+        public frmSubmitTicket(string logText)
         {
+            this.logText = logText;
             InitializeComponent();
         }
 
@@ -133,7 +136,7 @@ namespace PixelMagic.GUI
             ticketContents += "Notes\t: " + txtComments.Text + Environment.NewLine;
             ticketContents += "File \t: " + txtRotationPath.Text + Environment.NewLine;
             
-            frmTicket f = new frmTicket(ticketContents);
+            frmTicket f = new frmTicket(ticketContents, logText);
             f.ShowDialog();
 
             Close();
