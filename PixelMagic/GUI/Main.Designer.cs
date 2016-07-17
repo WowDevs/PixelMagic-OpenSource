@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.cmdStartBot = new System.Windows.Forms.Button();
-            this.rtbLog = new System.Windows.Forms.RichTextBox();
+            rtbLog = new System.Windows.Forms.RichTextBox();
             this.lblHotkeyInfo = new System.Windows.Forms.Label();
             this.txtHealth = new System.Windows.Forms.TextBox();
             this.txtPower = new System.Windows.Forms.TextBox();
@@ -64,7 +64,6 @@
             this.chkPlayErrorSounds = new System.Windows.Forms.CheckBox();
             this.chkDisableOverlay = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.txtMouseXYClick = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.nudPulse = new System.Windows.Forms.NumericUpDown();
@@ -96,19 +95,19 @@
             // 
             // rtbLog
             // 
-            this.rtbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            rtbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbLog.BackColor = System.Drawing.Color.White;
-            this.rtbLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.rtbLog.Location = new System.Drawing.Point(0, 27);
-            this.rtbLog.Name = "rtbLog";
-            this.rtbLog.ReadOnly = true;
-            this.rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.rtbLog.Size = new System.Drawing.Size(816, 513);
-            this.rtbLog.TabIndex = 2;
-            this.rtbLog.Text = "";
-            this.rtbLog.TextChanged += new System.EventHandler(this.rtbLog_TextChanged);
+            rtbLog.BackColor = System.Drawing.Color.White;
+            rtbLog.Font = new System.Drawing.Font("Segoe UI", 9F);
+            rtbLog.Location = new System.Drawing.Point(0, 27);
+            rtbLog.Name = "rtbLog";
+            rtbLog.ReadOnly = true;
+            rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            rtbLog.Size = new System.Drawing.Size(816, 513);
+            rtbLog.TabIndex = 2;
+            rtbLog.Text = "";
+            rtbLog.TextChanged += new System.EventHandler(this.rtbLog_TextChanged);
             // 
             // lblHotkeyInfo
             // 
@@ -409,7 +408,7 @@
             this.chkPlayErrorSounds.Checked = true;
             this.chkPlayErrorSounds.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPlayErrorSounds.ForeColor = System.Drawing.Color.Black;
-            this.chkPlayErrorSounds.Location = new System.Drawing.Point(840, 391);
+            this.chkPlayErrorSounds.Location = new System.Drawing.Point(840, 382);
             this.chkPlayErrorSounds.Name = "chkPlayErrorSounds";
             this.chkPlayErrorSounds.Size = new System.Drawing.Size(110, 17);
             this.chkPlayErrorSounds.TabIndex = 18;
@@ -424,7 +423,7 @@
             this.chkDisableOverlay.Checked = true;
             this.chkDisableOverlay.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDisableOverlay.ForeColor = System.Drawing.Color.Black;
-            this.chkDisableOverlay.Location = new System.Drawing.Point(840, 414);
+            this.chkDisableOverlay.Location = new System.Drawing.Point(840, 405);
             this.chkDisableOverlay.Name = "chkDisableOverlay";
             this.chkDisableOverlay.Size = new System.Drawing.Size(100, 17);
             this.chkDisableOverlay.TabIndex = 19;
@@ -435,31 +434,20 @@
             // groupBox5
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Controls.Add(this.txtMouseXYClick);
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.ForeColor = System.Drawing.Color.Black;
             this.groupBox5.Location = new System.Drawing.Point(825, 309);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(151, 67);
+            this.groupBox5.Size = new System.Drawing.Size(151, 51);
             this.groupBox5.TabIndex = 20;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Last Mouse Click Position";
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(36, 15);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(47, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "In WoW";
-            // 
             // txtMouseXYClick
             // 
             this.txtMouseXYClick.ForeColor = System.Drawing.Color.Black;
-            this.txtMouseXYClick.Location = new System.Drawing.Point(59, 37);
+            this.txtMouseXYClick.Location = new System.Drawing.Point(59, 19);
             this.txtMouseXYClick.Name = "txtMouseXYClick";
             this.txtMouseXYClick.ReadOnly = true;
             this.txtMouseXYClick.Size = new System.Drawing.Size(78, 20);
@@ -469,7 +457,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(11, 41);
+            this.label7.Location = new System.Drawing.Point(11, 23);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(39, 13);
             this.label7.TabIndex = 9;
@@ -561,7 +549,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cmdDonate);
-            this.Controls.Add(this.rtbLog);
+            this.Controls.Add(rtbLog);
             this.Controls.Add(this.lblHotkeyInfo);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -590,7 +578,7 @@
 
         #endregion
         private System.Windows.Forms.Button cmdStartBot;
-        private System.Windows.Forms.RichTextBox rtbLog;
+        internal static System.Windows.Forms.RichTextBox rtbLog;
         private System.Windows.Forms.Label lblHotkeyInfo;
         public System.Windows.Forms.TextBox txtHealth;
         public System.Windows.Forms.TextBox txtPower;
@@ -624,7 +612,6 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TextBox txtMouseXYClick;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown nudPulse;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ToolStripMenuItem reloadAddonToolStripMenuItem;

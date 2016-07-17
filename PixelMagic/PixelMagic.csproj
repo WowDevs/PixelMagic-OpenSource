@@ -77,6 +77,12 @@
     <Compile Include="GUI\frmSubmitTicket.Designer.cs">
       <DependentUpon>frmSubmitTicket.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\frmTicket.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmTicket.Designer.cs">
+      <DependentUpon>frmTicket.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +124,7 @@
     <Compile Include="Helpers\ConfigFile.cs" />
     <Compile Include="Helpers\Encryption.cs" />
     <Compile Include="Helpers\KeyboardHook.cs" />
+    <Compile Include="Helpers\Ticket.cs" />
     <Compile Include="Helpers\Log.cs" />
     <Compile Include="Helpers\Mouse.cs" />
     <Compile Include="Helpers\MouseHook.cs" />
@@ -149,11 +156,13 @@
     <None Include="Resources\help.png" />
     <None Include="Resources\Close_16x16.png" />
     <None Include="Resources\Register.png" />
-    <Content Include="Designcontest-Outline-Pixel-Art.ico" />
     <Content Include="Hadezign-Hobbies-Magic.ico" />
     <Content Include="ToDoList.txt" />
     <EmbeddedResource Include="GUI\frmSubmitTicket.resx">
       <DependentUpon>frmSubmitTicket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmTicket.resx">
+      <DependentUpon>frmTicket.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -205,7 +214,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icons8-Ios7-Animals-Ant.ico" />
     <Content Include="License.txt" />
   </ItemGroup>
   <ItemGroup />

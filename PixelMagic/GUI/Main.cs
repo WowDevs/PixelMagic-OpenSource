@@ -287,7 +287,7 @@ namespace PixelMagic.GUI
 
                 nudPulse.Value = ConfigFile.Pulse;
 
-                GUI.SelectWoWProcessToAttachTo f = new GUI.SelectWoWProcessToAttachTo(this);
+                SelectWoWProcessToAttachTo f = new SelectWoWProcessToAttachTo(this);
                 f.ShowDialog();
                 
                 if (process == null)

@@ -147,7 +147,7 @@ namespace PixelMagic.Helpers
         }
 
         public static bool Load()
-        {               
+        {
             using (var sr = new StreamReader(FullRotationFilePath))
             {
                 string fileContents = sr.ReadToEnd();
@@ -155,9 +155,11 @@ namespace PixelMagic.Helpers
                 bool encrypted = (FullRotationFilePath.EndsWith(".enc"));
 
                 if (encrypted)
-                {
+                { 
                     fileContents = Encryption.Decrypt(fileContents);
                 }
+                
+                RotationFileContents = fileContents;
 
                 bool addonLines = false;
                 bool readLines = false;
@@ -240,6 +242,8 @@ namespace PixelMagic.Helpers
         public static string AddonAuthor;
         public static string InterfaceVersion;
         public static string AddonName => ConfigFile.ReadValue("PixelMagic", "AddonName");
+
+        public static string RotationFileContents = "";
 
         public static void Save(TextBox author, string interfaceVersion, TextBox addonName)
         {

@@ -126,6 +126,17 @@ namespace PixelMagic.GUI
             {
                 MessageBox.Show("Enter in a brief description of what you were doing when it crashed (what was the last thing you clicked)", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            string ticketContents = "";
+            ticketContents += "Class\t:"  + cmbClass.Text + Environment.NewLine;
+            ticketContents += "Spec \t:"  + cmbSpec.Text + Environment.NewLine;
+            ticketContents += "Notes\t: " + txtComments.Text + Environment.NewLine;
+            ticketContents += "File \t: " + txtRotationPath.Text + Environment.NewLine;
+            
+            frmTicket f = new frmTicket(ticketContents);
+            f.ShowDialog();
+
+            Close();
         }
     }
 }
