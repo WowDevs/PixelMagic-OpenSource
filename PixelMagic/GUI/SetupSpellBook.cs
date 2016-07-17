@@ -28,7 +28,7 @@ namespace PixelMagic.GUI
             txtAddonName.Text = ti.ToTitleCase(machineName);
 
             txtAddonAuthor.Text = SpellBook.AddonAuthor;
-            txtAddonName.Text = SpellBook.AddonName;
+            txtAddonName.Text = ConfigFile.ReadValue("PixelMagic", "AddonName");
             cmbWowVersion.Text = SpellBook.InterfaceVersion;
 
             dgSpells.DataSource = SpellBook.dtSpells;

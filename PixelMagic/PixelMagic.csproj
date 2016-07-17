@@ -89,6 +89,12 @@
     <Compile Include="GUI\Overlay.designer.cs">
       <DependentUpon>Overlay.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\frmSelectAddonName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmSelectAddonName.Designer.cs">
+      <DependentUpon>frmSelectAddonName.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\SelectWoWProcessToAttachTo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +156,9 @@
     <EmbeddedResource Include="GUI\Overlay.resx">
       <DependentUpon>Overlay.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmSelectAddonName.resx">
+      <DependentUpon>frmSelectAddonName.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\SelectWoWProcessToAttachTo.resx">
       <DependentUpon>SelectWoWProcessToAttachTo.cs</DependentUpon>
     </EmbeddedResource>
@@ -196,6 +205,12 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cd $(ConfigurationName)
+del *.xml
+del *.config
+rmdir Logs /s /q</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

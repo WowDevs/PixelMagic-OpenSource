@@ -177,12 +177,7 @@ namespace PixelMagic.Helpers
                         {
                             AddonAuthor = split[1];
                         }
-
-                        if (split[0] == "AddonName")
-                        {
-                            AddonName = split[1];
-                        }
-
+                        
                         if (split[0] == "WoWVersion")
                         {
                             InterfaceVersion = split[1];
@@ -236,14 +231,13 @@ namespace PixelMagic.Helpers
 
         public static string AddonAuthor;
         public static string InterfaceVersion;
-        public static string AddonName;
+        public static string AddonName => ConfigFile.ReadValue("PixelMagic", "AddonName");
 
         public static void Save(TextBox author, string interfaceVersion, TextBox addonName)
         {
             AddonAuthor = author.Text;
             InterfaceVersion = interfaceVersion;
-            AddonName = addonName.Text;
-
+            
             try
             {
                 string fullRotationText = "";
@@ -397,7 +391,9 @@ namespace PixelMagic.Helpers
 
                     luaContents = luaContents.Replace("DoIt", AddonName);
 
-                    if (InterfaceVersion == "70000") // Legion changes as per http://www.wowinterface.com/forums/showthread.php?t=53248
+                    string AddonInterfaceVersion = InterfaceVersion.Split('-')[1].Trim();
+
+                    if (AddonInterfaceVersion == "70000") // Legion changes as per http://www.wowinterface.com/forums/showthread.php?t=53248
                     {
                         luaContents = luaContents.Replace("SetTexture", "SetColorTexture");
 
@@ -412,6 +408,9 @@ namespace PixelMagic.Helpers
 
                 Log.Write("Addon file generated.", Color.Green);
                 Log.Write($"Make sure that the addon: [{AddonName}] is enabled in your list of WoW Addons or the rotation bot will fail to work", Color.Black);
+
+                WoW.SendMacro("/console scriptErrors 1");   // Show wow Lua errors
+                WoW.SendMacro("/reload");
 
                 return true;
             }

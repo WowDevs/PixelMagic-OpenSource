@@ -50,6 +50,10 @@ namespace PixelMagic.GUI.GUI
             {
                 cmbWoW.SelectedIndex = 0;
             }
+            else
+            {
+                MessageBox.Show("Unable to find any WoW processes to connect to, please open WoW and then click the refresh button.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void SelectWoWProcessToAttachTo_Load(object sender, EventArgs e)

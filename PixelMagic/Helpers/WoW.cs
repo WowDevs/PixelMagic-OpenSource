@@ -410,11 +410,11 @@ namespace PixelMagic.Helpers
         }
 
         public static void Initialize(Process wowProcess)
-        {   
+        {
             random = new Random();
 
-            pWow = wowProcess;           
-                        
+            pWow = wowProcess;
+
             Log.Write("Successfully connected to WoW with process ID: " + pWow.Id, Color.Green);
 
             var is64 = pWow.ProcessName.Contains("64");
@@ -424,6 +424,20 @@ namespace PixelMagic.Helpers
             var wowRectangle = new Rectangle();
             GetWindowRect(pWow.MainWindowHandle, ref wowRectangle);
             Log.Write($"WoW Screen Resolution: {wowRectangle.Width}x{wowRectangle.Height}", Color.Gray);
+
+            if (ConfigFile.ReadValue("PixelMagic", "AddonName") == "")
+            {
+                Log.Write("This is the first time you have run the program, please specify a name you would like the PixelMagic addon to use");
+                Log.Write("this can be anything you like (letters only no numbers)");
+
+                while (ConfigFile.ReadValue("PixelMagic", "AddonName") == "")
+                {
+                    GUI.GUI.frmSelectAddonName f = new GUI.GUI.frmSelectAddonName();
+                    f.ShowDialog();
+                }
+            }
+
+            Log.Write($"Addon Name set to: [{ConfigFile.ReadValue("PixelMagic", "AddonName")}]", Color.Blue);
         }
 
         [DllImport("user32.dll")]

@@ -171,8 +171,7 @@ namespace PixelMagic.GUI
                         Log.Write("Successfully loaded combat routine: " + combatRoutine.Name, Color.Green);
 
                         Overlay.showOverlay(new Point(20, 680));
-                                              
-
+                 
                         if (SpellBook.Initialize(fileName))
                         {
                             spellbookToolStripMenuItem.Enabled = true;
@@ -274,9 +273,7 @@ namespace PixelMagic.GUI
             try
             {
                 ConfigFile.Initialize();
-
-
-
+                
                 Log.Write(OperatingSystem);
 
                 var i = 0;
@@ -536,6 +533,7 @@ namespace PixelMagic.GUI
             var f = new SetupSpellBook();
             f.ShowDialog();
 
+            WoW.SendMacro("/console scriptErrors 1");   // Show wow Lua errors
             WoW.SendMacro("/reload");
         }
 
@@ -591,6 +589,7 @@ namespace PixelMagic.GUI
 
         private void reloadAddonToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            WoW.SendMacro("/console scriptErrors 1");   // Show wow Lua errors
             WoW.SendMacro("/reload");
         }
 

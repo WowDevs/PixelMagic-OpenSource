@@ -126,8 +126,6 @@ namespace PixelMagic.GUI.GUI
             {
                 MessageBox.Show("Enter in a brief description of what you were doing when it crashed (what was the last thing you clicked)", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
     }
 }

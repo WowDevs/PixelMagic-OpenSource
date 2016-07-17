@@ -63,7 +63,6 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgSpells)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpellId)).BeginInit();
@@ -225,7 +224,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.cmbWowVersion);
             this.groupBox3.Controls.Add(this.txtAddonName);
             this.groupBox3.Controls.Add(this.txtAddonAuthor);
@@ -259,6 +257,7 @@
             // 
             this.txtAddonName.Location = new System.Drawing.Point(108, 41);
             this.txtAddonName.Name = "txtAddonName";
+            this.txtAddonName.ReadOnly = true;
             this.txtAddonName.Size = new System.Drawing.Size(197, 20);
             this.txtAddonName.TabIndex = 8;
             // 
@@ -429,15 +428,6 @@
             this.label9.Text = "NB: If you add spells / auras your class does not support the addon could  lag Wo" +
     "W !!!";
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(311, 44);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(330, 13);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "<-- you should always use the same addon name for all your rotations";
-            // 
             // SetupSpellBook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -502,7 +492,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn InternalNo;
         private System.Windows.Forms.ComboBox cmbWowVersion;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
     }
 }
