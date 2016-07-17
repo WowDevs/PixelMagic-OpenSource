@@ -53,6 +53,7 @@
             this.encryptCombatRoutineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.submitTicketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -71,7 +72,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.submitTicketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -311,6 +311,14 @@
             this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
             this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
             // 
+            // submitTicketToolStripMenuItem
+            // 
+            this.submitTicketToolStripMenuItem.Enabled = false;
+            this.submitTicketToolStripMenuItem.Name = "submitTicketToolStripMenuItem";
+            this.submitTicketToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.submitTicketToolStripMenuItem.Text = "Submit Ticket";
+            this.submitTicketToolStripMenuItem.Click += new System.EventHandler(this.submitTicketToolStripMenuItem_Click);
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -534,14 +542,6 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(69, 19);
             this.toolStripStatusLabel1.Text = "Version: {0}";
-            // 
-            // submitTicketToolStripMenuItem
-            // 
-            this.submitTicketToolStripMenuItem.Enabled = false;
-            this.submitTicketToolStripMenuItem.Name = "submitTicketToolStripMenuItem";
-            this.submitTicketToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.submitTicketToolStripMenuItem.Text = "Submit Ticket";
-            this.submitTicketToolStripMenuItem.Click += new System.EventHandler(this.submitTicketToolStripMenuItem_Click);
             // 
             // frmMain
             // 

@@ -55,7 +55,7 @@
     <StartupObject>PixelMagic.GUI.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icons8-Ios7-Animals-Ant.ico</ApplicationIcon>
+    <ApplicationIcon>Hadezign-Hobbies-Magic.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -149,6 +149,8 @@
     <None Include="Resources\help.png" />
     <None Include="Resources\Close_16x16.png" />
     <None Include="Resources\Register.png" />
+    <Content Include="Designcontest-Outline-Pixel-Art.ico" />
+    <Content Include="Hadezign-Hobbies-Magic.ico" />
     <Content Include="ToDoList.txt" />
     <EmbeddedResource Include="GUI\frmSubmitTicket.resx">
       <DependentUpon>frmSubmitTicket.cs</DependentUpon>
