@@ -147,15 +147,23 @@ namespace PixelMagic.Helpers
         }
 
         public static bool Load()
-        {
+        {               
             using (var sr = new StreamReader(FullRotationFilePath))
             {
+                string fileContents = sr.ReadToEnd();
+
+                bool encrypted = (FullRotationFilePath.EndsWith(".enc"));
+
+                if (encrypted)
+                {
+                    fileContents = Encryption.Decrypt(fileContents);
+                }
+
                 bool addonLines = false;
                 bool readLines = false;
-                string line;
                 
-                while ((line = sr.ReadLine()) != null)
-                {
+                foreach (string line in fileContents.Split('\n'))
+                {                
                     if (line.Contains("AddonDetails.db"))
                     {
                         addonLines = true;
@@ -242,12 +250,19 @@ namespace PixelMagic.Helpers
             {
                 string fullRotationText = "";
 
+                bool encrypted = (FullRotationFilePath.EndsWith(".enc"));
+
                 using (var sr = new StreamReader(FullRotationFilePath))
                 {
                     bool readLines = true;
-                    string line;
+                    string fileContents = sr.ReadToEnd();
+                    
+                    if (encrypted)
+                    {
+                        fileContents = Encryption.Decrypt(fileContents);
+                    }
 
-                    while ((line = sr.ReadLine()) != null)
+                    foreach (string line in fileContents.Split('\n'))
                     {
                         if (line.Contains("AddonDetails.db"))
                         {
@@ -270,26 +285,36 @@ namespace PixelMagic.Helpers
                     sr.Close();
                 }
 
+                string updatedRotationText = fullRotationText + Environment.NewLine;
+                updatedRotationText += "[AddonDetails.db]" + Environment.NewLine;
+                updatedRotationText += $"AddonAuthor={AddonAuthor}" + Environment.NewLine;
+                updatedRotationText += $"AddonName={AddonName}" + Environment.NewLine;
+                updatedRotationText += $"WoWVersion={InterfaceVersion}" + Environment.NewLine;
+
+                updatedRotationText += "[SpellBook.db]" + Environment.NewLine;
+
+                foreach (var spell in Spells)
+                {
+                    updatedRotationText += $"Spell,{spell.SpellId},{spell.SpellName},{spell.KeyBind}" + Environment.NewLine;
+                }
+                foreach (var aura in Auras)
+                {
+                    updatedRotationText += $"Aura,{aura.AuraId},{aura.AuraName}" + Environment.NewLine;
+                }
+
+                updatedRotationText += "*/";
+
                 using (var sw = new StreamWriter(FullRotationFilePath, false))
                 {
-                    sw.WriteLine(fullRotationText);
-                    sw.WriteLine("[AddonDetails.db]");
-                    sw.WriteLine($"AddonAuthor={AddonAuthor}");
-                    sw.WriteLine($"AddonName={AddonName}");
-                    sw.WriteLine($"WoWVersion={InterfaceVersion}");
-
-                    sw.WriteLine("[SpellBook.db]");
-
-                    foreach (var spell in Spells)
+                    if (encrypted)
                     {
-                        sw.WriteLine($"Spell,{spell.SpellId},{spell.SpellName},{spell.KeyBind}");
+                        updatedRotationText = Encryption.Encrypt(updatedRotationText);
+                        sw.WriteLine(updatedRotationText);
                     }
-                    foreach (var aura in Auras)
+                    else
                     {
-                        sw.WriteLine($"Aura,{aura.AuraId},{aura.AuraName}");
-                    }
-
-                    sw.WriteLine("*/");
+                        sw.WriteLine(updatedRotationText);
+                    }                    
 
                     sw.Close();
                 }
@@ -391,7 +416,9 @@ namespace PixelMagic.Helpers
 
                     luaContents = luaContents.Replace("DoIt", AddonName);
 
-                    string AddonInterfaceVersion = InterfaceVersion.Split('-')[1].Trim();
+                    string AddonInterfaceVersion = InterfaceVersion;
+                    if (InterfaceVersion.Contains("-"))
+                        AddonInterfaceVersion = InterfaceVersion.Split('-')[1].Trim();
 
                     if (AddonInterfaceVersion == "70000") // Legion changes as per http://www.wowinterface.com/forums/showthread.php?t=53248
                     {

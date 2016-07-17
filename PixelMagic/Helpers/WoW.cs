@@ -386,6 +386,7 @@ namespace PixelMagic.Helpers
         public static int Mana => Power;
         public static int Energy => Power;
         public static int Rage => Power;
+        public static int Fury => Power;
 
         public static bool HasFocus
         {
@@ -432,7 +433,7 @@ namespace PixelMagic.Helpers
 
                 while (ConfigFile.ReadValue("PixelMagic", "AddonName") == "")
                 {
-                    GUI.GUI.frmSelectAddonName f = new GUI.GUI.frmSelectAddonName();
+                    GUI.frmSelectAddonName f = new GUI.frmSelectAddonName();
                     f.ShowDialog();
                 }
             }

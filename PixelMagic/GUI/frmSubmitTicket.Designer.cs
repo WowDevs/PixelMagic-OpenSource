@@ -1,4 +1,4 @@
-﻿namespace PixelMagic.GUI.GUI
+﻿namespace PixelMagic.GUI
 {
     partial class frmSubmitTicket
     {

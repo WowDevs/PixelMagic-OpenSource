@@ -11,7 +11,7 @@ using PixelMagic;
 using PixelMagic.GUI;
 using PixelMagic.Helpers;
 
-namespace PixelMagic.GUI.GUI
+namespace PixelMagic.GUI
 {
     public partial class frmSubmitTicket : Form
     {

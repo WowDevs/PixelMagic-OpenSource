@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace PixelMagic.GUI.GUI
+namespace PixelMagic.GUI
 {
     public partial class SelectWoWProcessToAttachTo : Form
     {

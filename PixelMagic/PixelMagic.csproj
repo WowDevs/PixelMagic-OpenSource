@@ -129,6 +129,9 @@
     <Compile Include="Helpers\WoW.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rotations\DemonHunter\DemonHunter-Havoc.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Rotations\Hunter\Hunter-Incorrect %28for testing%29.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

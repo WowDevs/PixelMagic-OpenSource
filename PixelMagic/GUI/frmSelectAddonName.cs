@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using PixelMagic.Helpers;
 
-namespace PixelMagic.GUI.GUI
+namespace PixelMagic.GUI
 {
     public partial class frmSelectAddonName : Form
     {

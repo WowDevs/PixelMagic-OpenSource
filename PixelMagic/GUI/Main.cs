@@ -30,14 +30,8 @@ namespace PixelMagic.GUI
         private readonly Dictionary<int, string> classes;
         private KeyboardHook hook;
 
-        public static string Exe_Version
-        {
-            get
-            {
-                return System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetEntryAssembly().Location).ToString("yyyy.MM.dd");
-            }
-        }
-
+        public static string Exe_Version => File.GetLastWriteTime(System.Reflection.Assembly.GetEntryAssembly().Location).ToString("yyyy.MM.dd");
+        
         private readonly int LocalVersion = int.Parse(Application.ProductVersion.Split('.')[0]);
 
         internal frmMain()
@@ -96,7 +90,7 @@ namespace PixelMagic.GUI
             Log.WritePixelMagic("Welcome to PixelMagic Premium Edition developed by WiNiFiX (BETA)", Color.Blue);
             Log.WriteNoTime("For support please visit: http://goo.gl/0AqNxv");
             Log.WriteNoTime("To view a sample rotation see the file: " + Application.StartupPath + "\\Rotations\\Hunter\\Hunter.cs", Color.Gray);
-            Log.HorizontalLine = "-".PadLeft(136, '-');
+            Log.HorizontalLine = "-".PadLeft(158, '-');
             Log.DrawHorizontalLine();
         }
 
@@ -320,6 +314,7 @@ namespace PixelMagic.GUI
                                 
                 Log.Write("Please select a rotation to load from 'File' -> 'Load Rotation...'", Color.Green);
                 Log.Write("Please note that you can only start bot or setup spellbook once you have loaded a rotation", Color.Black);
+                Log.DrawHorizontalLine();
             }
             catch (Exception ex)
             {
@@ -513,6 +508,10 @@ namespace PixelMagic.GUI
                     Log.Write(ex.Message, Color.Red);
                 }
             }
+            else
+            {
+                Log.Write("Please load a rotation so that I know which rotation to encrypt.", Color.Red);
+            }
         }
 
         private void hotkeysToolStripMenuItem_Click(object sender, EventArgs e)
@@ -533,8 +532,8 @@ namespace PixelMagic.GUI
             var f = new SetupSpellBook();
             f.ShowDialog();
 
-            WoW.SendMacro("/console scriptErrors 1");   // Show wow Lua errors
-            WoW.SendMacro("/reload");
+            //WoW.SendMacro("/console scriptErrors 1");   // Show wow Lua errors
+            //WoW.SendMacro("/reload");
         }
 
         private void chkPlayErrorSounds_CheckedChanged(object sender, EventArgs e)
@@ -605,7 +604,7 @@ namespace PixelMagic.GUI
 
         private void submitTicketToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GUI.frmSubmitTicket f = new GUI.frmSubmitTicket();
+            frmSubmitTicket f = new frmSubmitTicket();
             f.ShowDialog();
         }
     }

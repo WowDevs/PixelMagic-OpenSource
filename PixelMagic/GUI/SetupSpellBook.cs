@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using PixelMagic.Helpers;
 using System.Globalization;
 using System.Linq;
+using System.Data;
 
 // ReSharper disable once CheckNamespace
 
@@ -29,8 +30,21 @@ namespace PixelMagic.GUI
 
             txtAddonAuthor.Text = SpellBook.AddonAuthor;
             txtAddonName.Text = ConfigFile.ReadValue("PixelMagic", "AddonName");
-            cmbWowVersion.Text = SpellBook.InterfaceVersion;
 
+            try
+            {
+                var intVer = SpellBook.InterfaceVersion.Replace("\n", "").Replace("\r", "");
+
+                foreach (var item in cmbWowVersion.Items)
+                {
+                    if (item.ToString().Contains(intVer)) cmbWowVersion.SelectedItem = item;
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            
             dgSpells.DataSource = SpellBook.dtSpells;
             dgAuras.DataSource = SpellBook.dtAuras;
         }
