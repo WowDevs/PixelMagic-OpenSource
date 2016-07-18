@@ -15,6 +15,8 @@ namespace PixelMagic.Helpers
         {
             using (var w = new WebClient())
             {
+                w.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+
                 var stringData = string.Empty;
                 try
                 {
