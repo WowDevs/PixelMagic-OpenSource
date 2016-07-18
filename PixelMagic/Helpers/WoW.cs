@@ -534,14 +534,15 @@ namespace PixelMagic.Helpers
         {
             var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
 
-            Log.Write("Green: " + c.ToString());
+//            Log.Write("Green: " + c.ToString());
 
             if (c.G == 255) return 0;
-            if (c.G == 255 - 20) return 1;
-            if (c.G == 255 - 40) return 2;
-            if (c.G == 255 - 60) return 3;
-            if (c.G == 255 - 80) return 4;
-            if (c.G == 255 - 100) return 5;
+            if (c.G == 26) return 1;
+            if (c.G == 51) return 2;
+            if (c.G == 77) return 3;
+            if (c.G == 102) return 4;
+            if (c.G == 128) return 5;
+            if (c.G == 153) return 6;
 
             return -99;
         }

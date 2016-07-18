@@ -9,8 +9,8 @@ namespace PixelMagic.Helpers
             InternalSpellNo = internalSpellNo;
 
             SpellId = spellId;
-            SpellName = spellName;
-            KeyBind = keyBind;
+            SpellName = spellName.Replace("\r", "").Replace("\n", "");
+            KeyBind = keyBind.Replace("\r", "").Replace("\n", "");
         }
 
         public int InternalSpellNo { get; }

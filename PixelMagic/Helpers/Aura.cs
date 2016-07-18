@@ -13,7 +13,7 @@
             InternalAuraNo = internalAuraNo;
 
             AuraId = auraId;
-            AuraName = auraName;
+            AuraName = auraName.Replace("\r", "").Replace("\n", "");
         }
     }
 }
