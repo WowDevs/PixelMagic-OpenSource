@@ -331,13 +331,13 @@ namespace PixelMagic.Helpers
             get
             {
                 // First we build up the binary string that makes up health
-                // This is read from the 2nd row on the screen of pixel information
+                // This is read from the 1st row on the screen of pixel information
                 // It is displayed as binary, so 100% health = 1100100
                 var binaryHealth = "";
 
                 for (var x = 1; x <= 7; x++)
                 {
-                    var c = GetBlockColor(x, 2);
+                    var c = GetBlockColor(x, 1);
                     binaryHealth += (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B) ? "1" : "0";
                 }
 
@@ -354,9 +354,9 @@ namespace PixelMagic.Helpers
                 // It is displayed as binary, so 100% health = 1100100
                 var binaryHealth = "";
 
-                for (var x = 1; x <= 7; x++)
+                for (var x = 16; x <= 23; x++)
                 {
-                    var c = GetBlockColor(x, 5);
+                    var c = GetBlockColor(x, 1);
                     binaryHealth += (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B) ? "1" : "0";
                 }
 
@@ -373,9 +373,9 @@ namespace PixelMagic.Helpers
                 // It is displayed as binary, so 100 power = 1100100
                 var binaryPower = "";
 
-                for (var x = 1; x <= 7; x++)
+                for (var x = 8; x <= 15; x++)
                 {
-                    var c = GetBlockColor(x, 4);
+                    var c = GetBlockColor(x, 1);
                     binaryPower += (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B) ? "1" : "0";
                 }
 
@@ -454,7 +454,7 @@ namespace PixelMagic.Helpers
 
         public static bool IsSpellOnCooldown(int spellNoInArrayOfSpells) // This will take the spell no from the array of spells, 1, 2, 3 ..... n
         {
-            var c = GetBlockColor(5 + spellNoInArrayOfSpells, 1);
+            var c = GetBlockColor(spellNoInArrayOfSpells, 2);
             return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
         }
 

@@ -455,8 +455,63 @@ local function updateUnitIsVisible()
 end
  
 local function initFrames()
-
     local playerClass, englishClass, classIndex = UnitClass(""player"");
+    local i = 0
+
+	print (""Initialising Health Frames"")
+	for i = 1, 7 do
+		healthFrames[i] = CreateFrame(""frame"")
+		healthFrames[i]:SetSize(size, size)
+		healthFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, 0)                -- column 1 - 7, row 1
+		healthFrames[i].t = healthFrames[i]:CreateTexture()        
+		healthFrames[i].t:SetTexture(255, 255, 255, 1)
+		healthFrames[i].t:SetAllPoints(healthFrames[i])
+		healthFrames[i]:Show()		
+		
+		healthFrames[i]:SetScript(""OnUpdate"", updateHealth)
+	end
+
+	-- Power can go above 100, it can be 120 maximum to my knowledge
+	print (""Initialising Power Frames (Rage, Energy, etc...)"")  
+	for i = 8, 15 do
+		powerFrames[i] = CreateFrame(""frame"")
+		powerFrames[i]:SetSize(size, size)
+		powerFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, 0)                 -- column 8 - 15, row 1
+		powerFrames[i].t = powerFrames[i]:CreateTexture()        
+		powerFrames[i].t:SetTexture(255, 255, 255, 1)
+		powerFrames[i].t:SetAllPoints(powerFrames[i])
+		powerFrames[i]:Show()		
+		
+		powerFrames[i]:SetScript(""OnUpdate"", updatePower)
+	end
+
+	print (""Initialising Target Health Frames"")
+	for i = 16, 23 do
+		targetHealthFrames[i] = CreateFrame(""frame"")
+		targetHealthFrames[i]:SetSize(size, size)
+		targetHealthFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, 0)          -- column 16 - 23, row 1        
+		targetHealthFrames[i].t = targetHealthFrames[i]:CreateTexture()        
+		targetHealthFrames[i].t:SetTexture(255, 255, 255, 1)
+		targetHealthFrames[i].t:SetAllPoints(targetHealthFrames[i])
+		targetHealthFrames[i]:Show()		
+		
+		targetHealthFrames[i]:SetScript(""OnUpdate"", updateTargetHealth)
+	end
+	
+	print (""Initialising Cooldown Frames"")
+	i = 1
+	for _, spellId in pairs(cooldowns) do	
+		cooldownframes[spellId] = CreateFrame(""frame"")
+		cooldownframes[spellId]:SetSize(size, size)
+		cooldownframes[spellId]:SetPoint(""TOPLEFT"", i * size, -size)          -- column 1+, row 2
+		cooldownframes[spellId].t = cooldownframes[spellId]:CreateTexture()        
+		cooldownframes[spellId].t:SetTexture(255, 255, 255, 1)
+		cooldownframes[spellId].t:SetAllPoints(cooldownframes[spellId])
+		cooldownframes[spellId]:Show()
+		               
+		cooldownframes[spellId]:SetScript(""OnUpdate"", updateCD)
+		i = i + 1
+	end
 
     if classIndex == 2 then
         print (""Initialising Holy Power Frames"")
@@ -502,21 +557,6 @@ local function initFrames()
 	    end
     end
 	
-	print (""Initialising Cooldown Frames"")
-	local i = 5
-	for _, spellId in pairs(cooldowns) do	
-		cooldownframes[spellId] = CreateFrame(""frame"")
-		cooldownframes[spellId]:SetSize(size, size)
-		cooldownframes[spellId]:SetPoint(""TOPLEFT"", i * size, 0)              -- column 5+, row 1
-		cooldownframes[spellId].t = cooldownframes[spellId]:CreateTexture()        
-		cooldownframes[spellId].t:SetTexture(255, 255, 255, 1)
-		cooldownframes[spellId].t:SetAllPoints(cooldownframes[spellId])
-		cooldownframes[spellId]:Show()
-		               
-		cooldownframes[spellId]:SetScript(""OnUpdate"", updateCD)
-		i = i + 1
-	end
-	
 	print (""Initialising Spell In Range Frames"")
 	local i = 0
 	for _, spellId in pairs(cooldowns) do	
@@ -530,46 +570,6 @@ local function initFrames()
 		               
 		spellInRangeFrames[spellId]:SetScript(""OnUpdate"", updateSpellInRangeFrames)
 		i = i + 1
-	end
-
-	print (""Initialising Health Frames"")
-	for i = 1, 7 do
-		healthFrames[i] = CreateFrame(""frame"")
-		healthFrames[i]:SetSize(size, size)
-		healthFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size)            -- column 1 - 7, row 2
-		healthFrames[i].t = healthFrames[i]:CreateTexture()        
-		healthFrames[i].t:SetTexture(255, 255, 255, 1)
-		healthFrames[i].t:SetAllPoints(healthFrames[i])
-		healthFrames[i]:Show()		
-		
-		healthFrames[i]:SetScript(""OnUpdate"", updateHealth)
-	end
-	
-	print (""Initialising Target Health Frames"")
-	for i = 1, 7 do
-		targetHealthFrames[i] = CreateFrame(""frame"")
-		targetHealthFrames[i]:SetSize(size, size)
-		targetHealthFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size * 4)  -- column 1 - 7, row 5        
-		targetHealthFrames[i].t = targetHealthFrames[i]:CreateTexture()        
-		targetHealthFrames[i].t:SetTexture(255, 255, 255, 1)
-		targetHealthFrames[i].t:SetAllPoints(targetHealthFrames[i])
-		targetHealthFrames[i]:Show()		
-		
-		targetHealthFrames[i]:SetScript(""OnUpdate"", updateTargetHealth)
-	end
-	
-	-- Power can go above 100, it can be 120 maximum to my knowledge
-	print (""Initialising Power Frames (Rage, Energy, etc...)"")  
-	for i = 1, 7 do
-		powerFrames[i] = CreateFrame(""frame"")
-		powerFrames[i]:SetSize(size, size)
-		powerFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size * 3)         -- column 1 - 7, row 4
-		powerFrames[i].t = powerFrames[i]:CreateTexture()        
-		powerFrames[i].t:SetTexture(255, 255, 255, 1)
-		powerFrames[i].t:SetAllPoints(powerFrames[i])
-		powerFrames[i]:Show()		
-		
-		powerFrames[i]:SetScript(""OnUpdate"", updatePower)
 	end
 	
 	print (""Initialising IsTargetFriendly Frame"")
