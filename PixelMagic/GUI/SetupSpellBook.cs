@@ -8,6 +8,7 @@ using System.Linq;
 using System.Data;
 
 // ReSharper disable once CheckNamespace
+#pragma warning disable 168
 
 namespace PixelMagic.GUI
 {
@@ -42,7 +43,7 @@ namespace PixelMagic.GUI
             }
             catch(Exception ex)
             {
-
+                // Do nothing - ignore
             }
             
             dgSpells.DataSource = SpellBook.dtSpells;

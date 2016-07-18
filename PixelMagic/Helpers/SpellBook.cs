@@ -247,7 +247,7 @@ namespace PixelMagic.Helpers
 
         public static void Save(TextBox author, string interfaceVersion, TextBox addonName)
         {
-            AddonAuthor = author.Text;
+            AddonAuthor = author.Text.Replace("\n", "").Replace("\r", "");
             InterfaceVersion = interfaceVersion;
             
             try

@@ -67,8 +67,8 @@ namespace PixelMagic.Rotation
             {
                 pause.WaitOne();
 
-                Threads.UpdateTextBox(parent.txtHealth, WoW.HealthPercent.ToString());
-                Threads.UpdateTextBox(parent.txtPower, WoW.Power.ToString());
+                Threads.UpdateProgressBar2(parent.prgPlayerHealth, WoW.HealthPercent);
+                Threads.UpdateProgressBar2(parent.prgPower, WoW.Power);
                 Threads.UpdateTextBox(parent.txtTargetHealth, WoW.TargetHealthPercent.ToString());
                 Threads.UpdateTextBox(parent.txtTargetCasting, WoW.TargetIsCasting.ToString());
 

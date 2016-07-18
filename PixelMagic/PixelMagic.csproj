@@ -63,6 +63,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="System.Data" />
@@ -71,6 +72,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorProgressBar\ColorProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorProgressBar\ColorProgressBarDesigner.cs" />
     <Compile Include="GUI\frmSubmitTicket.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +106,7 @@
     <Compile Include="GUI\frmSelectAddonName.Designer.cs">
       <DependentUpon>frmSelectAddonName.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ModifyProgressBarColor.cs" />
     <Compile Include="GUI\SelectWoWProcessToAttachTo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,8 +162,13 @@
     <None Include="Resources\help.png" />
     <None Include="Resources\Close_16x16.png" />
     <None Include="Resources\Register.png" />
+    <Content Include="ColorProgressBar\ColorProgressBar.csproj" />
+    <Content Include="ColorProgressBar\ColorProgressBar.csproj.user" />
     <Content Include="Hadezign-Hobbies-Magic.ico" />
     <Content Include="ToDoList.txt" />
+    <EmbeddedResource Include="ColorProgressBar\ColorProgressBar.resx">
+      <DependentUpon>ColorProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\frmSubmitTicket.resx">
       <DependentUpon>frmSubmitTicket.cs</DependentUpon>
     </EmbeddedResource>

@@ -32,10 +32,6 @@
             this.cmdStartBot = new System.Windows.Forms.Button();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.lblHotkeyInfo = new System.Windows.Forms.Label();
-            this.txtHealth = new System.Windows.Forms.TextBox();
-            this.txtPower = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtTargetHealth = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -71,6 +67,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.prgPower = new ColorProgressBar.ColorProgressBar();
+            this.prgPlayerHealth = new ColorProgressBar.ColorProgressBar();
             this.menuStrip1.SuspendLayout();
             this.grpPlayer.SuspendLayout();
             this.grpTarget.SuspendLayout();
@@ -118,44 +116,6 @@
             this.lblHotkeyInfo.TabIndex = 3;
             this.lblHotkeyInfo.Text = "[Hotkey Info]";
             // 
-            // txtHealth
-            // 
-            this.txtHealth.ForeColor = System.Drawing.Color.Black;
-            this.txtHealth.Location = new System.Drawing.Point(59, 20);
-            this.txtHealth.Name = "txtHealth";
-            this.txtHealth.ReadOnly = true;
-            this.txtHealth.Size = new System.Drawing.Size(78, 20);
-            this.txtHealth.TabIndex = 4;
-            // 
-            // txtPower
-            // 
-            this.txtPower.ForeColor = System.Drawing.Color.Black;
-            this.txtPower.Location = new System.Drawing.Point(59, 42);
-            this.txtPower.Name = "txtPower";
-            this.txtPower.ReadOnly = true;
-            this.txtPower.Size = new System.Drawing.Size(78, 20);
-            this.txtPower.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(12, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Health";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(12, 46);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(37, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Power";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -169,10 +129,10 @@
             // txtTargetHealth
             // 
             this.txtTargetHealth.ForeColor = System.Drawing.Color.Black;
-            this.txtTargetHealth.Location = new System.Drawing.Point(59, 19);
+            this.txtTargetHealth.Location = new System.Drawing.Point(55, 19);
             this.txtTargetHealth.Name = "txtTargetHealth";
             this.txtTargetHealth.ReadOnly = true;
-            this.txtTargetHealth.Size = new System.Drawing.Size(78, 20);
+            this.txtTargetHealth.Size = new System.Drawing.Size(88, 20);
             this.txtTargetHealth.TabIndex = 8;
             // 
             // label4
@@ -188,10 +148,10 @@
             // txtTargetCasting
             // 
             this.txtTargetCasting.ForeColor = System.Drawing.Color.Black;
-            this.txtTargetCasting.Location = new System.Drawing.Point(59, 41);
+            this.txtTargetCasting.Location = new System.Drawing.Point(55, 41);
             this.txtTargetCasting.Name = "txtTargetCasting";
             this.txtTargetCasting.ReadOnly = true;
-            this.txtTargetCasting.Size = new System.Drawing.Size(78, 20);
+            this.txtTargetCasting.Size = new System.Drawing.Size(88, 20);
             this.txtTargetCasting.TabIndex = 11;
             // 
             // cmdDonate
@@ -321,10 +281,8 @@
             // grpPlayer
             // 
             this.grpPlayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpPlayer.Controls.Add(this.txtPower);
-            this.grpPlayer.Controls.Add(this.txtHealth);
-            this.grpPlayer.Controls.Add(this.label2);
-            this.grpPlayer.Controls.Add(this.label3);
+            this.grpPlayer.Controls.Add(this.prgPower);
+            this.grpPlayer.Controls.Add(this.prgPlayerHealth);
             this.grpPlayer.ForeColor = System.Drawing.Color.Black;
             this.grpPlayer.Location = new System.Drawing.Point(825, 96);
             this.grpPlayer.Name = "grpPlayer";
@@ -332,7 +290,6 @@
             this.grpPlayer.TabIndex = 14;
             this.grpPlayer.TabStop = false;
             this.grpPlayer.Text = "Player";
-            this.grpPlayer.Visible = false;
             // 
             // grpTarget
             // 
@@ -348,7 +305,6 @@
             this.grpTarget.TabIndex = 15;
             this.grpTarget.TabStop = false;
             this.grpTarget.Text = "Target";
-            this.grpTarget.Visible = false;
             // 
             // groupBox3
             // 
@@ -375,15 +331,14 @@
             this.grpMousePosition.TabIndex = 17;
             this.grpMousePosition.TabStop = false;
             this.grpMousePosition.Text = "Mouse Position";
-            this.grpMousePosition.Visible = false;
             // 
             // txtMouseXY
             // 
             this.txtMouseXY.ForeColor = System.Drawing.Color.Black;
-            this.txtMouseXY.Location = new System.Drawing.Point(59, 19);
+            this.txtMouseXY.Location = new System.Drawing.Point(55, 19);
             this.txtMouseXY.Name = "txtMouseXY";
             this.txtMouseXY.ReadOnly = true;
-            this.txtMouseXY.Size = new System.Drawing.Size(78, 20);
+            this.txtMouseXY.Size = new System.Drawing.Size(88, 20);
             this.txtMouseXY.TabIndex = 8;
             // 
             // label5
@@ -446,15 +401,14 @@
             this.grpMouseClickPosition.TabIndex = 20;
             this.grpMouseClickPosition.TabStop = false;
             this.grpMouseClickPosition.Text = "Last Mouse Click Position";
-            this.grpMouseClickPosition.Visible = false;
             // 
             // txtMouseXYClick
             // 
             this.txtMouseXYClick.ForeColor = System.Drawing.Color.Black;
-            this.txtMouseXYClick.Location = new System.Drawing.Point(59, 19);
+            this.txtMouseXYClick.Location = new System.Drawing.Point(55, 19);
             this.txtMouseXYClick.Name = "txtMouseXYClick";
             this.txtMouseXYClick.ReadOnly = true;
-            this.txtMouseXYClick.Size = new System.Drawing.Size(78, 20);
+            this.txtMouseXYClick.Size = new System.Drawing.Size(88, 20);
             this.txtMouseXYClick.TabIndex = 8;
             // 
             // label7
@@ -535,6 +489,38 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(69, 19);
             this.toolStripStatusLabel1.Text = "Version: {0}";
             // 
+            // prgPower
+            // 
+            this.prgPower.BackColor = System.Drawing.Color.White;
+            this.prgPower.BarColor = System.Drawing.Color.PaleTurquoise;
+            this.prgPower.BorderColor = System.Drawing.Color.Green;
+            this.prgPower.FillStyle = ColorProgressBar.ColorProgressBar.FillStyles.Solid;
+            this.prgPower.ForeColor = System.Drawing.Color.White;
+            this.prgPower.Location = new System.Drawing.Point(13, 45);
+            this.prgPower.Maximum = 100;
+            this.prgPower.Minimum = 0;
+            this.prgPower.Name = "prgPower";
+            this.prgPower.Size = new System.Drawing.Size(128, 20);
+            this.prgPower.Step = 10;
+            this.prgPower.TabIndex = 25;
+            this.prgPower.Value = 70;
+            // 
+            // prgPlayerHealth
+            // 
+            this.prgPlayerHealth.BackColor = System.Drawing.Color.White;
+            this.prgPlayerHealth.BarColor = System.Drawing.Color.Salmon;
+            this.prgPlayerHealth.BorderColor = System.Drawing.Color.Green;
+            this.prgPlayerHealth.FillStyle = ColorProgressBar.ColorProgressBar.FillStyles.Solid;
+            this.prgPlayerHealth.ForeColor = System.Drawing.Color.White;
+            this.prgPlayerHealth.Location = new System.Drawing.Point(13, 19);
+            this.prgPlayerHealth.Maximum = 100;
+            this.prgPlayerHealth.Minimum = 0;
+            this.prgPlayerHealth.Name = "prgPlayerHealth";
+            this.prgPlayerHealth.Size = new System.Drawing.Size(128, 20);
+            this.prgPlayerHealth.Step = 10;
+            this.prgPlayerHealth.TabIndex = 24;
+            this.prgPlayerHealth.Value = 70;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -564,7 +550,6 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.grpPlayer.ResumeLayout(false);
-            this.grpPlayer.PerformLayout();
             this.grpTarget.ResumeLayout(false);
             this.grpTarget.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -583,10 +568,6 @@
         #endregion
         private System.Windows.Forms.Button cmdStartBot;
         private System.Windows.Forms.Label lblHotkeyInfo;
-        public System.Windows.Forms.TextBox txtHealth;
-        public System.Windows.Forms.TextBox txtPower;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.TextBox txtTargetHealth;
         private System.Windows.Forms.Label label4;
@@ -623,6 +604,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripMenuItem submitTicketToolStripMenuItem;
         internal System.Windows.Forms.RichTextBox rtbLog;
+        public ColorProgressBar.ColorProgressBar prgPlayerHealth;
+        public ColorProgressBar.ColorProgressBar prgPower;
     }
 }
 

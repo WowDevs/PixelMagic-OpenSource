@@ -37,7 +37,23 @@ namespace PixelMagic.GUI
         internal frmMain()
         {
             InitializeComponent();
-            
+
+            Label lblPlayerHealth = new Label
+            {
+                Text = "Health",
+                Parent = prgPlayerHealth,
+                Location = new Point(35, 3),
+                BackColor = Color.Transparent                                
+            };
+
+            Label lblPlayerPower = new Label
+            {
+                Text = "Power",
+                Parent = prgPower,
+                Location = new Point(35, 3),
+                BackColor = Color.Transparent
+            };
+
             classes = new Dictionary<int, string>
             {
                 { 1, "Warrior"},
@@ -76,6 +92,9 @@ namespace PixelMagic.GUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            
+            //ModifyProgressBarColor.SetState(prgHealth, 2);  // SetState, 1 = normal (green); 2 = error (red); 3 = warning (yellow).
+
             toolStripStatusLabel1.Text = string.Format(toolStripStatusLabel1.Text, Exe_Version);
 
             // Its annoying as hell when people use incorrect culture info, this will force it to use the correct number and date formats.
@@ -401,23 +420,13 @@ namespace PixelMagic.GUI
                 {
                     cmdStartBot.Text = "Stop bot";
                     cmdStartBot.BackColor = Color.Salmon;
-
-                    grpPlayer.Visible = true;
-                    grpTarget.Visible = true;
-                    grpMousePosition.Visible = true;
-                    grpMouseClickPosition.Visible = true;
                 }
             }
             else
             {
                 combatRoutine.Pause();
                 cmdStartBot.Text = "Start bot";
-                cmdStartBot.BackColor = Color.LightGreen;
-
-                grpPlayer.Visible = false;
-                grpTarget.Visible = false;
-                grpMousePosition.Visible = false;
-                grpMouseClickPosition.Visible = false;
+                cmdStartBot.BackColor = Color.LightGreen;                
             }
         }
 
