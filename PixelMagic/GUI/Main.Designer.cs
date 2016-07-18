@@ -67,6 +67,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.prgPower = new ColorProgressBar.ColorProgressBar();
             this.prgPlayerHealth = new ColorProgressBar.ColorProgressBar();
             this.menuStrip1.SuspendLayout();
@@ -461,6 +462,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel2,
+            this.toolStripStatusLabel3,
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 537);
             this.statusStrip1.Name = "statusStrip1";
@@ -486,8 +488,18 @@
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(69, 19);
-            this.toolStripStatusLabel1.Text = "Version: {0}";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(85, 19);
+            this.toolStripStatusLabel1.Text = "Build Date: {0}";
+            // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabel3.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(69, 19);
+            this.toolStripStatusLabel3.Text = "Version: {0}";
             // 
             // prgPower
             // 
@@ -606,6 +618,7 @@
         internal System.Windows.Forms.RichTextBox rtbLog;
         public ColorProgressBar.ColorProgressBar prgPlayerHealth;
         public ColorProgressBar.ColorProgressBar prgPower;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
     }
 }
 

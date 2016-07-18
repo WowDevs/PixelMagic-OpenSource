@@ -106,7 +106,6 @@
     <Compile Include="GUI\frmSelectAddonName.Designer.cs">
       <DependentUpon>frmSelectAddonName.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ModifyProgressBarColor.cs" />
     <Compile Include="GUI\SelectWoWProcessToAttachTo.cs">
       <SubType>Form</SubType>
     </Compile>

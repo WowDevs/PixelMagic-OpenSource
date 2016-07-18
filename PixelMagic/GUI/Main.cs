@@ -91,11 +91,9 @@ namespace PixelMagic.GUI
         }
 
         private void frmMain_Load(object sender, EventArgs e)
-        {
-            
-            //ModifyProgressBarColor.SetState(prgHealth, 2);  // SetState, 1 = normal (green); 2 = error (red); 3 = warning (yellow).
-
+        {   
             toolStripStatusLabel1.Text = string.Format(toolStripStatusLabel1.Text, Exe_Version);
+            toolStripStatusLabel3.Text = string.Format(toolStripStatusLabel3.Text, LocalVersion);
 
             // Its annoying as hell when people use incorrect culture info, this will force it to use the correct number and date formats.
             var ci = new CultureInfo("en-ZA") { DateTimeFormat = {ShortDatePattern = "yyyy/MM/dd"}, NumberFormat = { NumberDecimalSeparator = ".", CurrencyDecimalSeparator = "." } };
@@ -105,6 +103,13 @@ namespace PixelMagic.GUI
             FormClosing += FrmMain_FormClosing;
             Shown += FrmMain_Shown;
             Log.Initialize(rtbLog, this);
+
+            Thread checkForUpdates = new Thread(delegate ()
+            {
+                checkForUpdatesToolStripMenuItem.PerformClick();
+            });
+            checkForUpdates.IsBackground = true;
+            checkForUpdates.Start();
 
             Log.WritePixelMagic("Welcome to PixelMagic Premium Edition developed by WiNiFiX (BETA)", Color.Blue);
             Log.WriteNoTime("For support please visit: http://goo.gl/0AqNxv");
@@ -585,7 +590,7 @@ namespace PixelMagic.GUI
                 {
                     try
                     {
-                        var versionInfo = Web.GetString("https://raw.githubusercontent.com/winifix/Pixel-Bot-Sample-Application/master/AntiVirusBeta/Properties/AssemblyInfo.cs").
+                        var versionInfo = Web.GetString("https://raw.githubusercontent.com/winifix/PixelMagic-OpenSource/master/PixelMagic/Properties/AssemblyInfo.cs").
                             Split('\r').
                             FirstOrDefault(r => r.Contains("AssemblyFileVersion"))?.
                             Replace("\n", "").
