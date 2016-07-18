@@ -14,7 +14,8 @@ f:RegisterEvent(""ADDON_LOADED"")
 
 local hpframes = {}
 local cooldownframes = {}
-local auraFrames = {}
+local buffFrames = {}
+local targetDebuffFrames = {}
 local spellInRangeFrames = {}
 local healthFrames = {}
 local targetHealthFrames = {}
@@ -32,8 +33,9 @@ local hpPrev = 0
 
 local lastCooldownState = {}
 local lastBuffState = {}
+local lastDebuffState = {}
 
-local function updateHP()
+local function updateHolyPower()
 	local power = UnitPower(""player"", 9)
 	
 	if power ~= hpPrev then	
@@ -57,7 +59,7 @@ local function updateHP()
 	 end
  end
 
-local function updateCC()
+local function updateComboPoints()
     local playerClass, englishClass, classIndex = UnitClass(""player"");
     local power = UnitPower(""player"", 4)
 
@@ -136,7 +138,7 @@ local function updateRunes()
     end
 end
 
-local function updateCD() 
+local function updateSpellCooldowns() 
 	for _, spellId in pairs(cooldowns) do
 		-- start is the value of GetTime() at the point the spell began cooling down
 		-- duration is the total duration of the cooldown, NOT the remaining
@@ -174,13 +176,9 @@ local function updateCD()
 	end
 end
 
-function round(num, idp)
-  local mult = 10^(idp or 0)
-  return math.floor(num * mult + 0.5) / mult
-end
-
-local function updateAuras() 
-	for _, auraId in pairs(auras) do
+local function updateMyBuffs() 
+	for _, auraId in pairs(buffs) do
+        local buff = ""UnitBuff"";
 		local auraName = GetSpellInfo(auraId)
 		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitBuff(""player"", auraName)		
 		
@@ -192,20 +190,51 @@ local function updateAuras()
                 if (count >= 10) then
                     strcount = ""0."" .. count;
                 end
-
                 green = tonumber(strcount)
-
-                auraFrames[auraId].t:SetColorTexture(0, green, 0, 1)
-				auraFrames[auraId].t:SetAllPoints(false)
-                print(auraName.. "" "" .. count .. "" Green: "" .. green)
+                buffFrames[auraId].t:SetColorTexture(0, green, 0, 1)
+				buffFrames[auraId].t:SetAllPoints(false)
+                print(""["" .. buff .. ""] "" .. auraName.. "" "" .. count .. "" Green: "" .. green)
                 lastBuffState[auraId] = ""BuffOn"" .. count 
             end
         else
             if (lastBuffState[auraId] ~= ""BuffOff"") then
-                auraFrames[auraId].t:SetColorTexture(1, 1, 1, 1)
-                auraFrames[auraId].t:SetAllPoints(false)
+                buffFrames[auraId].t:SetColorTexture(1, 1, 1, 1)
+                buffFrames[auraId].t:SetAllPoints(false)
                 lastBuffState[auraId] = ""BuffOff""
-                print(auraName.. "" Off"")
+                print(""["" .. buff .. ""] "" .. auraName.. "" Off"")
+            end
+        end
+    end
+end
+
+local function updateTargetDebuffs() 
+	for _, auraId in pairs(debuffs) do
+        local buff = ""UnitDebuff"";
+		local auraName = GetSpellInfo(auraId)
+        name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitDebuff(""target"", auraName)		        
+
+		if (name == auraName) then -- We have Aura up and Aura ID is matching our list					
+			if (lastDebuffState[auraId] ~= ""DebuffOn"" .. count) then
+                local green = 0             
+                local strcount = ""0.0"" .. count;
+                
+                if (count >= 10) then
+                    strcount = ""0."" .. count;
+                end
+
+                green = tonumber(strcount)
+
+                targetDebuffFrames[auraId].t:SetColorTexture(0, green, 0, 1)
+				targetDebuffFrames[auraId].t:SetAllPoints(false)
+                print(""["" .. buff .. ""] "" .. auraName.. "" "" .. count .. "" Green: "" .. green)
+                lastDebuffState[auraId] = ""DebuffOn"" .. count 
+            end
+        else
+            if (lastDebuffState[auraId] ~= ""DebuffOff"") then
+                targetDebuffFrames[auraId].t:SetColorTexture(1, 1, 1, 1)
+                targetDebuffFrames[auraId].t:SetAllPoints(false)
+                lastDebuffState[auraId] = ""DebuffOff""
+                print(""["" .. buff .. ""] "" .. auraName.. "" Off"")
             end
         end
     end
@@ -296,7 +325,7 @@ local function updateTargetHealth()
 			local currentBit = string.sub(binaryHealth, i, i)
 			
 			if (currentBit == ""1"") then
-				targetHealthFrames[i].t:SetTexture(1, 0, 0, 1)
+				targetHealthFrames[i].t:SetTexture(0, 0, 1, 1)
 			else
 				targetHealthFrames[i].t:SetTexture(1, 1, 1, 1)
 			end
@@ -339,14 +368,14 @@ local function updatePower()
 		end
 		
 		local binaryPower = healthToBinary(power)			
-		--print (""Power = "" .. power .. "" binary = "".. binaryPower)	
+		print (""Power = "" .. power .. "" binary = "".. binaryPower)	
 		--print (""Current Spec = "" .. currentSpecId)
 		
 		for i = 1, string.len(binaryPower) do
 			local currentBit = string.sub(binaryPower, i, i)
 			
 			if (currentBit == ""1"") then
-				powerFrames[i].t:SetTexture(1, 0, 0, 1)
+				powerFrames[i].t:SetTexture(0, 1, 0, 1)
 			else
 				powerFrames[i].t:SetTexture(1, 1, 1, 1)
 			end
@@ -383,11 +412,11 @@ local function hasTarget()
 		
 	if (guid ~= lastTargetGUID) then
 		if (guid == nil) then
-			--print (""Target GUID: None"" )	
+			print (""Target GUID: None"" )	
 			
 			hasTargetFrame.t:SetTexture(0, 0, 0, 1)
 		else			
-			--print (""Target GUID: "" .. guid )	
+			print (""Target GUID: "" .. guid )	
 			
 			hasTargetFrame.t:SetTexture(1, 0, 0, 1)
 		end
@@ -486,10 +515,10 @@ local function initFrames()
 	-- Power can go above 100, it can be 120 maximum to my knowledge
 	print (""Initialising Power Frames (Rage, Energy, etc...)"")  
     local start = 7
-	for i = 8, 15 do
+	for i = 8, 14 do
 		powerFrames[i-start] = CreateFrame(""frame"")
 		powerFrames[i-start]:SetSize(size, size)
-		powerFrames[i-start]:SetPoint(""TOPLEFT"", (i - 1) * size, 0)                 -- column 8 - 15, row 1
+		powerFrames[i-start]:SetPoint(""TOPLEFT"", (i - 1) * size, 0)           -- column 8-15, row 1
 		powerFrames[i-start].t = powerFrames[i-start]:CreateTexture()        
 		powerFrames[i-start].t:SetTexture(1, 1, 1, 1)
 		powerFrames[i-start].t:SetAllPoints(powerFrames[i-start])
@@ -499,11 +528,11 @@ local function initFrames()
 	end
 
 	print (""Initialising Target Health Frames"")
-    start = 15
-	for i = 16, 23 do
+    start = 14
+	for i = 15, 22 do
 		targetHealthFrames[i-start] = CreateFrame(""frame"")
 		targetHealthFrames[i-start]:SetSize(size, size)
-		targetHealthFrames[i-start]:SetPoint(""TOPLEFT"", (i - 1) * size, 0)          -- column 16 - 23, row 1        
+		targetHealthFrames[i-start]:SetPoint(""TOPLEFT"", (i - 1) * size, 0)    -- column 16 - 23, row 1        
 		targetHealthFrames[i-start].t = targetHealthFrames[i-start]:CreateTexture()        
 		targetHealthFrames[i-start].t:SetTexture(1, 1, 1, 1)
 		targetHealthFrames[i-start].t:SetAllPoints(targetHealthFrames[i-start])
@@ -523,7 +552,7 @@ local function initFrames()
 		cooldownframes[spellId].t:SetAllPoints(cooldownframes[spellId])
 		cooldownframes[spellId]:Show()
 		               
-		cooldownframes[spellId]:SetScript(""OnUpdate"", updateCD)
+		cooldownframes[spellId]:SetScript(""OnUpdate"", updateSpellCooldowns)
 		i = i + 1
 	end
 
@@ -538,7 +567,7 @@ local function initFrames()
 		    hpframes[i].t:SetAllPoints(hpframes[i])
 		    hpframes[i]:Show()
 		
-		    hpframes[i]:SetScript(""OnUpdate"", updateHP)
+		    hpframes[i]:SetScript(""OnUpdate"", updateHolyPower)
 	    end
     end
 
@@ -553,7 +582,7 @@ local function initFrames()
 		    hpframes[i].t:SetAllPoints(hpframes[i])
 		    hpframes[i]:Show()
 		
-		    hpframes[i]:SetScript(""OnUpdate"", updateCC)
+		    hpframes[i]:SetScript(""OnUpdate"", updateComboPoints)
 	    end
     end
 
@@ -641,18 +670,33 @@ local function initFrames()
 		
 	unitIsVisibleFrame:SetScript(""OnUpdate"", updateUnitIsVisible)
 		
-	print (""Initialising Aura Frames"")
+	print (""Initialising Player Buff Frames"")
 	local i = 5
-	for _, auraId in pairs(auras) do
-		auraFrames[auraId] = CreateFrame(""frame"")
-		auraFrames[auraId]:SetSize(size, size)
-		auraFrames[auraId]:SetPoint(""TOPLEFT"", i * size, -(size * 2))         -- column 6+ row 3
-		auraFrames[auraId].t = auraFrames[auraId]:CreateTexture()        
-		auraFrames[auraId].t:SetTexture(1, 1, 1, 1)
-		auraFrames[auraId].t:SetAllPoints(auraFrames[auraId])
-		auraFrames[auraId]:Show()
+	for _, buffId in pairs(buffs) do
+		buffFrames[buffId] = CreateFrame(""frame"")
+		buffFrames[buffId]:SetSize(size, size)
+		buffFrames[buffId]:SetPoint(""TOPLEFT"", i * size, -(size * 2))         -- column 6+ row 3
+		buffFrames[buffId].t = buffFrames[buffId]:CreateTexture()        
+		buffFrames[buffId].t:SetTexture(1, 1, 1, 1)
+		buffFrames[buffId].t:SetAllPoints(buffFrames[buffId])
+		buffFrames[buffId]:Show()
 		               
-		auraFrames[auraId]:SetScript(""OnUpdate"", updateAuras)
+		buffFrames[buffId]:SetScript(""OnUpdate"", updateMyBuffs)
+		i = i + 1
+	end
+
+	print (""Initialising Target Debuff Frames"")
+	local i = 0
+	for _, debuffId in pairs(debuffs) do
+		targetDebuffFrames[debuffId] = CreateFrame(""frame"")
+		targetDebuffFrames[debuffId]:SetSize(size, size)
+		targetDebuffFrames[debuffId]:SetPoint(""TOPLEFT"", i * size, -(size * 7))         -- column 1+ row 8
+		targetDebuffFrames[debuffId].t = targetDebuffFrames[debuffId]:CreateTexture()        
+		targetDebuffFrames[debuffId].t:SetTexture(1, 1, 1, 1)
+		targetDebuffFrames[debuffId].t:SetAllPoints(targetDebuffFrames[debuffId])
+		targetDebuffFrames[debuffId]:Show()
+		               
+		targetDebuffFrames[debuffId]:SetScript(""OnUpdate"", updateTargetDebuffs)
 		i = i + 1
 	end
 	

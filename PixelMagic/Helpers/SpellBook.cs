@@ -402,7 +402,7 @@ namespace PixelMagic.Helpers
 
                     sr.Write(cooldowns);
 
-                    var auras = "local auras = { --These should be auraIDs for the spell you want to track " + Environment.NewLine;
+                    var auras = "local buffs = { --These should be auraIDs for the spell you want to track " + Environment.NewLine;
 
                     foreach (var aura in Auras)
                     {
@@ -419,6 +419,24 @@ namespace PixelMagic.Helpers
                     auras += "}" + Environment.NewLine;
 
                     sr.Write(auras);
+
+                    var debuffs = "local debuffs = { --These should be auraIDs for the spell you want to track " + Environment.NewLine;
+
+                    foreach (var aura in Auras)
+                    {
+                        if (aura.InternalAuraNo == Auras.Count)  // We are adding the last aura, dont include the comma
+                        {
+                            debuffs += $"    {aura.AuraId} \t -- {aura.AuraName}" + Environment.NewLine;
+                        }
+                        else
+                        {
+                            debuffs += $"    {aura.AuraId},\t -- {aura.AuraName}" + Environment.NewLine;
+                        }
+                    }
+
+                    debuffs += "}" + Environment.NewLine;
+
+                    sr.Write(debuffs);
 
                     var luaContents = Addon.LuaContents;
 

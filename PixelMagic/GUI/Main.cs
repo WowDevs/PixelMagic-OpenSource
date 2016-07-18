@@ -341,6 +341,36 @@ namespace PixelMagic.GUI
                 Log.Write("Please select a rotation to load from 'File' -> 'Load Rotation...'", Color.Green);
                 Log.Write("Please note that you can only start bot or setup spellbook once you have loaded a rotation", Color.Black);
                 Log.DrawHorizontalLine();
+
+                if (!Debugger.IsAttached)
+                    return;
+
+                // For testing only
+                Rogue rot = new Rogue();
+                rot.Load(this);
+                combatRoutine = rot.combatRoutine;
+                combatRoutine.FileName = Application.StartupPath + @"\Rotations\Rogue\Rogue.cs";
+
+                Log.Write("Successfully loaded combat routine: " + combatRoutine.Name, Color.Green);
+
+                Overlay.showOverlay(new Point(20, 680));
+
+                if (SpellBook.Initialize(Application.StartupPath + @"\Rotations\Rogue\Rogue.cs"))
+                {
+                    spellbookToolStripMenuItem.Enabled = true;
+                    submitTicketToolStripMenuItem.Enabled = true;
+
+                    cmdStartBot.Enabled = true;
+                    cmdStartBot.BackColor = Color.LightGreen;
+                }
+                else
+                {
+                    spellbookToolStripMenuItem.Enabled = false;
+                    submitTicketToolStripMenuItem.Enabled = false;
+
+                    cmdStartBot.Enabled = false;
+                    cmdStartBot.BackColor = Color.WhiteSmoke;
+                }
             }
             catch (Exception ex)
             {

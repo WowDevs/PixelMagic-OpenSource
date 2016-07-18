@@ -227,7 +227,62 @@ namespace PixelMagic.Helpers
         private static Random random;
         private static readonly object thisLock = new object();
         private static readonly Bitmap screenPixel = new Bitmap(1, 1);
-        private static DataTable dtAuraTable;
+        private static DataTable dtColorHelper;
+        
+        public static void Initialize(Process wowProcess)
+        {
+            random = new Random();
+
+            pWow = wowProcess;
+
+            Log.Write("Successfully connected to WoW with process ID: " + pWow.Id, Color.Green);
+
+            var is64 = pWow.ProcessName.Contains("64");
+
+            Log.Write($"WoW Version: {Version} (x{(is64 ? "64" : "86")})", Color.Gray);
+
+            var wowRectangle = new Rectangle();
+            GetWindowRect(pWow.MainWindowHandle, ref wowRectangle);
+            Log.Write($"WoW Screen Resolution: {wowRectangle.Width}x{wowRectangle.Height}", Color.Gray);
+
+            if (ConfigFile.ReadValue("PixelMagic", "AddonName") == "")
+            {
+                Log.Write("This is the first time you have run the program, please specify a name you would like the PixelMagic addon to use");
+                Log.Write("this can be anything you like (letters only no numbers)");
+
+                while (ConfigFile.ReadValue("PixelMagic", "AddonName") == "")
+                {
+                    GUI.frmSelectAddonName f = new GUI.frmSelectAddonName();
+                    f.ShowDialog();
+                }
+            }
+
+            Log.Write($"Addon Name set to: [{ConfigFile.ReadValue("PixelMagic", "AddonName")}]", Color.Blue);
+
+            dtColorHelper = new DataTable();
+            dtColorHelper.Columns.Add("Percent");
+            dtColorHelper.Columns.Add("Unrounded");
+            dtColorHelper.Columns.Add("Rounded");
+            dtColorHelper.Columns.Add("Value");
+
+            for (int i = 0; i <= 99; i++)
+            {
+                DataRow drNew = dtColorHelper.NewRow();
+                drNew["Percent"] = (i < 10) ? "0.0" + i : "0." + i;
+                drNew["Unrounded"] = double.Parse(drNew["Percent"].ToString()) * 255;
+                drNew["Rounded"] = Math.Round(double.Parse(drNew["Percent"].ToString()) * 255, 0);
+                drNew["Value"] = i;
+                dtColorHelper.Rows.Add(drNew);
+            }
+            {
+                DataRow drNew = dtColorHelper.NewRow();
+                drNew["Percent"] = "255";
+                drNew["Unrounded"] = "255";
+                drNew["Rounded"] = "255";
+                drNew["Value"] = 0;
+                dtColorHelper.Rows.Add(drNew);
+            }
+        }
 
         private static string Version => pWow.MainModule.FileVersionInfo.FileVersion;
 
@@ -354,10 +409,10 @@ namespace PixelMagic.Helpers
                 // It is displayed as binary, so 100% health = 1100100
                 var binaryHealth = "";
 
-                for (var x = 16; x <= 23; x++)
+                for (var x = 15; x <= 21; x++)
                 {
                     var c = GetBlockColor(x, 1);
-                    binaryHealth += (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B) ? "1" : "0";
+                    binaryHealth += (c.R == 0) && (c.G == 0) && (c.B == 255) ? "1" : "0";
                 }
 
                 return Convert.ToInt32(binaryHealth, 2);
@@ -373,10 +428,10 @@ namespace PixelMagic.Helpers
                 // It is displayed as binary, so 100 power = 1100100
                 var binaryPower = "";
 
-                for (var x = 8; x <= 15; x++)
+                for (var x = 8; x <= 14; x++)
                 {
                     var c = GetBlockColor(x, 1);
-                    binaryPower += (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B) ? "1" : "0";
+                    binaryPower += (c.R == 0) && (c.G == 255) && (c.B == 0) ? "1" : "0";
                 }
 
                 return Convert.ToInt32(binaryPower, 2);
@@ -407,61 +462,6 @@ namespace PixelMagic.Helpers
                 }
 
                 return activeProcId == pWow.Id;
-            }
-        }
-
-        public static void Initialize(Process wowProcess)
-        {
-            random = new Random();
-
-            pWow = wowProcess;
-
-            Log.Write("Successfully connected to WoW with process ID: " + pWow.Id, Color.Green);
-
-            var is64 = pWow.ProcessName.Contains("64");
-
-            Log.Write($"WoW Version: {Version} (x{(is64 ? "64" : "86")})", Color.Gray);
-
-            var wowRectangle = new Rectangle();
-            GetWindowRect(pWow.MainWindowHandle, ref wowRectangle);
-            Log.Write($"WoW Screen Resolution: {wowRectangle.Width}x{wowRectangle.Height}", Color.Gray);
-
-            if (ConfigFile.ReadValue("PixelMagic", "AddonName") == "")
-            {
-                Log.Write("This is the first time you have run the program, please specify a name you would like the PixelMagic addon to use");
-                Log.Write("this can be anything you like (letters only no numbers)");
-
-                while (ConfigFile.ReadValue("PixelMagic", "AddonName") == "")
-                {
-                    GUI.frmSelectAddonName f = new GUI.frmSelectAddonName();
-                    f.ShowDialog();
-                }
-            }
-
-            Log.Write($"Addon Name set to: [{ConfigFile.ReadValue("PixelMagic", "AddonName")}]", Color.Blue);
-
-            dtAuraTable = new DataTable();
-            dtAuraTable.Columns.Add("Percent");
-            dtAuraTable.Columns.Add("Unrounded");
-            dtAuraTable.Columns.Add("Rounded");
-            dtAuraTable.Columns.Add("Stacks");
-
-            for (int i = 0; i <= 99; i++)
-            {
-                DataRow drNew = dtAuraTable.NewRow();
-                drNew["Percent"] = (i < 10) ? "0.0" + i : "0." + i;
-                drNew["Unrounded"] = double.Parse(drNew["Percent"].ToString()) * 255;
-                drNew["Rounded"] = Math.Round(double.Parse(drNew["Percent"].ToString()) * 255, 0);
-                drNew["Stacks"] = i;
-                dtAuraTable.Rows.Add(drNew);
-            }
-            {
-                DataRow drNew = dtAuraTable.NewRow();
-                drNew["Percent"] = "255";
-                drNew["Unrounded"] = "255";
-                drNew["Rounded"] = "255";
-                drNew["Stacks"] = 0;
-                dtAuraTable.Rows.Add(drNew);
             }
         }
 
@@ -568,22 +568,16 @@ namespace PixelMagic.Helpers
 
             try
             {
-                string stacks = dtAuraTable.Select($"[Rounded] = '{c.G}'").FirstOrDefault()["Stacks"].ToString();
+                string stacks = dtColorHelper.Select($"[Rounded] = '{c.G}'").FirstOrDefault()["Value"].ToString();
 
                 return int.Parse(stacks);
             }
             catch(Exception ex)
             {
                 Log.Write("Failed to find aura stacks for color G = " + c.G, Color.Red);
+                Log.Write("Error: " + ex.Message, Color.Red);
             }
              
-            //if (c.G == 3)  return 1;  // + 2
-            //if (c.G == 5)  return 2;  // + 3
-            //if (c.G == 8)  return 3;  // + 2
-            //if (c.G == 10) return 4;  // + 3
-            //if (c.G == 13) return 5;  // + 2
-            //if (c.G == 15) return 6;  // + 2
-
             return 0;   
         }
 
