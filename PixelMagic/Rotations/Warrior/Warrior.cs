@@ -35,13 +35,21 @@ namespace PixelMagic.Rotation
         {
         }
 
+        private int lastAuraCount = 0;
+
         public override void Pulse()
         {   
 			if (combatRoutine.Type == RotationType.SingleTarget)  // Do Single Target Stuff here
             {
                 if (WoW.HasTarget && WoW.TargetIsEnemy)
                 {
-                    Log.Write("Aura Count: " + WoW.GetAuraCount("Taste for Blood"));
+                    var ac = WoW.GetAuraCount("Taste for Blood");
+
+                    if (ac != lastAuraCount)
+                    {
+                        Log.Write("Aura Count: " + ac);
+                        lastAuraCount = ac;
+                    }
                 }
             }
             if (combatRoutine.Type == RotationType.AOE)

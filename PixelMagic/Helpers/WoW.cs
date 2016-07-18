@@ -5,6 +5,7 @@
 //////////////////////////////////////////////////
 
 using System;
+using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.AccountManagement;
@@ -224,10 +225,9 @@ namespace PixelMagic.Helpers
 
         internal static Process pWow;
         private static Random random;
-
         private static readonly object thisLock = new object();
-
         private static readonly Bitmap screenPixel = new Bitmap(1, 1);
+        private static DataTable dtAuraTable;
 
         private static string Version => pWow.MainModule.FileVersionInfo.FileVersion;
 
@@ -439,6 +439,30 @@ namespace PixelMagic.Helpers
             }
 
             Log.Write($"Addon Name set to: [{ConfigFile.ReadValue("PixelMagic", "AddonName")}]", Color.Blue);
+
+            dtAuraTable = new DataTable();
+            dtAuraTable.Columns.Add("Percent");
+            dtAuraTable.Columns.Add("Unrounded");
+            dtAuraTable.Columns.Add("Rounded");
+            dtAuraTable.Columns.Add("Stacks");
+
+            for (int i = 0; i <= 99; i++)
+            {
+                DataRow drNew = dtAuraTable.NewRow();
+                drNew["Percent"] = (i < 10) ? "0.0" + i : "0." + i;
+                drNew["Unrounded"] = double.Parse(drNew["Percent"].ToString()) * 255;
+                drNew["Rounded"] = Math.Round(double.Parse(drNew["Percent"].ToString()) * 255, 0);
+                drNew["Stacks"] = i;
+                dtAuraTable.Rows.Add(drNew);
+            }
+            {
+                DataRow drNew = dtAuraTable.NewRow();
+                drNew["Percent"] = "255";
+                drNew["Unrounded"] = "255";
+                drNew["Rounded"] = "255";
+                drNew["Stacks"] = 0;
+                dtAuraTable.Rows.Add(drNew);
+            }
         }
 
         [DllImport("user32.dll")]
@@ -529,22 +553,38 @@ namespace PixelMagic.Helpers
             var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
             return ((c.R != 255) && (c.G != 255) && (c.B != 255));
         }
-
+        
+        static byte lastGreen = 0;
+        
         public static int GetAuraCount(int auraNoInArrayOfAuras)
         {
             var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
 
-//            Log.Write("Green: " + c.ToString());
+            if (c.G != lastGreen)
+            {
+                Log.Write("Green: " + c.ToString());
+                lastGreen = c.G;
+            }
 
-            if (c.G == 255) return 0;
-            if (c.G == 26) return 1;
-            if (c.G == 51) return 2;
-            if (c.G == 77) return 3;
-            if (c.G == 102) return 4;
-            if (c.G == 128) return 5;
-            if (c.G == 153) return 6;
+            try
+            {
+                string stacks = dtAuraTable.Select($"[Rounded] = '{c.G}'").FirstOrDefault()["Stacks"].ToString();
 
-            return -99;
+                return int.Parse(stacks);
+            }
+            catch(Exception ex)
+            {
+                Log.Write("Failed to find aura stacks for color G = " + c.G, Color.Red);
+            }
+             
+            //if (c.G == 3)  return 1;  // + 2
+            //if (c.G == 5)  return 2;  // + 3
+            //if (c.G == 8)  return 3;  // + 2
+            //if (c.G == 10) return 4;  // + 3
+            //if (c.G == 13) return 5;  // + 2
+            //if (c.G == 15) return 6;  // + 2
+
+            return 0;   
         }
 
         public static int GetAuraCount(string auraName)

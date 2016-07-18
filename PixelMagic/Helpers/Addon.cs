@@ -186,42 +186,18 @@ local function updateAuras()
 		
 		if (name == auraName) then -- We have Aura up and Aura ID is matching our list					
 			if (lastBuffState[auraId] ~= ""BuffOn"" .. count) then
-                local green = 0 
-            
-                if (count == 1) then 
-                    green = 0.1
+                local green = 0             
+                local strcount = ""0.0"" .. count;
+                
+                if (count >= 10) then
+                    strcount = ""0."" .. count;
                 end
-                if (count == 2) then 
-                    green = 0.2
-                end
-                if (count == 3) then 
-                    green = 0.3
-                end
-                if (count == 4) then 
-                    green = 0.4
-                end
-                if (count == 5) then 
-                    green = 0.5
-                end
-                if (count == 6) then 
-                    green = 0.6
-                end
-                if (count == 7) then 
-                    green = 0.7
-                end
-                if (count == 8) then 
-                    green = 0.8
-                end
-                if (count == 9) then 
-                    green = 0.9
-                end
-                if (count == 10) then 
-                    green = 1
-                end
+
+                green = tonumber(strcount)
 
                 auraFrames[auraId].t:SetColorTexture(0, green, 0, 1)
 				auraFrames[auraId].t:SetAllPoints(false)
-                print(auraName.. "" "" .. count .. ""Green:"" .. green)
+                print(auraName.. "" "" .. count .. "" Green: "" .. green)
                 lastBuffState[auraId] = ""BuffOn"" .. count 
             end
         else
