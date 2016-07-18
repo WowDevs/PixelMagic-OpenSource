@@ -526,13 +526,13 @@ namespace PixelMagic.Helpers
 
         public static bool HasAura(int auraNoInArrayOfAuras)
         {
-            var c = GetBlockColor(4 + auraNoInArrayOfAuras, 3);
+            var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
             return ((c.R != 255) && (c.G != 255) && (c.B != 255));
         }
 
         public static int GetAuraCount(int auraNoInArrayOfAuras)
         {
-            var c = GetBlockColor(4 + auraNoInArrayOfAuras, 3);
+            var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
 
             Log.Write("Green: " + c.ToString());
 

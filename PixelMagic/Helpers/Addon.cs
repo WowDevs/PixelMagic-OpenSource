@@ -463,7 +463,7 @@ local function initFrames()
 	    for i = 1, 5 do
 		    hpframes[i] = CreateFrame(""frame"");
 		    hpframes[i]:SetSize(size, size)
-		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)      
+		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)          -- column 1 - 5, row 7
 		    hpframes[i].t = hpframes[i]:CreateTexture()        
 		    hpframes[i].t:SetTexture(0, 255, 255, 1)
 		    hpframes[i].t:SetAllPoints(hpframes[i])
@@ -478,7 +478,7 @@ local function initFrames()
 	    for i = 1, 5 do
 		    hpframes[i] = CreateFrame(""frame"");
 		    hpframes[i]:SetSize(size, size)
-		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)      
+		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)          -- column 1 - 5, row 7
 		    hpframes[i].t = hpframes[i]:CreateTexture()        
 		    hpframes[i].t:SetTexture(0, 255, 255, 1)
 		    hpframes[i].t:SetAllPoints(hpframes[i])
@@ -493,7 +493,7 @@ local function initFrames()
 	    for i = 1, 6 do
 		    hpframes[i] = CreateFrame(""frame"");
 		    hpframes[i]:SetSize(size, size)
-		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)       
+		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)          -- column 1 - 6, row 7
 		    hpframes[i].t = hpframes[i]:CreateTexture()        
 		    hpframes[i].t:SetTexture(0, 255, 255, 1)
 		    hpframes[i].t:SetAllPoints(hpframes[i])
@@ -507,7 +507,7 @@ local function initFrames()
 	for _, spellId in pairs(cooldowns) do	
 		cooldownframes[spellId] = CreateFrame(""frame"")
 		cooldownframes[spellId]:SetSize(size, size)
-		cooldownframes[spellId]:SetPoint(""TOPLEFT"", i * size, 0)        
+		cooldownframes[spellId]:SetPoint(""TOPLEFT"", i * size, 0)              -- column 5+, row 1
 		cooldownframes[spellId].t = cooldownframes[spellId]:CreateTexture()        
 		cooldownframes[spellId].t:SetTexture(255, 255, 255, 1)
 		cooldownframes[spellId].t:SetAllPoints(cooldownframes[spellId])
@@ -522,7 +522,7 @@ local function initFrames()
 	for _, spellId in pairs(cooldowns) do	
 		spellInRangeFrames[spellId] = CreateFrame(""frame"")
 		spellInRangeFrames[spellId]:SetSize(size, size)
-		spellInRangeFrames[spellId]:SetPoint(""TOPLEFT"", i * size, -size * 5)        
+		spellInRangeFrames[spellId]:SetPoint(""TOPLEFT"", i * size, -size * 5)  -- entire row 6
 		spellInRangeFrames[spellId].t = spellInRangeFrames[spellId]:CreateTexture()        
 		spellInRangeFrames[spellId].t:SetTexture(255, 255, 255, 1)
 		spellInRangeFrames[spellId].t:SetAllPoints(spellInRangeFrames[spellId])
@@ -536,7 +536,7 @@ local function initFrames()
 	for i = 1, 7 do
 		healthFrames[i] = CreateFrame(""frame"")
 		healthFrames[i]:SetSize(size, size)
-		healthFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size)        
+		healthFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size)            -- column 1 - 7, row 2
 		healthFrames[i].t = healthFrames[i]:CreateTexture()        
 		healthFrames[i].t:SetTexture(255, 255, 255, 1)
 		healthFrames[i].t:SetAllPoints(healthFrames[i])
@@ -549,7 +549,7 @@ local function initFrames()
 	for i = 1, 7 do
 		targetHealthFrames[i] = CreateFrame(""frame"")
 		targetHealthFrames[i]:SetSize(size, size)
-		targetHealthFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size * 4)        
+		targetHealthFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size * 4)  -- column 1 - 7, row 5        
 		targetHealthFrames[i].t = targetHealthFrames[i]:CreateTexture()        
 		targetHealthFrames[i].t:SetTexture(255, 255, 255, 1)
 		targetHealthFrames[i].t:SetAllPoints(targetHealthFrames[i])
@@ -563,7 +563,7 @@ local function initFrames()
 	for i = 1, 7 do
 		powerFrames[i] = CreateFrame(""frame"")
 		powerFrames[i]:SetSize(size, size)
-		powerFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size * 3)        
+		powerFrames[i]:SetPoint(""TOPLEFT"", (i - 1) * size, -size * 3)         -- column 1 - 7, row 4
 		powerFrames[i].t = powerFrames[i]:CreateTexture()        
 		powerFrames[i].t:SetTexture(255, 255, 255, 1)
 		powerFrames[i].t:SetAllPoints(powerFrames[i])
@@ -575,7 +575,7 @@ local function initFrames()
 	print (""Initialising IsTargetFriendly Frame"")
 	isTargetFriendlyFrame = CreateFrame(""frame"");
 	isTargetFriendlyFrame:SetSize(size, size);
-	isTargetFriendlyFrame:SetPoint(""TOPLEFT"", 0, -(size * 2))    
+	isTargetFriendlyFrame:SetPoint(""TOPLEFT"", 0, -(size * 2))                 -- column 1 row 3
 	isTargetFriendlyFrame.t = isTargetFriendlyFrame:CreateTexture()        
 	isTargetFriendlyFrame.t:SetTexture(0, 255, 0, 1)
 	isTargetFriendlyFrame.t:SetAllPoints(isTargetFriendlyFrame)
@@ -586,7 +586,7 @@ local function initFrames()
 	print (""Initialising HasTarget Frame"")
 	hasTargetFrame = CreateFrame(""frame"");
 	hasTargetFrame:SetSize(size, size);
-	hasTargetFrame:SetPoint(""TOPLEFT"", size, -(size * 2))                 -- column 2 row 3
+	hasTargetFrame:SetPoint(""TOPLEFT"", size, -(size * 2))                     -- column 2 row 3
 	hasTargetFrame.t = hasTargetFrame:CreateTexture()        
 	hasTargetFrame.t:SetTexture(0, 255, 0, 1)
 	hasTargetFrame.t:SetAllPoints(hasTargetFrame)
@@ -597,7 +597,7 @@ local function initFrames()
 	print (""Initialising PlayerIsCasting Frame"")
 	playerIsCastingFrame = CreateFrame(""frame"");
 	playerIsCastingFrame:SetSize(size, size);
-	playerIsCastingFrame:SetPoint(""TOPLEFT"", size * 2, -(size * 2))       -- column 3 row 3
+	playerIsCastingFrame:SetPoint(""TOPLEFT"", size * 2, -(size * 2))           -- column 3 row 3
 	playerIsCastingFrame.t = playerIsCastingFrame:CreateTexture()        
 	playerIsCastingFrame.t:SetTexture(255, 255, 255, 1)
 	playerIsCastingFrame.t:SetAllPoints(playerIsCastingFrame)
@@ -608,7 +608,7 @@ local function initFrames()
 	print (""Initialising TargetIsCasting Frame"")
 	targetIsCastingFrame = CreateFrame(""frame"");
 	targetIsCastingFrame:SetSize(size, size);
-	targetIsCastingFrame:SetPoint(""TOPLEFT"", size * 3, -(size * 2))       -- column 4 row 3
+	targetIsCastingFrame:SetPoint(""TOPLEFT"", size * 3, -(size * 2))           -- column 4 row 3
 	targetIsCastingFrame.t = targetIsCastingFrame:CreateTexture()        
 	targetIsCastingFrame.t:SetTexture(255, 255, 255, 1)
 	targetIsCastingFrame.t:SetAllPoints(targetIsCastingFrame)
@@ -619,7 +619,7 @@ local function initFrames()
 	print (""Initialising Unit Is Visible Frame"")
 	unitIsVisibleFrame = CreateFrame(""frame"");
 	unitIsVisibleFrame:SetSize(size, size);
-	unitIsVisibleFrame:SetPoint(""TOPLEFT"", size * 4, -(size * 2))         -- column 5 row 3
+	unitIsVisibleFrame:SetPoint(""TOPLEFT"", size * 4, -(size * 2))             -- column 5 row 3
 	unitIsVisibleFrame.t = unitIsVisibleFrame:CreateTexture()        
 	unitIsVisibleFrame.t:SetTexture(0, 255, 0, 1)
 	unitIsVisibleFrame.t:SetAllPoints(unitIsVisibleFrame)
@@ -628,11 +628,11 @@ local function initFrames()
 	unitIsVisibleFrame:SetScript(""OnUpdate"", updateUnitIsVisible)
 		
 	print (""Initialising Aura Frames"")
-	local i = 4
+	local i = 5
 	for _, auraId in pairs(auras) do
 		auraFrames[auraId] = CreateFrame(""frame"")
 		auraFrames[auraId]:SetSize(size, size)
-		auraFrames[auraId]:SetPoint(""TOPLEFT"", i * size, -(size * 2)) 
+		auraFrames[auraId]:SetPoint(""TOPLEFT"", i * size, -(size * 2))         -- column 6+ row 3
 		auraFrames[auraId].t = auraFrames[auraId]:CreateTexture()        
 		auraFrames[auraId].t:SetTexture(255, 255, 255, 1)
 		auraFrames[auraId].t:SetAllPoints(auraFrames[auraId])
