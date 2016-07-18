@@ -241,10 +241,10 @@
             // 
             this.cmbWowVersion.FormattingEnabled = true;
             this.cmbWowVersion.Items.AddRange(new object[] {
-            "Vanilla - To Be Implemented",
-            "TBC - To Be Implemented",
-            "WOTLK - To Be Implemented",
-            "Cataclysm - To Be Implemented",
+            "Vanilla - 11200",
+            "TBC - 20400",
+            "WOTLK - 30300",
+            "Cataclysm - 40300",
             "MoP - 50400",
             "WoD - 60200",
             "Legion - 70000"});

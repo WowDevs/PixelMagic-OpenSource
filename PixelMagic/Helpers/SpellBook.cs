@@ -361,12 +361,16 @@ namespace PixelMagic.Helpers
                     //  ## SavedVariablesPerCharacter: DoItOptions
                     //  DoItBase.lua
 
-                    sr.WriteLine($"## Author: {AddonAuthor}");
-                    sr.WriteLine($"## Interface: {InterfaceVersion}");
-                    sr.WriteLine($"## Title: {AddonName}");
+                    sr.WriteLine($"## Author: {AddonAuthor.Replace("\r", "").Replace("\n", "")}");
+
+                    if (InterfaceVersion.Contains("-"))
+                        sr.WriteLine($"## Interface: {InterfaceVersion.Split('-')[1].Trim()}");
+                    else
+                        sr.WriteLine($"## Interface: {InterfaceVersion}");
+                    sr.WriteLine($"## Title: {AddonName.Replace("\r", "").Replace("\n", "")}");
                     sr.WriteLine($"## Version: {Application.ProductVersion}");
-                    sr.WriteLine($"## SavedVariablesPerCharacter: {AddonName}_settings");
-                    sr.WriteLine($"{AddonName}.lua");
+                    sr.WriteLine($"## SavedVariablesPerCharacter: {AddonName.Replace("\r", "").Replace("\n", "")}_settings");
+                    sr.WriteLine($"{AddonName.Replace("\r", "").Replace("\n", "")}.lua");
                     sr.Close();
                 }
 

@@ -59,6 +59,6 @@ AddonName=PixelMagic
 WoWVersion=Legion - 70000
 [SpellBook.db]
 Spell,100,Charge, D1
-Aura,24604,Taste for Blood
+Aura,206333,Taste for Blood
 */
 

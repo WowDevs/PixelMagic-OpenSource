@@ -109,6 +109,7 @@ namespace PixelMagic.GUI
             Log.WritePixelMagic("Welcome to PixelMagic Premium Edition developed by WiNiFiX (BETA)", Color.Blue);
             Log.WriteNoTime("For support please visit: http://goo.gl/0AqNxv");
             Log.WriteNoTime("To view a sample rotation see the file: " + Application.StartupPath + "\\Rotations\\Hunter\\Hunter.cs", Color.Gray);
+            Log.WriteNoTime("To find spell / buff id's in WoW use the addon http://mods.curse.com/addons/wow/spellid", Color.Gray);
             Log.HorizontalLine = "-".PadLeft(158, '-');
             Log.DrawHorizontalLine();
         }
