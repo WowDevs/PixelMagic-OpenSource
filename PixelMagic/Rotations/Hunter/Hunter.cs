@@ -5,6 +5,7 @@
 using PixelMagic.Helpers;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace PixelMagic.Rotation
 {
@@ -72,6 +73,8 @@ namespace PixelMagic.Rotation
                 // Log.Write("Aura Count: " + WoW.GetAuraCount("Taste for Blood"));
             }            
         }
+
+        public override Form SettingsForm { get; set; }
     }
 }
 

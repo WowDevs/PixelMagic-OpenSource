@@ -199,6 +199,7 @@ namespace PixelMagic.GUI
 
                             cmdStartBot.Enabled = true;
                             cmdStartBot.BackColor = Color.LightGreen;
+                            cmdRotationSettings.Enabled = true;
                             return true;
                         }
                         else
@@ -445,14 +446,14 @@ namespace PixelMagic.GUI
 
                 if (combatRoutine.State == CombatRoutine.RotationState.Running)
                 {
-                    cmdStartBot.Text = "Stop bot";
+                    cmdStartBot.Text = "Stop rotation";
                     cmdStartBot.BackColor = Color.Salmon;
                 }
             }
             else
             {
                 combatRoutine.Pause();
-                cmdStartBot.Text = "Start bot";
+                cmdStartBot.Text = "Start rotation";
                 cmdStartBot.BackColor = Color.LightGreen;                
             }
         }
@@ -644,6 +645,16 @@ namespace PixelMagic.GUI
         {
             frmSubmitTicket f = new frmSubmitTicket(rtbLog.Text);
             f.ShowDialog();
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmdRotationSettings_Click(object sender, EventArgs e)
+        {
+            combatRoutine.SettingsForm.ShowDialog();
         }
     }
 }

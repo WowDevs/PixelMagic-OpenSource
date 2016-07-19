@@ -183,8 +183,6 @@ local function updateSpellCharges()
         charges, maxCharges, start, duration = GetSpellCharges(spellId)
 
         if (lastSpellChargeCharges[spellId] ~= charges) then
-            print(""Spell with Id = "" .. spellId .. "" has charges: "" .. charges)
-
             local green = 0             
             local strcount = ""0.0"" .. charges;
                     
@@ -192,6 +190,9 @@ local function updateSpellCharges()
                 strcount = ""0."" .. charges;
             end
             green = tonumber(strcount)
+
+            print(""Spell with Id = "" .. spellId .. "" has charges: "" .. charges .. "" Green = "" .. green)
+
             updateSpellChargesFrame[spellId].t:SetTexture(0, green, 0, 1)
 		    updateSpellChargesFrame[spellId].t:SetAllPoints(false)
 		    		
@@ -333,13 +334,16 @@ local lastTargetHealth = 0
 
 local function updateTargetHealth()
 	local guid = UnitGUID(""target"")
-	local health = UnitHealth(""target"");		
-	local maxHealth = UnitHealthMax(""target"");
-	local percHealth = ceil((health / maxHealth) * 100)
-	
-	if (guid == nil) then
-		percHealth = 0
-	end
+
+    local health = 0		
+    local maxHealth = 100
+    local percHealth = 0
+
+    if (guid ~= nil) then
+	    health = UnitHealth(""target"");		
+	    maxHealth = UnitHealthMax(""target"");
+	    percHealth = ceil((health / maxHealth) * 100)
+    end	
 	
 	if (percHealth ~= lastTargetHealth) then		
 		local binaryHealth = healthToBinary(percHealth)

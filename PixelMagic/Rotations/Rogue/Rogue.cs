@@ -5,6 +5,7 @@
 using PixelMagic.Helpers;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 
 #pragma warning disable 414
 
@@ -62,6 +63,8 @@ namespace PixelMagic.Rotation
                 // Do AOE Stuff here                
             }            
         }
+
+        public override Form SettingsForm { get; set; }
     }
 }
 

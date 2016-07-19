@@ -8,6 +8,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 using PixelMagic.GUI;
 using PixelMagic.Helpers;
 
@@ -212,5 +213,6 @@ namespace PixelMagic.Rotation
         public abstract void Initialize();
         public abstract void Stop();
         public abstract void Pulse();
+        public abstract Form SettingsForm { get; set; }
     }
 }

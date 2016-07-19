@@ -7,6 +7,7 @@
 using PixelMagic.Helpers;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace PixelMagic.Rotation
 {
@@ -37,8 +38,6 @@ namespace PixelMagic.Rotation
         {
         }
 
-        private int lastAuraCount = 0;
-
         public override void Pulse()
         {   
 			if (combatRoutine.Type == RotationType.SingleTarget)  // Do Single Target Stuff here
@@ -53,6 +52,8 @@ namespace PixelMagic.Rotation
                 // Do AOE Stuff here                
             }            
         }
+
+        public override Form SettingsForm { get; set; }
     }
 }
 

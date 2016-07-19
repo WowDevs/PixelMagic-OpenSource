@@ -5,6 +5,7 @@
 using PixelMagic.Helpers;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace PixelMagic.Rotation
 {
@@ -29,6 +30,48 @@ namespace PixelMagic.Rotation
         public override void Initialize()
         {
             Log.Write("Welcome to Warrior Sample", Color.Green);
+
+            SettingsForm = new Form()
+            {
+                Text = "Settings",
+                StartPosition = FormStartPosition.CenterScreen,
+                Width = 1000,
+                Height = 600,
+            };
+
+            var lblLastStandHealth = new Label()
+            {
+                Text = "Last Stand Health",
+                Left = 20,
+                Top = 20
+            };
+            SettingsForm.Controls.Add(lblLastStandHealth);
+
+            var nudLastStandHealthPercent = new NumericUpDown()
+            {
+                Value = 0,
+                Maximum = 100,
+                Left = 150,
+                Top = 20
+            };
+            SettingsForm.Controls.Add(nudLastStandHealthPercent);
+
+            var cmdSave = new Button()
+            {
+                Text = "Save",
+                Width = 65,
+                Height = 25,
+                Left = SettingsForm.Width - 200,
+                Top = SettingsForm.Height - 200
+            };
+            cmdSave.Click += CmdSave_Click;
+
+            SettingsForm.Controls.Add(cmdSave);
+        }
+
+        private void CmdSave_Click(object sender, System.EventArgs e)
+        {
+            // Save stuff here
         }
 
         public override void Stop()
@@ -65,6 +108,8 @@ namespace PixelMagic.Rotation
                 // Do AOE Stuff here                
             }            
         }
+
+        public override Form SettingsForm { get; set; }
     }
 }
 

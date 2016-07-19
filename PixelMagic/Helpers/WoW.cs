@@ -499,6 +499,9 @@ namespace PixelMagic.Helpers
             if (IsSpellInRange(spellNoInArrayOfSpells) == false)
                 return false;
 
+            if (GetSpellCharges(spellNoInArrayOfSpells) <= 0)
+                return false;
+
             if (TargetIsVisible == false)
                 return false;
 
@@ -633,23 +636,6 @@ namespace PixelMagic.Helpers
 
             return GetAuraCount(spell.InternalSpellNo);
         }
-
-        //public static int CurrentRunes
-        //{
-        //    get
-        //    {
-        //        int CurrentRunes = 0;
-        //        for (int x = 1; x <= 7; x++)
-        //        {
-        //            Color c = GetBlockColor(x, 8);
-        //            if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
-        //            {
-        //                CurrentRunes++;
-        //            }
-        //        }
-        //        return CurrentRunes;
-        //    }
-        //}
 
         public static bool HasAura(string auraName)
         {
