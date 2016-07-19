@@ -32,6 +32,8 @@ namespace PixelMagic.GUI
             txtAddonAuthor.Text = SpellBook.AddonAuthor;
             txtAddonName.Text = ConfigFile.ReadValue("PixelMagic", "AddonName");
 
+            cmbKeyBind.DataSource = Enum.GetNames(typeof(WoW.Keys));
+
             try
             {
                 var intVer = SpellBook.InterfaceVersion.Replace("\n", "").Replace("\r", "");
@@ -52,7 +54,7 @@ namespace PixelMagic.GUI
 
         private void cmdAddSpell_Click(object sender, EventArgs e)
         {
-            SpellBook.AddSpell(nudSpellId, txtSpellName, txtKeyBind);
+            SpellBook.AddSpell(nudSpellId, txtSpellName, cmbKeyBind);
         }
 
         private void cmdRemoveSpell_Click(object sender, EventArgs e)

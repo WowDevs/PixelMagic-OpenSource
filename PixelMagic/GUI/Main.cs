@@ -30,7 +30,7 @@ namespace PixelMagic.GUI
         private readonly Dictionary<int, string> classes;
         private KeyboardHook hook;
 
-        public static string Exe_Version => File.GetLastWriteTime(System.Reflection.Assembly.GetEntryAssembly().Location).ToString("yyyy.MM.dd");
+        private static string Exe_Version => File.GetLastWriteTime(System.Reflection.Assembly.GetEntryAssembly().Location).ToString("yyyy.MM.dd");
         
         private readonly int LocalVersion = int.Parse(Application.ProductVersion.Split('.')[0]);
 
@@ -38,19 +38,21 @@ namespace PixelMagic.GUI
         {
             InitializeComponent();
 
-            Label lblPlayerHealth = new Label
+            // ReSharper disable once UnusedVariable
+            var lblPlayerHealth = new Label
             {
                 Text = "Health",
                 Parent = prgPlayerHealth,
-                Location = new Point(35, 3),
+                Location = new Point(45, 3),
                 BackColor = Color.Transparent                                
             };
-
-            Label lblPlayerPower = new Label
+            
+            // ReSharper disable once UnusedVariable
+            var lblPlayerPower = new Label
             {
                 Text = "Power",
                 Parent = prgPower,
-                Location = new Point(35, 3),
+                Location = new Point(45, 3),
                 BackColor = Color.Transparent
             };
 
@@ -95,6 +97,9 @@ namespace PixelMagic.GUI
             toolStripStatusLabel1.Text = string.Format(toolStripStatusLabel1.Text, Exe_Version);
             toolStripStatusLabel3.Text = string.Format(toolStripStatusLabel3.Text, LocalVersion);
 
+            prgPlayerHealth.Value = 0;
+            prgPower.Value = 0;
+
             // Its annoying as hell when people use incorrect culture info, this will force it to use the correct number and date formats.
             var ci = new CultureInfo("en-ZA") { DateTimeFormat = {ShortDatePattern = "yyyy/MM/dd"}, NumberFormat = { NumberDecimalSeparator = ".", CurrencyDecimalSeparator = "." } };
             Thread.CurrentThread.CurrentCulture = ci;
@@ -104,11 +109,7 @@ namespace PixelMagic.GUI
             Shown += FrmMain_Shown;
             Log.Initialize(rtbLog, this);
 
-            Thread checkForUpdates = new Thread(delegate ()
-            {
-                checkForUpdatesToolStripMenuItem.PerformClick();
-            });
-            checkForUpdates.IsBackground = true;
+            var checkForUpdates = new Thread(delegate() { checkForUpdatesToolStripMenuItem.PerformClick(); }) {IsBackground = true};
             checkForUpdates.Start();
 
             Log.WritePixelMagic("Welcome to PixelMagic Premium Edition developed by WiNiFiX (BETA)", Color.Blue);
@@ -278,11 +279,6 @@ namespace PixelMagic.GUI
         private void MouseHook_MouseClick(object sender, MouseEventArgs e)
         {
             txtMouseXYClick.Text = $"{e.X}, {e.Y}";
-
-            //if (Debugger.IsAttached)
-            //{
-            //    Log.Write($"Cursor clicked at (x, y) = {e.X}, {e.Y}");
-            //}
         }
 
         public Process process;
@@ -341,36 +337,30 @@ namespace PixelMagic.GUI
                 Log.Write("Please select a rotation to load from 'File' -> 'Load Rotation...'", Color.Green);
                 Log.Write("Please note that you can only start bot or setup spellbook once you have loaded a rotation", Color.Black);
                 Log.DrawHorizontalLine();
-
-                if (!Debugger.IsAttached)
-                    return;
-
-                // For testing only
-                Rogue rot = new Rogue();
-                rot.Load(this);
-                combatRoutine = rot.combatRoutine;
-                combatRoutine.FileName = Application.StartupPath + @"\Rotations\Rogue\Rogue.cs";
-
-                Log.Write("Successfully loaded combat routine: " + combatRoutine.Name, Color.Green);
-
-                Overlay.showOverlay(new Point(20, 680));
-
-                if (SpellBook.Initialize(Application.StartupPath + @"\Rotations\Rogue\Rogue.cs"))
-                {
-                    spellbookToolStripMenuItem.Enabled = true;
-                    submitTicketToolStripMenuItem.Enabled = true;
-
-                    cmdStartBot.Enabled = true;
-                    cmdStartBot.BackColor = Color.LightGreen;
-                }
-                else
-                {
-                    spellbookToolStripMenuItem.Enabled = false;
-                    submitTicketToolStripMenuItem.Enabled = false;
-
-                    cmdStartBot.Enabled = false;
-                    cmdStartBot.BackColor = Color.WhiteSmoke;
-                }
+                
+                //// For testing only
+                //if (!Debugger.IsAttached)
+                //    return;
+                //var rot = new Rogue();
+                //rot.Load(this);
+                //combatRoutine = rot.combatRoutine;
+                //combatRoutine.FileName = Application.StartupPath + @"\Rotations\Rogue\Rogue.cs";
+                //Log.Write("Successfully loaded combat routine: " + combatRoutine.Name, Color.Green);
+                //Overlay.showOverlay(new Point(20, 680));
+                //if (SpellBook.Initialize(Application.StartupPath + @"\Rotations\Rogue\Rogue.cs"))
+                //{
+                //    spellbookToolStripMenuItem.Enabled = true;
+                //    submitTicketToolStripMenuItem.Enabled = true;
+                //    cmdStartBot.Enabled = true;
+                //    cmdStartBot.BackColor = Color.LightGreen;
+                //}
+                //else
+                //{
+                //    spellbookToolStripMenuItem.Enabled = false;
+                //    submitTicketToolStripMenuItem.Enabled = false;
+                //    cmdStartBot.Enabled = false;
+                //    cmdStartBot.BackColor = Color.WhiteSmoke;
+                //}
             }
             catch (Exception ex)
             {
@@ -578,18 +568,10 @@ namespace PixelMagic.GUI
             ReloadHotkeys();
         }
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //WoW.LeftClick(504, 982);
-        }
-
         private void spellbookToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var f = new SetupSpellBook();
             f.ShowDialog();
-
-            //WoW.SendMacro("/console scriptErrors 1");   // Show wow Lua errors
-            //WoW.SendMacro("/reload");
         }
 
         private void chkPlayErrorSounds_CheckedChanged(object sender, EventArgs e)

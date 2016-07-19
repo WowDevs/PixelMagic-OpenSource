@@ -37,7 +37,6 @@
             this.InternalNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.txtKeyBind = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cmdRemoveSpell = new System.Windows.Forms.Button();
@@ -63,6 +62,8 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label9 = new System.Windows.Forms.Label();
+            this.cmbKeyBind = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgSpells)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpellId)).BeginInit();
@@ -132,8 +133,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmbKeyBind);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.txtKeyBind);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.cmdRemoveSpell);
@@ -143,7 +144,7 @@
             this.groupBox1.Controls.Add(this.dgSpells);
             this.groupBox1.Location = new System.Drawing.Point(12, 118);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(358, 348);
+            this.groupBox1.Size = new System.Drawing.Size(404, 348);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Spells you care about (the addon will ignore spells not in this list)";
@@ -156,13 +157,6 @@
             this.label8.Size = new System.Drawing.Size(49, 13);
             this.label8.TabIndex = 11;
             this.label8.Text = "Key Bind";
-            // 
-            // txtKeyBind
-            // 
-            this.txtKeyBind.Location = new System.Drawing.Point(262, 42);
-            this.txtKeyBind.Name = "txtKeyBind";
-            this.txtKeyBind.Size = new System.Drawing.Size(43, 20);
-            this.txtKeyBind.TabIndex = 7;
             // 
             // label5
             // 
@@ -184,7 +178,7 @@
             // 
             // cmdRemoveSpell
             // 
-            this.cmdRemoveSpell.Location = new System.Drawing.Point(329, 42);
+            this.cmdRemoveSpell.Location = new System.Drawing.Point(375, 42);
             this.cmdRemoveSpell.Name = "cmdRemoveSpell";
             this.cmdRemoveSpell.Size = new System.Drawing.Size(23, 23);
             this.cmdRemoveSpell.TabIndex = 5;
@@ -194,7 +188,7 @@
             // 
             // cmdAddSpell
             // 
-            this.cmdAddSpell.Location = new System.Drawing.Point(307, 42);
+            this.cmdAddSpell.Location = new System.Drawing.Point(353, 42);
             this.cmdAddSpell.Name = "cmdAddSpell";
             this.cmdAddSpell.Size = new System.Drawing.Size(23, 23);
             this.cmdAddSpell.TabIndex = 4;
@@ -224,6 +218,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.cmbWowVersion);
             this.groupBox3.Controls.Add(this.txtAddonName);
             this.groupBox3.Controls.Add(this.txtAddonAuthor);
@@ -314,9 +309,9 @@
             this.groupBox2.Controls.Add(this.nudAuraId);
             this.groupBox2.Controls.Add(this.txtAuraName);
             this.groupBox2.Controls.Add(this.dgAuras);
-            this.groupBox2.Location = new System.Drawing.Point(376, 118);
+            this.groupBox2.Location = new System.Drawing.Point(422, 118);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(358, 348);
+            this.groupBox2.Size = new System.Drawing.Size(312, 348);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Auras you care about (the addon will ignore auras not in this list)";
@@ -341,7 +336,7 @@
             // 
             // cmdRemoveAura
             // 
-            this.cmdRemoveAura.Location = new System.Drawing.Point(329, 42);
+            this.cmdRemoveAura.Location = new System.Drawing.Point(284, 41);
             this.cmdRemoveAura.Name = "cmdRemoveAura";
             this.cmdRemoveAura.Size = new System.Drawing.Size(23, 23);
             this.cmdRemoveAura.TabIndex = 5;
@@ -351,7 +346,7 @@
             // 
             // cmdAddAura
             // 
-            this.cmdAddAura.Location = new System.Drawing.Point(307, 42);
+            this.cmdAddAura.Location = new System.Drawing.Point(262, 41);
             this.cmdAddAura.Name = "cmdAddAura";
             this.cmdAddAura.Size = new System.Drawing.Size(23, 23);
             this.cmdAddAura.TabIndex = 4;
@@ -376,7 +371,7 @@
             // 
             this.txtAuraName.Location = new System.Drawing.Point(110, 42);
             this.txtAuraName.Name = "txtAuraName";
-            this.txtAuraName.Size = new System.Drawing.Size(196, 20);
+            this.txtAuraName.Size = new System.Drawing.Size(150, 20);
             this.txtAuraName.TabIndex = 8;
             // 
             // dgAuras
@@ -396,7 +391,7 @@
             this.dgAuras.RowHeadersVisible = false;
             this.dgAuras.RowHeadersWidth = 21;
             this.dgAuras.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgAuras.Size = new System.Drawing.Size(346, 277);
+            this.dgAuras.Size = new System.Drawing.Size(301, 277);
             this.dgAuras.TabIndex = 0;
             // 
             // dataGridViewTextBoxColumn1
@@ -421,12 +416,32 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.Red;
-            this.label9.Location = new System.Drawing.Point(81, 480);
+            this.label9.Location = new System.Drawing.Point(20, 479);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(502, 13);
+            this.label9.Size = new System.Drawing.Size(610, 13);
             this.label9.TabIndex = 7;
-            this.label9.Text = "NB: If you add spells / auras your class does not support the addon could  lag Wo" +
-    "W !!!";
+            this.label9.Text = "NB: If you add spells / auras your class does not support then addon could (and m" +
+    "ost likely will) lag/break";
+            // 
+            // cmbKeyBind
+            // 
+            this.cmbKeyBind.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbKeyBind.FormattingEnabled = true;
+            this.cmbKeyBind.Location = new System.Drawing.Point(261, 42);
+            this.cmbKeyBind.Name = "cmbKeyBind";
+            this.cmbKeyBind.Size = new System.Drawing.Size(91, 21);
+            this.cmbKeyBind.TabIndex = 10;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.Gray;
+            this.label10.Location = new System.Drawing.Point(311, 68);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(256, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "[Note: currently only WoD and Legion are supported]";
             // 
             // SetupSpellBook
             // 
@@ -486,12 +501,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtKeyBind;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn InternalNo;
         private System.Windows.Forms.ComboBox cmbWowVersion;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cmbKeyBind;
+        private System.Windows.Forms.Label label10;
     }
 }

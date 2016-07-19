@@ -42,7 +42,7 @@ namespace PixelMagic.Helpers
             return Load();
         }
 
-        public static void AddSpell(NumericUpDown spellId, TextBox spellName, TextBox keyBind)
+        public static void AddSpell(NumericUpDown spellId, TextBox spellName, ComboBox keyBind)
         {
             AddSpell(int.Parse(spellId.Value.ToString()), spellName.Text, keyBind.Text);
         }
