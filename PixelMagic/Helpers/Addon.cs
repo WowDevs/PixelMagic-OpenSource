@@ -14,6 +14,7 @@ f:RegisterEvent(""ADDON_LOADED"")
 
 local hpframes = {}
 local cooldownframes = {}
+local updateSpellChargesFrame = {}
 local buffFrames = {}
 local targetDebuffFrames = {}
 local spellInRangeFrames = {}
@@ -32,6 +33,7 @@ local ccPrev = 0
 local hpPrev = 0
 
 local lastCooldownState = {}
+local lastSpellChargeCharges = {}
 local lastBuffState = {}
 local lastDebuffState = {}
 
@@ -173,6 +175,28 @@ local function updateSpellCooldowns()
 				end
 			end				
 		end
+	end
+end
+
+local function updateSpellCharges() 
+	for _, spellId in pairs(cooldowns) do
+        charges, maxCharges, start, duration = GetSpellCharges(spellId)
+
+        if (lastSpellChargeCharges[spellId] ~= charges) then
+            print(""Spell with Id = "" .. spellId .. "" has charges: "" .. charges)
+
+            local green = 0             
+            local strcount = ""0.0"" .. charges;
+                    
+            if (charges >= 10) then
+                strcount = ""0."" .. charges;
+            end
+            green = tonumber(strcount)
+            updateSpellChargesFrame[spellId].t:SetTexture(0, green, 0, 1)
+		    updateSpellChargesFrame[spellId].t:SetAllPoints(false)
+		    		
+		    lastSpellChargeCharges[spellId] = charges		
+        end        
 	end
 end
 
@@ -541,7 +565,7 @@ local function initFrames()
 		targetHealthFrames[i-start]:SetScript(""OnUpdate"", updateTargetHealth)
 	end
 	
-	print (""Initialising Cooldown Frames"")
+	print (""Initialising Spell Cooldown Frames"")
 	i = 1
 	for _, spellId in pairs(cooldowns) do	
 		cooldownframes[spellId] = CreateFrame(""frame"")
@@ -553,6 +577,21 @@ local function initFrames()
 		cooldownframes[spellId]:Show()
 		               
 		cooldownframes[spellId]:SetScript(""OnUpdate"", updateSpellCooldowns)
+		i = i + 1
+	end
+
+	print (""Initialising Spell Charges Frames"")
+	i = 1
+	for _, spellId in pairs(cooldowns) do	
+		updateSpellChargesFrame[spellId] = CreateFrame(""frame"")
+		updateSpellChargesFrame[spellId]:SetSize(size, size)
+		updateSpellChargesFrame[spellId]:SetPoint(""TOPLEFT"", (i - 1) * size, -size * 8)          -- column 1+, row 9
+		updateSpellChargesFrame[spellId].t = updateSpellChargesFrame[spellId]:CreateTexture()        
+		updateSpellChargesFrame[spellId].t:SetTexture(1, 1, 1, 1)
+		updateSpellChargesFrame[spellId].t:SetAllPoints(updateSpellChargesFrame[spellId])
+		updateSpellChargesFrame[spellId]:Show()
+		               
+		updateSpellChargesFrame[spellId]:SetScript(""OnUpdate"", updateSpellCharges)
 		i = i + 1
 	end
 

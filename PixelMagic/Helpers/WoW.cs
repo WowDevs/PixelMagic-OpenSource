@@ -580,7 +580,7 @@ namespace PixelMagic.Helpers
              
             return 0;   
         }
-
+        
         public static int GetAuraCount(string auraName)
         {
             var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == auraName);
@@ -593,7 +593,47 @@ namespace PixelMagic.Helpers
 
             return GetAuraCount(aura.InternalAuraNo);
         }
-        
+
+        static byte lastGreen2 = 0;
+
+        public static int GetSpellCharges(int spellNoInArrayOfSpells)
+        {
+            var c = GetBlockColor(spellNoInArrayOfSpells, 9);
+
+            if (c.G != lastGreen2)
+            {
+                Log.Write("Green: " + c.ToString());
+                lastGreen2 = c.G;
+            }
+
+            try
+            {
+                string stacks = dtColorHelper.Select($"[Rounded] = '{c.G}'").FirstOrDefault()["Value"].ToString();
+
+                return int.Parse(stacks);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Failed to find spell charge stacks for color G = " + c.G, Color.Red);
+                Log.Write("Error: " + ex.Message, Color.Red);
+            }
+
+            return 0;
+        }
+
+        public static int GetSpellCharges(string spellName)
+        {
+            var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellName);
+
+            if (spell == null)
+            {
+                Log.Write($"[GetSpellCharges] Unable to find spell with name '{spellName}' in Spell Book");
+                return -1;
+            }
+
+            return GetAuraCount(spell.InternalSpellNo);
+        }
+
         //public static int CurrentRunes
         //{
         //    get

@@ -43,11 +43,19 @@ namespace PixelMagic.Rotation
             {
                 if (WoW.HasTarget && WoW.TargetIsEnemy)
                 {
-                    var ac = WoW.GetAuraCount("Taste for Blood");
+                    //var ac = WoW.GetAuraCount("Taste for Blood");
+
+                    //if (ac != lastAuraCount)
+                    //{
+                    //    Log.Write("Aura Count: " + ac);
+                    //    lastAuraCount = ac;
+                    //}
+
+                    var ac = WoW.GetSpellCharges("Charge");
 
                     if (ac != lastAuraCount)
                     {
-                        Log.Write("Aura Count: " + ac);
+                        Log.Write("Spell Charge Count: " + ac);
                         lastAuraCount = ac;
                     }
                 }
