@@ -159,6 +159,7 @@ namespace PixelMagic.GUI
                 parameters.ReferencedAssemblies.Add("System.Xml.dll");
                 parameters.ReferencedAssemblies.Add("System.Linq.dll");
                 parameters.ReferencedAssemblies.Add("System.dll");
+                parameters.ReferencedAssemblies.Add("System.IO.dll");
                 parameters.ReferencedAssemblies.Add("System.Threading.dll");
                 parameters.ReferencedAssemblies.Add(Application.ExecutablePath);
                 parameters.GenerateInMemory = true;
@@ -338,22 +339,24 @@ namespace PixelMagic.GUI
                 Log.Write("Please select a rotation to load from 'File' -> 'Load Rotation...'", Color.Green);
                 Log.Write("Please note that you can only start bot or setup spellbook once you have loaded a rotation", Color.Black);
                 Log.DrawHorizontalLine();
-                
+
                 //// For testing only
-                //if (!Debugger.IsAttached)
+                //if (!Debugger.IsAttached || Environment.MachineName != "BRETT-PC")
                 //    return;
-                //var rot = new Rogue();
+
+                //var rot = new Warrior();
                 //rot.Load(this);
                 //combatRoutine = rot.combatRoutine;
-                //combatRoutine.FileName = Application.StartupPath + @"\Rotations\Rogue\Rogue.cs";
+                //combatRoutine.FileName = Application.StartupPath + @"\Rotations\Warrior\Warrior.cs";
                 //Log.Write("Successfully loaded combat routine: " + combatRoutine.Name, Color.Green);
                 //Overlay.showOverlay(new Point(20, 680));
-                //if (SpellBook.Initialize(Application.StartupPath + @"\Rotations\Rogue\Rogue.cs"))
+                //if (SpellBook.Initialize(Application.StartupPath + @"\Rotations\Warrior\Warrior.cs"))
                 //{
                 //    spellbookToolStripMenuItem.Enabled = true;
                 //    submitTicketToolStripMenuItem.Enabled = true;
                 //    cmdStartBot.Enabled = true;
                 //    cmdStartBot.BackColor = Color.LightGreen;
+                //    cmdRotationSettings.Enabled = true;
                 //}
                 //else
                 //{
