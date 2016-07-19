@@ -147,15 +147,9 @@
     <Compile Include="Rotations\Hunter\Hunter-Incorrect %28for testing%29.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-<<<<<<< .mine
     <Compile Include="Rotations\Rogue\Rogue.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-=======
-    <Compile Include="Rotations\DeathKnight\DeathKnight_3.3.5a.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
->>>>>>> .r40
     <Compile Include="Rotations\Warrior\Warrior.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
