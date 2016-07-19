@@ -2,6 +2,8 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable ConvertPropertyToExpressionBody
 
+// BETA TESTING FOR 3.3.5a - TESTING ONLY !!! DONT TELL ME IT DOESNT WORK ITS NOT MEANT TO YET !!!
+
 using PixelMagic.Helpers;
 using System.Drawing;
 using System.Threading;

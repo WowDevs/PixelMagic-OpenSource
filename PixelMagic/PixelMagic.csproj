@@ -141,6 +141,7 @@
     <Compile Include="Helpers\WoW.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rotations\DeathKnight\DeathKnight_3.3.5a.cs" />
     <Compile Include="Rotations\DemonHunter\DemonHunter-Havoc.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -164,8 +165,6 @@
     <None Include="Resources\help.png" />
     <None Include="Resources\Close_16x16.png" />
     <None Include="Resources\Register.png" />
-    <Content Include="ColorProgressBar\ColorProgressBar.csproj" />
-    <Content Include="ColorProgressBar\ColorProgressBar.csproj.user" />
     <Content Include="Hadezign-Hobbies-Magic.ico" />
     <Content Include="ToDoList.txt" />
     <EmbeddedResource Include="ColorProgressBar\ColorProgressBar.resx">
