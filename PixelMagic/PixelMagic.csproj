@@ -166,6 +166,7 @@
     <None Include="Resources\Close_16x16.png" />
     <None Include="Resources\Register.png" />
     <Content Include="Hadezign-Hobbies-Magic.ico" />
+    <None Include="Resources\body-bg-baked-1920px2.jpg" />
     <Content Include="ToDoList.txt" />
     <EmbeddedResource Include="ColorProgressBar\ColorProgressBar.resx">
       <DependentUpon>ColorProgressBar.cs</DependentUpon>

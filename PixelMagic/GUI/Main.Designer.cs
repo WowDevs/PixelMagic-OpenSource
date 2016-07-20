@@ -38,6 +38,24 @@
             this.txtTargetCasting = new System.Windows.Forms.TextBox();
             this.cmdDonate = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.prgPower = new ColorProgressBar.ColorProgressBar();
+            this.prgPlayerHealth = new ColorProgressBar.ColorProgressBar();
+            this.txtMouseXYClick = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtMouseXY = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.chkPlayErrorSounds = new System.Windows.Forms.CheckBox();
+            this.chkDisableOverlay = new System.Windows.Forms.CheckBox();
+            this.nudPulse = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmdRotationSettings = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadRotationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,44 +68,22 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.submitTicketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.grpPlayer = new System.Windows.Forms.GroupBox();
-            this.prgPower = new ColorProgressBar.ColorProgressBar();
-            this.prgPlayerHealth = new ColorProgressBar.ColorProgressBar();
-            this.grpTarget = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.grpMousePosition = new System.Windows.Forms.GroupBox();
-            this.txtMouseXY = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.chkPlayErrorSounds = new System.Windows.Forms.CheckBox();
-            this.chkDisableOverlay = new System.Windows.Forms.CheckBox();
-            this.txtMouseXYClick = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.nudPulse = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cmdRotationSettings = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
-            this.grpPlayer.SuspendLayout();
-            this.grpTarget.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.grpMousePosition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPulse)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdStartBot
             // 
             this.cmdStartBot.Enabled = false;
             this.cmdStartBot.ForeColor = System.Drawing.Color.Black;
-            this.cmdStartBot.Location = new System.Drawing.Point(55, 19);
+            this.cmdStartBot.Location = new System.Drawing.Point(880, 44);
             this.cmdStartBot.Name = "cmdStartBot";
             this.cmdStartBot.Size = new System.Drawing.Size(195, 31);
             this.cmdStartBot.TabIndex = 1;
@@ -124,39 +120,43 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(11, 23);
+            this.label1.Location = new System.Drawing.Point(843, 194);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 9;
             this.label1.Text = "Health";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txtTargetHealth
             // 
             this.txtTargetHealth.ForeColor = System.Drawing.Color.Black;
-            this.txtTargetHealth.Location = new System.Drawing.Point(55, 19);
+            this.txtTargetHealth.Location = new System.Drawing.Point(887, 190);
             this.txtTargetHealth.Name = "txtTargetHealth";
             this.txtTargetHealth.ReadOnly = true;
             this.txtTargetHealth.Size = new System.Drawing.Size(88, 20);
             this.txtTargetHealth.TabIndex = 8;
+            this.txtTargetHealth.TextChanged += new System.EventHandler(this.txtTargetHealth_TextChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(11, 45);
+            this.label4.Location = new System.Drawing.Point(843, 216);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(42, 13);
             this.label4.TabIndex = 10;
             this.label4.Text = "Casting";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // txtTargetCasting
             // 
             this.txtTargetCasting.ForeColor = System.Drawing.Color.Black;
-            this.txtTargetCasting.Location = new System.Drawing.Point(55, 41);
+            this.txtTargetCasting.Location = new System.Drawing.Point(887, 212);
             this.txtTargetCasting.Name = "txtTargetCasting";
             this.txtTargetCasting.ReadOnly = true;
             this.txtTargetCasting.Size = new System.Drawing.Size(88, 20);
             this.txtTargetCasting.TabIndex = 11;
+            this.txtTargetCasting.TextChanged += new System.EventHandler(this.txtTargetCasting_TextChanged);
             // 
             // cmdDonate
             // 
@@ -184,117 +184,6 @@
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadRotationToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.Project_16x16;
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // loadRotationToolStripMenuItem
-            // 
-            this.loadRotationToolStripMenuItem.Name = "loadRotationToolStripMenuItem";
-            this.loadRotationToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.loadRotationToolStripMenuItem.Text = "Load Rotation...";
-            this.loadRotationToolStripMenuItem.Click += new System.EventHandler(this.loadRotationToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // setupToolStripMenuItem
-            // 
-            this.setupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hotkeysToolStripMenuItem,
-            this.spellbookToolStripMenuItem,
-            this.reloadAddonToolStripMenuItem});
-            this.setupToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.PageSetup_16x16;
-            this.setupToolStripMenuItem.Name = "setupToolStripMenuItem";
-            this.setupToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-            this.setupToolStripMenuItem.Text = "Setup";
-            // 
-            // hotkeysToolStripMenuItem
-            // 
-            this.hotkeysToolStripMenuItem.Name = "hotkeysToolStripMenuItem";
-            this.hotkeysToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.hotkeysToolStripMenuItem.Text = "Hotkeys";
-            this.hotkeysToolStripMenuItem.Click += new System.EventHandler(this.hotkeysToolStripMenuItem_Click);
-            // 
-            // spellbookToolStripMenuItem
-            // 
-            this.spellbookToolStripMenuItem.Enabled = false;
-            this.spellbookToolStripMenuItem.Name = "spellbookToolStripMenuItem";
-            this.spellbookToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.spellbookToolStripMenuItem.Text = "Spellbook";
-            this.spellbookToolStripMenuItem.Click += new System.EventHandler(this.spellbookToolStripMenuItem_Click);
-            // 
-            // reloadAddonToolStripMenuItem
-            // 
-            this.reloadAddonToolStripMenuItem.Name = "reloadAddonToolStripMenuItem";
-            this.reloadAddonToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.reloadAddonToolStripMenuItem.Text = "Reload Addon";
-            this.reloadAddonToolStripMenuItem.Click += new System.EventHandler(this.reloadAddonToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.encryptCombatRoutineToolStripMenuItem});
-            this.toolsToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.Version_16x16;
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // encryptCombatRoutineToolStripMenuItem
-            // 
-            this.encryptCombatRoutineToolStripMenuItem.Name = "encryptCombatRoutineToolStripMenuItem";
-            this.encryptCombatRoutineToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.encryptCombatRoutineToolStripMenuItem.Text = "Encrypt Combat Routine";
-            this.encryptCombatRoutineToolStripMenuItem.Click += new System.EventHandler(this.encryptCombatRoutineToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkForUpdatesToolStripMenuItem,
-            this.submitTicketToolStripMenuItem});
-            this.helpToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.help;
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // checkForUpdatesToolStripMenuItem
-            // 
-            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
-            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
-            // 
-            // submitTicketToolStripMenuItem
-            // 
-            this.submitTicketToolStripMenuItem.Enabled = false;
-            this.submitTicketToolStripMenuItem.Name = "submitTicketToolStripMenuItem";
-            this.submitTicketToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.submitTicketToolStripMenuItem.Text = "Submit Ticket";
-            this.submitTicketToolStripMenuItem.Click += new System.EventHandler(this.submitTicketToolStripMenuItem_Click);
-            // 
-            // grpPlayer
-            // 
-            this.grpPlayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpPlayer.Controls.Add(this.prgPower);
-            this.grpPlayer.Controls.Add(this.prgPlayerHealth);
-            this.grpPlayer.ForeColor = System.Drawing.Color.Black;
-            this.grpPlayer.Location = new System.Drawing.Point(825, 96);
-            this.grpPlayer.Name = "grpPlayer";
-            this.grpPlayer.Size = new System.Drawing.Size(151, 74);
-            this.grpPlayer.TabIndex = 14;
-            this.grpPlayer.TabStop = false;
-            this.grpPlayer.Text = "Player";
-            // 
             // prgPower
             // 
             this.prgPower.BackColor = System.Drawing.Color.White;
@@ -302,7 +191,7 @@
             this.prgPower.BorderColor = System.Drawing.Color.Green;
             this.prgPower.FillStyle = ColorProgressBar.ColorProgressBar.FillStyles.Solid;
             this.prgPower.ForeColor = System.Drawing.Color.White;
-            this.prgPower.Location = new System.Drawing.Point(13, 45);
+            this.prgPower.Location = new System.Drawing.Point(842, 138);
             this.prgPower.Maximum = 100;
             this.prgPower.Minimum = 0;
             this.prgPower.Name = "prgPower";
@@ -318,7 +207,7 @@
             this.prgPlayerHealth.BorderColor = System.Drawing.Color.Green;
             this.prgPlayerHealth.FillStyle = ColorProgressBar.ColorProgressBar.FillStyles.Solid;
             this.prgPlayerHealth.ForeColor = System.Drawing.Color.White;
-            this.prgPlayerHealth.Location = new System.Drawing.Point(13, 19);
+            this.prgPlayerHealth.Location = new System.Drawing.Point(842, 112);
             this.prgPlayerHealth.Maximum = 100;
             this.prgPlayerHealth.Minimum = 0;
             this.prgPlayerHealth.Name = "prgPlayerHealth";
@@ -327,76 +216,43 @@
             this.prgPlayerHealth.TabIndex = 24;
             this.prgPlayerHealth.Value = 70;
             // 
-            // grpTarget
+            // txtMouseXYClick
             // 
-            this.grpTarget.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpTarget.Controls.Add(this.txtTargetHealth);
-            this.grpTarget.Controls.Add(this.label1);
-            this.grpTarget.Controls.Add(this.label4);
-            this.grpTarget.Controls.Add(this.txtTargetCasting);
-            this.grpTarget.ForeColor = System.Drawing.Color.Black;
-            this.grpTarget.Location = new System.Drawing.Point(825, 175);
-            this.grpTarget.Name = "grpTarget";
-            this.grpTarget.Size = new System.Drawing.Size(151, 74);
-            this.grpTarget.TabIndex = 15;
-            this.grpTarget.TabStop = false;
-            this.grpTarget.Text = "Target";
+            this.txtMouseXYClick.ForeColor = System.Drawing.Color.Black;
+            this.txtMouseXYClick.Location = new System.Drawing.Point(1031, 137);
+            this.txtMouseXYClick.Name = "txtMouseXYClick";
+            this.txtMouseXYClick.ReadOnly = true;
+            this.txtMouseXYClick.Size = new System.Drawing.Size(69, 20);
+            this.txtMouseXYClick.TabIndex = 8;
             // 
-            // groupBox3
+            // label7
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.cmdStartBot);
-            this.groupBox3.ForeColor = System.Drawing.Color.Black;
-            this.groupBox3.Location = new System.Drawing.Point(825, 27);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(308, 66);
-            this.groupBox3.TabIndex = 16;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Pixel Magic";
-            this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
-            // 
-            // grpMousePosition
-            // 
-            this.grpMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpMousePosition.Controls.Add(this.txtMouseXYClick);
-            this.grpMousePosition.Controls.Add(this.label7);
-            this.grpMousePosition.Controls.Add(this.txtMouseXY);
-            this.grpMousePosition.Controls.Add(this.label5);
-            this.grpMousePosition.Controls.Add(this.label6);
-            this.grpMousePosition.ForeColor = System.Drawing.Color.Black;
-            this.grpMousePosition.Location = new System.Drawing.Point(982, 96);
-            this.grpMousePosition.Name = "grpMousePosition";
-            this.grpMousePosition.Size = new System.Drawing.Size(151, 74);
-            this.grpMousePosition.TabIndex = 17;
-            this.grpMousePosition.TabStop = false;
-            this.grpMousePosition.Text = "Mouse Position";
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.Color.Black;
+            this.label7.Location = new System.Drawing.Point(983, 141);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(33, 13);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "Click:";
             // 
             // txtMouseXY
             // 
             this.txtMouseXY.ForeColor = System.Drawing.Color.Black;
-            this.txtMouseXY.Location = new System.Drawing.Point(55, 19);
+            this.txtMouseXY.Location = new System.Drawing.Point(1031, 111);
             this.txtMouseXY.Name = "txtMouseXY";
             this.txtMouseXY.ReadOnly = true;
-            this.txtMouseXY.Size = new System.Drawing.Size(88, 20);
+            this.txtMouseXY.Size = new System.Drawing.Size(69, 20);
             this.txtMouseXY.TabIndex = 8;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(11, 23);
+            this.label5.Location = new System.Drawing.Point(983, 115);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 9;
             this.label5.Text = "Current:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 45);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(0, 13);
-            this.label6.TabIndex = 10;
             // 
             // chkPlayErrorSounds
             // 
@@ -427,25 +283,6 @@
             this.chkDisableOverlay.Text = "Disable Overlay";
             this.chkDisableOverlay.UseVisualStyleBackColor = true;
             this.chkDisableOverlay.CheckedChanged += new System.EventHandler(this.chkDisableOverlay_CheckedChanged);
-            // 
-            // txtMouseXYClick
-            // 
-            this.txtMouseXYClick.ForeColor = System.Drawing.Color.Black;
-            this.txtMouseXYClick.Location = new System.Drawing.Point(55, 45);
-            this.txtMouseXYClick.Name = "txtMouseXYClick";
-            this.txtMouseXYClick.ReadOnly = true;
-            this.txtMouseXYClick.Size = new System.Drawing.Size(88, 20);
-            this.txtMouseXYClick.TabIndex = 8;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(11, 49);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(33, 13);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "Click:";
             // 
             // nudPulse
             // 
@@ -513,7 +350,7 @@
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusLabel3.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(69, 19);
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(70, 19);
             this.toolStripStatusLabel3.Text = "Version: {0}";
             // 
             // toolStripStatusLabel1
@@ -533,7 +370,7 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.chkDisableOverlay);
             this.groupBox1.Controls.Add(this.chkPlayErrorSounds);
-            this.groupBox1.Location = new System.Drawing.Point(982, 175);
+            this.groupBox1.Location = new System.Drawing.Point(986, 175);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(151, 125);
             this.groupBox1.TabIndex = 24;
@@ -544,7 +381,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.cmdRotationSettings);
-            this.groupBox2.Location = new System.Drawing.Point(825, 253);
+            this.groupBox2.Location = new System.Drawing.Point(829, 253);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(151, 66);
             this.groupBox2.TabIndex = 25;
@@ -563,6 +400,142 @@
             this.cmdRotationSettings.UseVisualStyleBackColor = false;
             this.cmdRotationSettings.Click += new System.EventHandler(this.cmdRotationSettings_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::PixelMagic.GUI.Properties.Resources.body_bg_baked_1920px2;
+            this.pictureBox1.Location = new System.Drawing.Point(825, 27);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(317, 510);
+            this.pictureBox1.TabIndex = 26;
+            this.pictureBox1.TabStop = false;
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadRotationToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.Project_16x16;
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // loadRotationToolStripMenuItem
+            // 
+            this.loadRotationToolStripMenuItem.Name = "loadRotationToolStripMenuItem";
+            this.loadRotationToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.loadRotationToolStripMenuItem.Text = "Load Rotation...";
+            this.loadRotationToolStripMenuItem.Click += new System.EventHandler(this.loadRotationToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // setupToolStripMenuItem
+            // 
+            this.setupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hotkeysToolStripMenuItem,
+            this.spellbookToolStripMenuItem,
+            this.reloadAddonToolStripMenuItem});
+            this.setupToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.PageSetup_16x16;
+            this.setupToolStripMenuItem.Name = "setupToolStripMenuItem";
+            this.setupToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.setupToolStripMenuItem.Text = "Setup";
+            // 
+            // hotkeysToolStripMenuItem
+            // 
+            this.hotkeysToolStripMenuItem.Name = "hotkeysToolStripMenuItem";
+            this.hotkeysToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.hotkeysToolStripMenuItem.Text = "Hotkeys";
+            this.hotkeysToolStripMenuItem.Click += new System.EventHandler(this.hotkeysToolStripMenuItem_Click);
+            // 
+            // spellbookToolStripMenuItem
+            // 
+            this.spellbookToolStripMenuItem.Enabled = false;
+            this.spellbookToolStripMenuItem.Name = "spellbookToolStripMenuItem";
+            this.spellbookToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.spellbookToolStripMenuItem.Text = "Spellbook";
+            this.spellbookToolStripMenuItem.Click += new System.EventHandler(this.spellbookToolStripMenuItem_Click);
+            // 
+            // reloadAddonToolStripMenuItem
+            // 
+            this.reloadAddonToolStripMenuItem.Name = "reloadAddonToolStripMenuItem";
+            this.reloadAddonToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.reloadAddonToolStripMenuItem.Text = "Reload Addon";
+            this.reloadAddonToolStripMenuItem.Click += new System.EventHandler(this.reloadAddonToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.encryptCombatRoutineToolStripMenuItem});
+            this.toolsToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.Version_16x16;
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // encryptCombatRoutineToolStripMenuItem
+            // 
+            this.encryptCombatRoutineToolStripMenuItem.Name = "encryptCombatRoutineToolStripMenuItem";
+            this.encryptCombatRoutineToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.encryptCombatRoutineToolStripMenuItem.Text = "Encrypt Combat Routine";
+            this.encryptCombatRoutineToolStripMenuItem.Click += new System.EventHandler(this.encryptCombatRoutineToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkForUpdatesToolStripMenuItem,
+            this.submitTicketToolStripMenuItem});
+            this.helpToolStripMenuItem.Image = global::PixelMagic.GUI.Properties.Resources.help;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check for updates...";
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
+            // 
+            // submitTicketToolStripMenuItem
+            // 
+            this.submitTicketToolStripMenuItem.Enabled = false;
+            this.submitTicketToolStripMenuItem.Name = "submitTicketToolStripMenuItem";
+            this.submitTicketToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.submitTicketToolStripMenuItem.Text = "Submit Ticket";
+            this.submitTicketToolStripMenuItem.Click += new System.EventHandler(this.submitTicketToolStripMenuItem_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(842, 91);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(36, 13);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Player";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(983, 91);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(79, 13);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "Mouse Position";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(843, 172);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(38, 13);
+            this.label6.TabIndex = 29;
+            this.label6.Text = "Target";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -570,17 +543,28 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1141, 561);
+            this.Controls.Add(this.txtTargetHealth);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtMouseXYClick);
+            this.Controls.Add(this.txtTargetCasting);
+            this.Controls.Add(this.txtMouseXY);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.prgPower);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.prgPlayerHealth);
+            this.Controls.Add(this.cmdStartBot);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.grpMousePosition);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.grpTarget);
-            this.Controls.Add(this.grpPlayer);
             this.Controls.Add(this.cmdDonate);
             this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.lblHotkeyInfo);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.pictureBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
@@ -588,18 +572,13 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.grpPlayer.ResumeLayout(false);
-            this.grpTarget.ResumeLayout(false);
-            this.grpTarget.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.grpMousePosition.ResumeLayout(false);
-            this.grpMousePosition.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPulse)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -617,9 +596,6 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadRotationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.GroupBox grpPlayer;
-        private System.Windows.Forms.GroupBox grpTarget;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
@@ -627,10 +603,8 @@
         private System.Windows.Forms.ToolStripMenuItem setupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hotkeysToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spellbookToolStripMenuItem;
-        private System.Windows.Forms.GroupBox grpMousePosition;
         private System.Windows.Forms.TextBox txtMouseXY;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
         public System.Windows.Forms.CheckBox chkPlayErrorSounds;
         public System.Windows.Forms.CheckBox chkDisableOverlay;
         private System.Windows.Forms.TextBox txtMouseXYClick;
@@ -649,6 +623,10 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button cmdRotationSettings;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
     }
 }
 

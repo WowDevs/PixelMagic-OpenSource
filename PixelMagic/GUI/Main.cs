@@ -93,7 +93,9 @@ namespace PixelMagic.GUI
         }
 
         private void frmMain_Load(object sender, EventArgs e)
-        {   
+        {
+            label2.Parent = this;
+
             toolStripStatusLabel1.Text = string.Format(toolStripStatusLabel1.Text, Exe_Version);
             toolStripStatusLabel3.Text = string.Format(toolStripStatusLabel3.Text, LocalVersion);
 
@@ -656,6 +658,31 @@ namespace PixelMagic.GUI
         private void cmdRotationSettings_Click(object sender, EventArgs e)
         {
             combatRoutine.SettingsForm.ShowDialog();
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTargetCasting_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTargetHealth_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
