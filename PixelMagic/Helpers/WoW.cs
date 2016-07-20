@@ -369,7 +369,7 @@ namespace PixelMagic.Helpers
                 var runes = 0;
                 for (var x = 1; x <= 7; x++)
                 {
-                    var c = GetBlockColor(x, 8);
+                    var c = GetBlockColor(x, 7);
                     if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
                     {
                         runes++;
@@ -386,13 +386,47 @@ namespace PixelMagic.Helpers
                 var comboPoints = 0;
                 for (var x = 1; x <= 8; x++)
                 {
-                    var c = GetBlockColor(x, 8);
+                    var c = GetBlockColor(x, 7);
                     if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
                     {
                         comboPoints++;
                     }
                 }
                 return comboPoints;
+            }
+        }
+
+        public static int CurrentSoulShards
+        {
+            get
+            {
+                var ss = 0;
+                for (var x = 1; x <= 5; x++)
+                {
+                    var c = GetBlockColor(x, 7);
+                    if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
+                    {
+                        ss++;
+                    }
+                }
+                return ss;
+            }
+        }
+
+        public static int CurrentHolyPower
+        {
+            get
+            {
+                var hp = 0;
+                for (var x = 1; x <= 5; x++)
+                {
+                    var c = GetBlockColor(x, 7);
+                    if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
+                    {
+                        hp++;
+                    }
+                }
+                return hp;
             }
         }
 
