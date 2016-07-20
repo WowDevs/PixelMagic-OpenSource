@@ -366,16 +366,33 @@ namespace PixelMagic.Helpers
         {
             get
             {
-                int CurrentRunes = 0;
-                for (int x = 1; x <= 7; x++)
+                var runes = 0;
+                for (var x = 1; x <= 7; x++)
                 {
-                    Color c = GetBlockColor(x, 8);
+                    var c = GetBlockColor(x, 8);
                     if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
                     {
-                        CurrentRunes++;
+                        runes++;
                     }
                 }
-                return CurrentRunes;
+                return runes;
+            }
+        }
+
+        public static int CurrentComboPoints
+        {
+            get
+            {
+                var comboPoints = 0;
+                for (var x = 1; x <= 8; x++)
+                {
+                    var c = GetBlockColor(x, 8);
+                    if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
+                    {
+                        comboPoints++;
+                    }
+                }
+                return comboPoints;
             }
         }
 

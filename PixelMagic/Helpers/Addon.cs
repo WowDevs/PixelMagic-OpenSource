@@ -239,6 +239,7 @@ local function updateTargetDebuffs()
         name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitDebuff(""target"", auraName)		        
 
 		if (name == auraName) then -- We have Aura up and Aura ID is matching our list					
+            local getTime = GetTime()
             local remainingTime = math.floor(expirationTime - getTime + 0.5) 	
 
 			if (lastDebuffState[auraId] ~= ""DebuffOn"" .. count .. remainingTime) then
