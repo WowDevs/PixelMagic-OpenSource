@@ -587,7 +587,7 @@ namespace PixelMagic.Helpers
             return CanCast(spell.InternalSpellNo, checkIfPlayerIsCasting, checkIfSpellIsOnCooldown, checkIfSpellIsInRange, checkSpellCharges, checkIfTargetIsVisible);
         }
 
-        public static void SendKey(Keys key, int milliseconds = 50, string spellName = null)
+        private static void SendKey(Keys key, int milliseconds = 50, string spellName = null)
         {
             if (spellName == null)
             {
@@ -629,24 +629,10 @@ namespace PixelMagic.Helpers
             Thread.Sleep(100);
             KeyPressRelease(Keys.Enter);
         }
-
-        public static bool HasAura(int auraNoInArrayOfAuras)
+        
+        public static int GetBuffStacks(int auraNoInArrayOfAuras)
         {
             var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
-            return ((c.R != 255) && (c.G != 255) && (c.B != 255));
-        }
-        
-        static byte lastGreen = 0;
-        
-        public static int GetAuraCount(int auraNoInArrayOfAuras)
-        {
-            var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
-
-            if (c.G != lastGreen)
-            {
-                Log.Write("Green: " + c.ToString());
-                lastGreen = c.G;
-            }
 
             try
             {
@@ -657,29 +643,29 @@ namespace PixelMagic.Helpers
             }
             catch(Exception ex)
             {
-                Log.Write("Failed to find aura stacks for color G = " + c.G, Color.Red);
+                Log.Write("Failed to find buff stacks for color G = " + c.G, Color.Red);
                 Log.Write("Error: " + ex.Message, Color.Red);
             }
              
             return 0;   
         }
         
-        public static int GetAuraCount(string auraName)
+        public static int GetBuffStacks(string auraName)
         {
             var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == auraName);
 
             if (aura == null)
             {
-                Log.Write($"[GetAuraCount] Unable to find aura with name '{auraName}' in Spell Book");
+                Log.Write($"[GetBuffStacks] Unable to find buff with name '{auraName}' in Spell Book");
                 return -1;
             }
 
-            return GetAuraCount(aura.InternalAuraNo);
+            return GetBuffStacks(aura.InternalAuraNo);
         }
 
-        public static int GetAuraTimeRemaining(int auraNoInArrayOfAuras)
+        public static int GetDebuffTimeRemaining(int auraNoInArrayOfAuras)
         {
-            var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
+            var c = GetBlockColor(auraNoInArrayOfAuras, 8);
 
             try
             {
@@ -690,37 +676,29 @@ namespace PixelMagic.Helpers
             }
             catch (Exception ex)
             {
-                Log.Write("Failed to find aura stacks for color G = " + c.B, Color.Red);
+                Log.Write("Failed to find debuff stacks for color G = " + c.B, Color.Red);
                 Log.Write("Error: " + ex.Message, Color.Red);
             }
 
             return 0;
         }
 
-        public static int GetAuraTimeRemaining(string auraName)
+        public static int GetDebuffTimeRemaining(string debuffName)
         {
-            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == auraName);
+            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == debuffName);
 
             if (aura == null)
             {
-                Log.Write($"[GetAuraTimeRemaining] Unable to find aura with name '{auraName}' in Spell Book");
+                Log.Write($"[GetDebuffTimeRemaining] Unable to find debuff with name '{debuffName}' in Spell Book");
                 return -1;
             }
 
-            return GetAuraTimeRemaining(aura.InternalAuraNo);
+            return GetDebuffTimeRemaining(aura.InternalAuraNo);
         }
-
-        static byte lastGreen2 = 0;
 
         public static int GetSpellCharges(int spellNoInArrayOfSpells)
         {
             var c = GetBlockColor(spellNoInArrayOfSpells, 9);
-
-            if (c.G != lastGreen2)
-            {
-                Log.Write("Green: " + c.ToString());
-                lastGreen2 = c.G;
-            }
 
             try
             {
@@ -748,24 +726,28 @@ namespace PixelMagic.Helpers
                 return -1;
             }
 
-            return GetAuraCount(spell.InternalSpellNo);
+            return GetSpellCharges(spell.InternalSpellNo);
         }
 
-        public static bool HasAura(string auraName)
+        public static bool HasBuff(int auraNoInArrayOfAuras)
         {
-            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == auraName);
+            var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
+            return ((c.R != 255) && (c.G != 255) && (c.B != 255));
+        }
+
+        public static bool HasBuff(string buffName)
+        {
+            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == buffName);
 
             if (aura == null)
             {
-                Log.Write($"[HasAura] Unable to find aura with name '{auraName}' in Spell Book");
+                Log.Write($"[HasAura] Unable to find aura with name '{buffName}' in Spell Book");
                 return false;
             }
 
-            return HasAura(aura.InternalAuraNo);
+            return HasBuff(aura.InternalAuraNo);
         }
-
-
-
+        
         public static void CastSpellByName(string spellBookSpellName)
         {
             var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
