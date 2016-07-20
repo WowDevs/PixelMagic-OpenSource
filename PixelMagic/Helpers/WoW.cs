@@ -571,6 +571,7 @@ namespace PixelMagic.Helpers
 
             try
             {
+                // ReSharper disable once PossibleNullReferenceException
                 string stacks = dtColorHelper.Select($"[Rounded] = '{c.G}'").FirstOrDefault()["Value"].ToString();
 
                 return int.Parse(stacks);
@@ -597,6 +598,39 @@ namespace PixelMagic.Helpers
             return GetAuraCount(aura.InternalAuraNo);
         }
 
+        public static int GetAuraTimeRemaining(int auraNoInArrayOfAuras)
+        {
+            var c = GetBlockColor(5 + auraNoInArrayOfAuras, 3);
+
+            try
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                var stacks = dtColorHelper.Select($"[Rounded] = '{c.B}'").FirstOrDefault()["Value"].ToString();
+
+                return int.Parse(stacks);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Failed to find aura stacks for color G = " + c.B, Color.Red);
+                Log.Write("Error: " + ex.Message, Color.Red);
+            }
+
+            return 0;
+        }
+
+        public static int GetAuraTimeRemaining(string auraName)
+        {
+            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == auraName);
+
+            if (aura == null)
+            {
+                Log.Write($"[GetAuraTimeRemaining] Unable to find aura with name '{auraName}' in Spell Book");
+                return -1;
+            }
+
+            return GetAuraTimeRemaining(aura.InternalAuraNo);
+        }
+
         static byte lastGreen2 = 0;
 
         public static int GetSpellCharges(int spellNoInArrayOfSpells)
@@ -611,6 +645,7 @@ namespace PixelMagic.Helpers
 
             try
             {
+                // ReSharper disable once PossibleNullReferenceException
                 string stacks = dtColorHelper.Select($"[Rounded] = '{c.G}'").FirstOrDefault()["Value"].ToString();
 
                 return int.Parse(stacks);

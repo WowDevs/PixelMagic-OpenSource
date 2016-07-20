@@ -203,15 +203,13 @@ namespace PixelMagic.GUI
                             cmdRotationSettings.Enabled = true;
                             return true;
                         }
-                        else
-                        {
-                            spellbookToolStripMenuItem.Enabled = false;
-                            submitTicketToolStripMenuItem.Enabled = false;
 
-                            cmdStartBot.Enabled = false;
-                            cmdStartBot.BackColor = Color.WhiteSmoke;
-                            return false;
-                        }                        
+                        spellbookToolStripMenuItem.Enabled = false;
+                        submitTicketToolStripMenuItem.Enabled = false;
+
+                        cmdStartBot.Enabled = false;
+                        cmdStartBot.BackColor = Color.WhiteSmoke;
+                        return false;
                     }
                 }
 

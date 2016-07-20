@@ -90,8 +90,8 @@ local function updateComboPoints()
     ccPrev = power
 end
 
-local function updateSS()
-    local power = UnitPower(""player"", 4)
+local function updateSoulShards()
+    local power = UnitPower(""player"", 7)
 	
     if power ~= ssPrev then	    
         local i = 1
@@ -239,20 +239,29 @@ local function updateTargetDebuffs()
         name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId = UnitDebuff(""target"", auraName)		        
 
 		if (name == auraName) then -- We have Aura up and Aura ID is matching our list					
-			if (lastDebuffState[auraId] ~= ""DebuffOn"" .. count) then
-                local green = 0             
+            local remainingTime = math.floor(expirationTime - getTime + 0.5) 	
+
+			if (lastDebuffState[auraId] ~= ""DebuffOn"" .. count .. remainingTime) then
+                local green = 0
+                local blue = 0             
                 local strcount = ""0.0"" .. count;
+                local strbluecount = ""0.0"" .. remainingTime;
                 
                 if (count >= 10) then
                     strcount = ""0."" .. count;
                 end
 
-                green = tonumber(strcount)
+                if(remainingTime >= 10) then
+                   strbluecount = ""0."" .. remainingTime
+                end
 
-                targetDebuffFrames[auraId].t:SetColorTexture(0, green, 0, 1)
+                green = tonumber(strcount)
+                blue = tonumber(strbluecount)
+
+                targetDebuffFrames[auraId].t:SetColorTexture(0, green, blue, 1)
 				targetDebuffFrames[auraId].t:SetAllPoints(false)
-                print(""["" .. buff .. ""] "" .. auraName.. "" "" .. count .. "" Green: "" .. green)
-                lastDebuffState[auraId] = ""DebuffOn"" .. count 
+                print(""["" .. buff .. ""] "" .. auraName.. "" "" .. count .. "" Green: "" .. green .. "" Blue: "" .. blue)
+                lastDebuffState[auraId] = ""DebuffOn"" .. count .. remainingTime
             end
         else
             if (lastDebuffState[auraId] ~= ""DebuffOff"") then
@@ -599,7 +608,7 @@ local function initFrames()
 		i = i + 1
 	end
 
-    if classIndex == 2 then
+    if classIndex == 2 then                                 -- Paladin
         print (""Initialising Holy Power Frames"")
 	    for i = 1, 5 do
 		    hpframes[i] = CreateFrame(""frame"");
@@ -614,9 +623,24 @@ local function initFrames()
 	    end
     end
 
-    if classIndex == 9 then
+    if classIndex == 9 then                                 -- Warlock
         print (""Initialising Soulshard Frames"")
 	    for i = 1, 5 do
+		    hpframes[i] = CreateFrame(""frame"");
+		    hpframes[i]:SetSize(size, size)
+		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)          -- column 1 - 5, row 7
+		    hpframes[i].t = hpframes[i]:CreateTexture()        
+		    hpframes[i].t:SetTexture(0, 1, 1, 1)
+		    hpframes[i].t:SetAllPoints(hpframes[i])
+		    hpframes[i]:Show()
+		
+		    hpframes[i]:SetScript(""OnUpdate"", updateSoulShards)
+	    end
+    end
+
+    if classIndex == 4 then                                 -- Rogue
+        print (""Initialising Combo Point Frames"")
+	    for i = 1, 8 do
 		    hpframes[i] = CreateFrame(""frame"");
 		    hpframes[i]:SetSize(size, size)
 		    hpframes[i]:SetPoint(""TOPLEFT"", i * size - 5, -size * 6)          -- column 1 - 5, row 7
@@ -629,7 +653,7 @@ local function initFrames()
 	    end
     end
 
-    if classIndex == 6 then
+    if classIndex == 6 then                                 -- DeathKnight
         print (""Initialising Runes Frames"")
 	    for i = 1, 6 do
 		    hpframes[i] = CreateFrame(""frame"");
