@@ -696,6 +696,39 @@ namespace PixelMagic.Helpers
             return GetDebuffTimeRemaining(aura.InternalAuraNo);
         }
 
+        public static int GetDebuffStacks(int auraNoInArrayOfAuras)
+        {
+            var c = GetBlockColor(auraNoInArrayOfAuras, 8);
+
+            try
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                var stacks = dtColorHelper.Select($"[Rounded] = '{c.G}'").FirstOrDefault()["Value"].ToString();
+
+                return int.Parse(stacks);
+            }
+            catch (Exception ex)
+            {
+                Log.Write("Failed to find debuff stacks for color G = " + c.G, Color.Red);
+                Log.Write("Error: " + ex.Message, Color.Red);
+            }
+
+            return 0;
+        }
+
+        public static int GetDebuffStacks(string debuffName)
+        {
+            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == debuffName);
+
+            if (aura == null)
+            {
+                Log.Write($"[GetDebuffTimeRemaining] Unable to find debuff with name '{debuffName}' in Spell Book");
+                return -1;
+            }
+
+            return GetDebuffStacks(aura.InternalAuraNo);
+        }
+
         public static int GetSpellCharges(int spellNoInArrayOfSpells)
         {
             var c = GetBlockColor(spellNoInArrayOfSpells, 9);
