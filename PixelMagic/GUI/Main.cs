@@ -38,24 +38,6 @@ namespace PixelMagic.GUI
         {
             InitializeComponent();
 
-            // ReSharper disable once UnusedVariable
-            var lblPlayerHealth = new Label
-            {
-                Text = "Health",
-                Parent = prgPlayerHealth,
-                Location = new Point(45, 3),
-                BackColor = Color.Transparent                                
-            };
-            
-            // ReSharper disable once UnusedVariable
-            var lblPlayerPower = new Label
-            {
-                Text = "Power",
-                Parent = prgPower,
-                Location = new Point(45, 3),
-                BackColor = Color.Transparent
-            };
-
             classes = new Dictionary<int, string>
             {
                 { 1, "Warrior"},
@@ -94,13 +76,12 @@ namespace PixelMagic.GUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            label2.Parent = this;
-
             toolStripStatusLabel1.Text = string.Format(toolStripStatusLabel1.Text, Exe_Version);
             toolStripStatusLabel3.Text = string.Format(toolStripStatusLabel3.Text, LocalVersion);
 
             prgPlayerHealth.Value = 0;
             prgPower.Value = 0;
+            prgTargetHealth.Value = 0;
 
             // Its annoying as hell when people use incorrect culture info, this will force it to use the correct number and date formats.
             var ci = new CultureInfo("en-ZA") { DateTimeFormat = {ShortDatePattern = "yyyy/MM/dd"}, NumberFormat = { NumberDecimalSeparator = ".", CurrencyDecimalSeparator = "." } };
