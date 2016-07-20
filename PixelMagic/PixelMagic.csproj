@@ -148,6 +148,9 @@
     <Compile Include="Rotations\DemonHunter\DemonHunter-Havoc.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="Rotations\Druid\FeralSeed.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Rotations\Hunter\Hunter-Incorrect %28for testing%29.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -170,6 +173,7 @@
     <None Include="Resources\Register.png" />
     <Content Include="Hadezign-Hobbies-Magic.ico" />
     <None Include="Resources\body-bg-baked-1920px2.jpg" />
+    <None Include="Resources\wow2.png" />
     <Content Include="ToDoList.txt" />
     <EmbeddedResource Include="ColorProgressBar\ColorProgressBar.resx">
       <DependentUpon>ColorProgressBar.cs</DependentUpon>

@@ -71,14 +71,23 @@ namespace PixelMagic.Helpers
 
         public static void AddSpell(int spellId, string spellName, string keyBind)
         {
+            keyBind = keyBind.Replace("\r", "").Replace("\n", "");
+
             if (dtSpells != null && dtSpells.Select($"[Spell Id] = {spellId}").Length == 0)
             {
-                dtSpells.Rows.Add(spellId, spellName, keyBind, 0);
-                RenumberSpells();
+                try
+                {
+                    dtSpells.Rows.Add(spellId, spellName, keyBind, 0);
+                    RenumberSpells();
 
-                var newSpellId = int.Parse(dtSpells.Select($"[Spell Id] = {spellId}")[0]["InternalNo"].ToString());
+                    var newSpellId = int.Parse(dtSpells.Select($"[Spell Id] = '{spellId}'")[0]["InternalNo"].ToString());
 
-                Spells.Add(new Spell(spellId, spellName, keyBind, newSpellId));                
+                    Spells.Add(new Spell(spellId, spellName, keyBind, newSpellId));
+                }
+                catch (Exception ex)
+                {
+                    Log.Write(ex.Message, Color.Red);
+                }
             }
             else
             {
@@ -277,11 +286,11 @@ namespace PixelMagic.Helpers
                         {
                             if (line.StartsWith("/*"))
                             {
-                                fullRotationText += line;
+                                fullRotationText += line.Replace("\r", "").Replace("\n", "");
                             }
                             else
                             {
-                                fullRotationText += line + Environment.NewLine;
+                                fullRotationText += line.Replace("\r", "").Replace("\n", "") + Environment.NewLine;
                             }
                         }
                     }

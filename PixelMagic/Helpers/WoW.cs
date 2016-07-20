@@ -533,10 +533,36 @@ namespace PixelMagic.Helpers
             return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
         }
 
+        public static bool IsSpellOnCooldown(string spellBookSpellName)
+        {
+            var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
+
+            if (spell == null)
+            {
+                Log.Write($"[IsSpellOnCooldown] Unable to find spell with name '{spellBookSpellName}' in Spell Book");
+                return false;
+            }
+
+            return IsSpellOnCooldown(spell.InternalSpellNo);
+        }
+
         public static bool IsSpellInRange(int spellNoInArrayOfSpells) // This will take the spell no from the array of spells, 1, 2, 3 ..... n
         {
             var c = GetBlockColor(spellNoInArrayOfSpells, 6);
             return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
+        }
+
+        public static bool IsSpellInRange(string spellBookSpellName)
+        {
+            var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
+
+            if (spell == null)
+            {
+                Log.Write($"[IsSpellInRange] Unable to find spell with name '{spellBookSpellName}' in Spell Book");
+                return false;
+            }
+
+            return IsSpellInRange(spell.InternalSpellNo);
         }
 
         public static bool CanCast(int spellNoInArrayOfSpells, 
@@ -780,7 +806,26 @@ namespace PixelMagic.Helpers
 
             return HasBuff(aura.InternalAuraNo);
         }
-        
+
+        public static bool HasDebuff(string debuffName)
+        {
+            var aura = SpellBook.Auras.FirstOrDefault(s => s.AuraName == debuffName);
+
+            if (aura == null)
+            {
+                Log.Write($"[HasDebuff] Unable to find debuff with name '{debuffName}' in Spell Book");
+                return false;
+            }
+
+            return HasDebuff(aura.InternalAuraNo);
+        }
+
+        public static bool HasDebuff(int auraNoInArrayOfAuras)
+        {
+            var c = GetBlockColor(auraNoInArrayOfAuras, 8);
+            return ((c.R != 255) && (c.G != 255) && (c.B != 255));
+        }
+
         public static void CastSpellByName(string spellBookSpellName)
         {
             var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);

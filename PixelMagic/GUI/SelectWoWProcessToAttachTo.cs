@@ -49,10 +49,11 @@ namespace PixelMagic.GUI
             if (cmbWoW.Items.Count > 0)
             {
                 cmbWoW.SelectedIndex = 0;
+                cmbWoW.Enabled = true;
             }
             else
             {
-                MessageBox.Show("Unable to find any WoW processes to connect to, please open WoW and then click the refresh button.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                cmbWoW.Enabled = false;
             }
         }
 
