@@ -488,24 +488,52 @@ namespace PixelMagic.Helpers
             return (c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B);
         }
 
-        public static bool CanCast(int spellNoInArrayOfSpells)
+        public static bool CanCast(int spellNoInArrayOfSpells, 
+                                   bool checkIfPlayerIsCasting = true, 
+                                   bool checkIfSpellIsOnCooldown = true, 
+                                   bool checkIfSpellIsInRange = true, 
+                                   bool checkSpellCharges = true, 
+                                   bool checkIfTargetIsVisible = true)
         {
-            if (PlayerIsCasting)
-                return false;
+            if (checkIfPlayerIsCasting)
+                if (PlayerIsCasting)
+                    return false;
 
-            if (IsSpellOnCooldown(spellNoInArrayOfSpells))
-                return false;
+            if (checkIfSpellIsOnCooldown)
+                if (IsSpellOnCooldown(spellNoInArrayOfSpells))
+                    return false;
 
-            if (IsSpellInRange(spellNoInArrayOfSpells) == false)
-                return false;
+            if (checkIfSpellIsInRange)
+                if (IsSpellInRange(spellNoInArrayOfSpells) == false)
+                    return false;
 
-            if (GetSpellCharges(spellNoInArrayOfSpells) <= 0)
-                return false;
+            if (checkSpellCharges)
+                if (GetSpellCharges(spellNoInArrayOfSpells) <= 0)
+                    return false;
 
-            if (TargetIsVisible == false)
-                return false;
+            if (checkIfTargetIsVisible)
+                if (TargetIsVisible == false)
+                    return false;
 
             return true;
+        }
+
+        public static bool CanCast(string spellBookSpellName,
+                                   bool checkIfPlayerIsCasting = true,
+                                   bool checkIfSpellIsOnCooldown = true,
+                                   bool checkIfSpellIsInRange = true,
+                                   bool checkSpellCharges = true,
+                                   bool checkIfTargetIsVisible = true)
+        {
+            var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
+
+            if (spell == null)
+            {
+                Log.Write($"[CanCast] Unable to find spell with name '{spellBookSpellName}' in Spell Book");
+                return false;
+            }
+
+            return CanCast(spell.InternalSpellNo, checkIfPlayerIsCasting, checkIfSpellIsOnCooldown, checkIfSpellIsInRange, checkSpellCharges, checkIfTargetIsVisible);
         }
 
         public static void SendKey(Keys key, int milliseconds = 50, string spellName = null)
@@ -685,18 +713,7 @@ namespace PixelMagic.Helpers
             return HasAura(aura.InternalAuraNo);
         }
 
-        public static bool CanCast(string spellBookSpellName)
-        {
-            var spell = SpellBook.Spells.FirstOrDefault(s => s.SpellName == spellBookSpellName);
 
-            if (spell == null)
-            {
-                Log.Write($"[CanCast] Unable to find spell with name '{spellBookSpellName}' in Spell Book");
-                return false;
-            }
-
-            return CanCast(spell.InternalSpellNo);
-        }
 
         public static void CastSpellByName(string spellBookSpellName)
         {
