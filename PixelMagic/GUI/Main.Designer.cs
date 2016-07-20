@@ -95,11 +95,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbLog.BackColor = System.Drawing.Color.White;
             this.rtbLog.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.rtbLog.Location = new System.Drawing.Point(0, 27);
+            this.rtbLog.Location = new System.Drawing.Point(0, 24);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
             this.rtbLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.rtbLog.Size = new System.Drawing.Size(825, 513);
+            this.rtbLog.Size = new System.Drawing.Size(825, 515);
             this.rtbLog.TabIndex = 2;
             this.rtbLog.Text = "";
             this.rtbLog.TextChanged += new System.EventHandler(this.rtbLog_TextChanged);
@@ -115,7 +115,8 @@
             // 
             // txtTargetCasting
             // 
-            this.txtTargetCasting.ForeColor = System.Drawing.Color.Black;
+            this.txtTargetCasting.BackColor = System.Drawing.Color.DarkGreen;
+            this.txtTargetCasting.ForeColor = System.Drawing.Color.White;
             this.txtTargetCasting.Location = new System.Drawing.Point(1021, 180);
             this.txtTargetCasting.Name = "txtTargetCasting";
             this.txtTargetCasting.ReadOnly = true;
@@ -249,30 +250,33 @@
             // 
             // txtMouseXYClick
             // 
-            this.txtMouseXYClick.ForeColor = System.Drawing.Color.Black;
-            this.txtMouseXYClick.Location = new System.Drawing.Point(967, 341);
+            this.txtMouseXYClick.BackColor = System.Drawing.Color.DarkGreen;
+            this.txtMouseXYClick.ForeColor = System.Drawing.Color.White;
+            this.txtMouseXYClick.Location = new System.Drawing.Point(956, 341);
             this.txtMouseXYClick.Name = "txtMouseXYClick";
             this.txtMouseXYClick.ReadOnly = true;
-            this.txtMouseXYClick.Size = new System.Drawing.Size(55, 20);
+            this.txtMouseXYClick.Size = new System.Drawing.Size(79, 20);
             this.txtMouseXYClick.TabIndex = 8;
             // 
             // txtMouseXY
             // 
-            this.txtMouseXY.ForeColor = System.Drawing.Color.Black;
-            this.txtMouseXY.Location = new System.Drawing.Point(967, 317);
+            this.txtMouseXY.BackColor = System.Drawing.Color.DarkGreen;
+            this.txtMouseXY.ForeColor = System.Drawing.Color.White;
+            this.txtMouseXY.Location = new System.Drawing.Point(956, 317);
             this.txtMouseXY.Name = "txtMouseXY";
             this.txtMouseXY.ReadOnly = true;
-            this.txtMouseXY.Size = new System.Drawing.Size(55, 20);
+            this.txtMouseXY.Size = new System.Drawing.Size(79, 20);
             this.txtMouseXY.TabIndex = 8;
             // 
             // chkPlayErrorSounds
             // 
             this.chkPlayErrorSounds.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkPlayErrorSounds.AutoSize = true;
+            this.chkPlayErrorSounds.BackColor = System.Drawing.Color.DarkGreen;
             this.chkPlayErrorSounds.Checked = true;
             this.chkPlayErrorSounds.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPlayErrorSounds.ForeColor = System.Drawing.Color.Black;
-            this.chkPlayErrorSounds.Location = new System.Drawing.Point(1007, 395);
+            this.chkPlayErrorSounds.Location = new System.Drawing.Point(1020, 395);
             this.chkPlayErrorSounds.Name = "chkPlayErrorSounds";
             this.chkPlayErrorSounds.Size = new System.Drawing.Size(15, 14);
             this.chkPlayErrorSounds.TabIndex = 18;
@@ -283,21 +287,23 @@
             // 
             this.chkDisableOverlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkDisableOverlay.AutoSize = true;
+            this.chkDisableOverlay.BackColor = System.Drawing.Color.DarkGreen;
             this.chkDisableOverlay.Checked = true;
             this.chkDisableOverlay.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDisableOverlay.ForeColor = System.Drawing.Color.Black;
-            this.chkDisableOverlay.Location = new System.Drawing.Point(1007, 418);
+            this.chkDisableOverlay.Location = new System.Drawing.Point(1020, 418);
             this.chkDisableOverlay.Name = "chkDisableOverlay";
             this.chkDisableOverlay.Size = new System.Drawing.Size(15, 14);
             this.chkDisableOverlay.TabIndex = 19;
-            this.chkDisableOverlay.UseVisualStyleBackColor = true;
+            this.chkDisableOverlay.UseVisualStyleBackColor = false;
             this.chkDisableOverlay.CheckedChanged += new System.EventHandler(this.chkDisableOverlay_CheckedChanged);
             // 
             // nudPulse
             // 
             this.nudPulse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.nudPulse.ForeColor = System.Drawing.Color.Black;
-            this.nudPulse.Location = new System.Drawing.Point(968, 368);
+            this.nudPulse.BackColor = System.Drawing.Color.DarkGreen;
+            this.nudPulse.ForeColor = System.Drawing.Color.White;
+            this.nudPulse.Location = new System.Drawing.Point(981, 368);
             this.nudPulse.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -376,9 +382,10 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::PixelMagic.GUI.Properties.Resources.body_bg_baked_1920px2;
-            this.pictureBox1.Location = new System.Drawing.Point(825, 27);
+            this.pictureBox1.Location = new System.Drawing.Point(825, -251);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(298, 510);
+            this.pictureBox1.Size = new System.Drawing.Size(462, 934);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 26;
             this.pictureBox1.TabStop = false;
             // 
@@ -434,7 +441,7 @@
             // transparentLabel10
             // 
             this.transparentLabel10.ForeColor = System.Drawing.Color.White;
-            this.transparentLabel10.Location = new System.Drawing.Point(904, 417);
+            this.transparentLabel10.Location = new System.Drawing.Point(893, 417);
             this.transparentLabel10.Name = "transparentLabel10";
             this.transparentLabel10.Size = new System.Drawing.Size(85, 15);
             this.transparentLabel10.TabIndex = 39;
@@ -445,7 +452,7 @@
             // transparentLabel9
             // 
             this.transparentLabel9.ForeColor = System.Drawing.Color.White;
-            this.transparentLabel9.Location = new System.Drawing.Point(904, 395);
+            this.transparentLabel9.Location = new System.Drawing.Point(893, 395);
             this.transparentLabel9.Name = "transparentLabel9";
             this.transparentLabel9.Size = new System.Drawing.Size(93, 15);
             this.transparentLabel9.TabIndex = 38;
@@ -456,7 +463,7 @@
             // transparentLabel7
             // 
             this.transparentLabel7.ForeColor = System.Drawing.Color.White;
-            this.transparentLabel7.Location = new System.Drawing.Point(904, 344);
+            this.transparentLabel7.Location = new System.Drawing.Point(893, 344);
             this.transparentLabel7.Name = "transparentLabel7";
             this.transparentLabel7.Size = new System.Drawing.Size(59, 15);
             this.transparentLabel7.TabIndex = 37;
@@ -467,7 +474,7 @@
             // transparentLabel8
             // 
             this.transparentLabel8.ForeColor = System.Drawing.Color.White;
-            this.transparentLabel8.Location = new System.Drawing.Point(904, 320);
+            this.transparentLabel8.Location = new System.Drawing.Point(893, 320);
             this.transparentLabel8.Name = "transparentLabel8";
             this.transparentLabel8.Size = new System.Drawing.Size(59, 15);
             this.transparentLabel8.TabIndex = 36;
@@ -478,7 +485,7 @@
             // transparentLabel6
             // 
             this.transparentLabel6.ForeColor = System.Drawing.Color.White;
-            this.transparentLabel6.Location = new System.Drawing.Point(904, 370);
+            this.transparentLabel6.Location = new System.Drawing.Point(893, 370);
             this.transparentLabel6.Name = "transparentLabel6";
             this.transparentLabel6.Size = new System.Drawing.Size(58, 15);
             this.transparentLabel6.TabIndex = 35;
