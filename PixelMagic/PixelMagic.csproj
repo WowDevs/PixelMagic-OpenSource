@@ -145,6 +145,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rotations\DeathKnight\DeathKnight_3.3.5a.cs" />
+    <Compile Include="Rotations\DeathKnight\DKUnholy.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Rotations\DemonHunter\DemonHunter-Havoc.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

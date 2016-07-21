@@ -387,7 +387,7 @@ namespace PixelMagic.Helpers
                 for (var x = 1; x <= 8; x++)
                 {
                     var c = GetBlockColor(x, 7);
-                    if ((c.R == Color.Red.R) && (c.G == Color.Red.G) && (c.B == Color.Red.B))
+                    if ((c.R == 255) && (c.G == 0) && (c.B == 0))
                     {
                         comboPoints++;
                     }
@@ -493,6 +493,7 @@ namespace PixelMagic.Helpers
         public static int Energy => Power;
         public static int Rage => Power;
         public static int Fury => Power;
+        public static int RunicPower => Power;
 
         public static bool HasFocus
         {

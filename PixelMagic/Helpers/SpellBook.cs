@@ -73,7 +73,7 @@ namespace PixelMagic.Helpers
         {
             keyBind = keyBind.Replace("\r", "").Replace("\n", "");
 
-            if (dtSpells != null && dtSpells.Select($"[Spell Id] = {spellId}").Length == 0)
+            if (dtSpells != null && dtSpells.Select($"[Spell Id] = '{spellId}'").Length == 0)
             {
                 try
                 {
@@ -102,12 +102,12 @@ namespace PixelMagic.Helpers
 
         public static void AddAura(int auraId, string auraName)
         {
-            if (dtAuras != null && dtAuras.Select($"[Aura Id] = {auraId}").Length == 0)
+            if (dtAuras != null && dtAuras.Select($"[Aura Id] = '{auraId}'").Length == 0)
             {
                 dtAuras.Rows.Add(auraId, auraName);
                 RenumberAuras();
 
-                var newAuraId = int.Parse(dtAuras.Select($"[Aura Id] = {auraId}")[0]["InternalNo"].ToString());
+                var newAuraId = int.Parse(dtAuras.Select($"[Aura Id] = '{auraId}'")[0]["InternalNo"].ToString());
 
                 Auras.Add(new Aura(auraId, auraName, newAuraId));
             }
@@ -124,9 +124,9 @@ namespace PixelMagic.Helpers
 
         public static void RemoveSpell(int spellId)
         {
-            if (dtSpells.Select($"[Spell Id] = {spellId}").Length == 1)
+            if (dtSpells.Select($"[Spell Id] = '{spellId}'").Length == 1)
             {
-                dtSpells.Rows.Remove(dtSpells.Select($"[Spell Id] = {spellId}").FirstOrDefault());
+                dtSpells.Rows.Remove(dtSpells.Select($"[Spell Id] = '{spellId}'").FirstOrDefault());
                 Spells.Remove(Spells.FirstOrDefault(s => s.SpellId == spellId));
 
                 RenumberSpells();
@@ -144,9 +144,9 @@ namespace PixelMagic.Helpers
 
         public static void RemoveAura(int auraId)
         {
-            if (dtAuras.Select($"[Aura Id] = {auraId}").Length == 1)
+            if (dtAuras.Select($"[Aura Id] = '{auraId}'").Length == 1)
             {
-                dtAuras.Rows.Remove(dtAuras.Select($"[Aura Id] = {auraId}").FirstOrDefault());
+                dtAuras.Rows.Remove(dtAuras.Select($"[Aura Id] = '{auraId}'").FirstOrDefault());
                 Auras.Remove(Auras.FirstOrDefault(a => a.AuraId == auraId));
             }
             else
@@ -239,7 +239,7 @@ namespace PixelMagic.Helpers
                 else
                 {                    
                     Log.Write("Failed to load addon details or spellbook from rotation file, please ensure that it is not missing.", Color.Red);
-                    Log.Write("you can see the file: " + Application.StartupPath + "\\Rotations\\Hunter\\Hunter.cs for reference", Color.Red);
+                    Log.Write("you can see the file: " + Application.StartupPath + "\\Rotations\\Warrior\\Warrior.cs for reference", Color.Red);
 
                     return false;
                 }

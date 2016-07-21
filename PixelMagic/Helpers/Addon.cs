@@ -62,12 +62,7 @@ local function updateHolyPower()
  end
 
 local function updateComboPoints()
-    local playerClass, englishClass, classIndex = UnitClass(""player"");
     local power = UnitPower(""player"", 4)
-
-    -- http://wowwiki.wikia.com/wiki/API_GetTalentInfo
-    -- local ATalent = select(4, GetTalentInfo(3, 2, 1))   -- Anticipation (You may have a max of 8 combo points)
-    -- local DSTalent = select(4, GetTalentInfo(3, 1, 1))  -- Deeper Stratgem (You may have a max of 6 combo points)
 
     if power ~= ccPrev then	
         local i = 1
@@ -81,8 +76,8 @@ local function updateComboPoints()
         end		
     end
   
-    while i <= 8 do                                     -- mark the remaining frames in color 1,1,0
-        hpframes[i].t:SetTexture(0, 1, 1, 1)
+    while i <= 8 do                                     -- mark the remaining frames in color white
+        hpframes[i].t:SetTexture(1, 1, 0, 1)
         hpframes[i].t:SetAllPoints(false)
         i = 1 + i
     end    
@@ -639,8 +634,8 @@ local function initFrames()
 	    end
     end
 
-    if classIndex == 4 then                                 -- Rogue
-        print (""Initialising Combo Point Frames"")
+    if classIndex == 4 or classIndex == 11 then                                 -- Rogue or Druid Feral
+        print (""Initialising Combo Point Frames - Class Index = "" .. classIndex)
 	    for i = 1, 8 do
 		    hpframes[i] = CreateFrame(""frame"");
 		    hpframes[i]:SetSize(size, size)
