@@ -611,7 +611,11 @@ namespace PixelMagic.Helpers
                 return false;
             }
 
-            return CanCast(spell.InternalSpellNo, checkIfPlayerIsCasting, checkIfSpellIsOnCooldown, checkIfSpellIsInRange, checkSpellCharges, checkIfTargetIsVisible);
+            var ret = CanCast(spell.InternalSpellNo, checkIfPlayerIsCasting, checkIfSpellIsOnCooldown, checkIfSpellIsInRange, checkSpellCharges, checkIfTargetIsVisible);
+
+            Log.Write($"CanCast [{spellBookSpellName}] = {ret}", ret ? Color.Green : Color.Red);
+
+            return ret;
         }
 
         private static void SendKey(Keys key, int milliseconds = 50, string spellName = null)

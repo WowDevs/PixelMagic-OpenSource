@@ -42,39 +42,33 @@ namespace PixelMagic.Rotation
             {
                 if (WoW.HasTarget && WoW.TargetIsEnemy)
                 {
-                    //On GCD
-                    if (!WoW.IsSpellOnCooldown("Death Coil"))
+                    if (!WoW.HasDebuff("Virulent Plague") && WoW.CurrentRunes >= 1 && WoW.CanCast("Outbreak", true, false, true, false, true))
                     {
-                        //actions +=/ outbreak,target_if = !dot.virulent_plague.ticking
-                        if (!WoW.HasDebuff("Virulent Plague") && WoW.CurrentRunes >= 1 && WoW.CanCast("Outbreak", true, false, true, false, true))
-                        {
-                            WoW.CastSpellByName("Outbreak");
-                        }
-                        if (WoW.CanCast("Dark Transformation", true, true, true, false, true))
-                        {
-                            WoW.CastSpellByName("Dark Transformation");
-                        }
-
-                        if (WoW.CanCast("Death Coil", true, false, false, false, true) && (WoW.RunicPower >= 80) || (WoW.HasBuff("Sudden Doom") && WoW.IsSpellOnCooldown("Dark Arbiter")))
-                        {
-                            WoW.CastSpellByName("Death Coil");
-                        }
-                        if (WoW.CanCast("Festering Strike", true, false, true, false, true) && WoW.GetDebuffStacks("Festering Wound") <= 4)
-                        {
-                            WoW.CastSpellByName("Festering Strike");
-                        }
-                        if (WoW.CanCast("Clawing Shadows", true, false, false, false, true) && WoW.CurrentRunes >= 3)
-                        {
-                            WoW.CastSpellByName("Clawing Shadows");
-                        }
-                        //actions +=/ dark_transformation
+                        WoW.CastSpellByName("Outbreak");
                     }
-                    //Off gcd
+                    if (WoW.CanCast("Dark Transformation", true, true, true, true, true) && WoW.GetSpellCharges("Dark Transformation") > 0)
+                    {
+                        WoW.CastSpellByName("Dark Transformation");
+                    }
+
+                    //if (WoW.CanCast("Death Coil", true, false, false, false, true) && (WoW.RunicPower >= 80) || (WoW.HasBuff("Sudden Doom") && WoW.IsSpellOnCooldown("Dark Arbiter")))
+                    //{
+                    //    WoW.CastSpellByName("Death Coil");
+                    //}
+                    //if (WoW.CanCast("Festering Strike", true, false, true, false, true) && WoW.GetDebuffStacks("Festering Wound") <= 4)
+                    //{
+                    //    WoW.CastSpellByName("Festering Strike");
+                    //}
+                    //if (WoW.CanCast("Clawing Shadows", true, false, false, false, true) && WoW.CurrentRunes >= 3)
+                    //{
+                    //    WoW.CastSpellByName("Clawing Shadows");
+                    //}                        
                 }
             }
             if (combatRoutine.Type == RotationType.AOE)
             {
-                
+                //Log.Write("Spell Charges: " + WoW.GetSpellCharges("Dark Transformation"));
+                Log.Write("Spell Charges: " + WoW.GetSpellCharges("Dark Transformation"));
             }
         }
 
@@ -94,7 +88,7 @@ Spell,207311,Clawing Shadows,D3
 Spell,47541,Death Coil,D4
 Spell,194918,Blighted Rune Weapon,D5
 Spell,63560,Dark Transformation,D6
-Spell,207349,Dark Arbiter, Q
+Spell,207349,Dark Arbiter,Q
 Aura,81340,Sudden Doom
 Aura,194310,Festering Wound
 Aura,191587,Virulent Plague

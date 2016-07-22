@@ -152,7 +152,7 @@ local function updateSpellCooldowns()
 																-- BUG: when trigger global CD on ANY spell this increases to 1 second
 																-- dont have a workaround for now
 				if (lastCooldownState[spellId] ~= ""onCD"") then										 
-					--print(""Spell with Id = "" .. spellId .. "" is on CD: "" .. remainingCD)
+					print(""Spell with Id = "" .. spellId .. "" is on CD: "" .. remainingCD)
 					
 					cooldownframes[spellId].t:SetTexture(1, 0, 0, 1)
 					cooldownframes[spellId].t:SetAllPoints(false)
@@ -213,7 +213,7 @@ local function updateMyBuffs()
                 green = tonumber(strcount)
                 buffFrames[auraId].t:SetColorTexture(0, green, 0, 1)
 				buffFrames[auraId].t:SetAllPoints(false)
-                print(""["" .. buff .. ""] "" .. auraName.. "" "" .. count .. "" Green: "" .. green)
+                --print(""["" .. buff .. ""] "" .. auraName.. "" "" .. count .. "" Green: "" .. green)
                 lastBuffState[auraId] = ""BuffOn"" .. count 
             end
         else
@@ -221,7 +221,7 @@ local function updateMyBuffs()
                 buffFrames[auraId].t:SetColorTexture(1, 1, 1, 1)
                 buffFrames[auraId].t:SetAllPoints(false)
                 lastBuffState[auraId] = ""BuffOff""
-                print(""["" .. buff .. ""] "" .. auraName.. "" Off"")
+                --print(""["" .. buff .. ""] "" .. auraName.. "" Off"")
             end
         end
     end
@@ -256,7 +256,7 @@ local function updateTargetDebuffs()
 
                 targetDebuffFrames[auraId].t:SetColorTexture(0, green, blue, 1)
 				targetDebuffFrames[auraId].t:SetAllPoints(false)
-                print(""["" .. buff .. ""] "" .. auraName.. "" "" .. count .. "" Green: "" .. green .. "" Blue: "" .. blue)
+                --print(""["" .. buff .. ""] "" .. auraName.. "" "" .. count .. "" Green: "" .. green .. "" Blue: "" .. blue)
                 lastDebuffState[auraId] = ""DebuffOn"" .. count .. remainingTime
             end
         else
@@ -264,7 +264,7 @@ local function updateTargetDebuffs()
                 targetDebuffFrames[auraId].t:SetColorTexture(1, 1, 1, 1)
                 targetDebuffFrames[auraId].t:SetAllPoints(false)
                 lastDebuffState[auraId] = ""DebuffOff""
-                print(""["" .. buff .. ""] "" .. auraName.. "" Off"")
+                --print(""["" .. buff .. ""] "" .. auraName.. "" Off"")
             end
         end
     end
@@ -318,7 +318,7 @@ local function updateHealth()
 	
 	if (percHealth ~= lastHealth) then		
 		local binaryHealth = healthToBinary(percHealth)
-		print (""Health = "" .. percHealth .. "" binary = "".. binaryHealth)
+		--print (""Health = "" .. percHealth .. "" binary = "".. binaryHealth)
 		
 		for i = 1, string.len(binaryHealth) do
 			local currentBit = string.sub(binaryHealth, i, i)
@@ -401,7 +401,7 @@ local function updatePower()
 		end
 		
 		local binaryPower = healthToBinary(power)			
-		print (""Power = "" .. power .. "" binary = "".. binaryPower)	
+		--print (""Power = "" .. power .. "" binary = "".. binaryPower)	
 		--print (""Current Spec = "" .. currentSpecId)
 		
 		for i = 1, string.len(binaryPower) do
@@ -425,11 +425,11 @@ local function updateIsFriendly()
 	if (isFriend ~= lastIsFriend) then
 	
 		if (isFriend == true) then
-			print (""Unit is friendly: True"")
+			--print (""Unit is friendly: True"")
 			
 			isTargetFriendlyFrame.t:SetTexture(0, 1, 0, 1)
 		else
-			print (""Unit is friendly: False"")
+			--print (""Unit is friendly: False"")
 			
 			isTargetFriendlyFrame.t:SetTexture(0, 0, 1, 1)
 		end
@@ -445,11 +445,11 @@ local function hasTarget()
 		
 	if (guid ~= lastTargetGUID) then
 		if (guid == nil) then
-			print (""Target GUID: None"" )	
+			--print (""Target GUID: None"" )	
 			
 			hasTargetFrame.t:SetTexture(0, 0, 0, 1)
 		else			
-			print (""Target GUID: "" .. guid )	
+			--print (""Target GUID: "" .. guid )	
 			
 			hasTargetFrame.t:SetTexture(1, 0, 0, 1)
 		end
@@ -489,7 +489,7 @@ local function updateTargetIsCasting()
 		
 	if castID ~= nil then	
 		if castID ~= lastTargetCastID then
-			print(""Casting spell: "" .. spell)
+			--print(""Casting spell: "" .. spell)
 		
 			targetIsCastingFrame.t:SetTexture(1, 0, 0, 1)
 		
@@ -497,7 +497,7 @@ local function updateTargetIsCasting()
 		end
 	else
 		if castID ~= lastTargetCastID then
-			print(""Not casting"")
+			--print(""Not casting"")
 			
 			targetIsCastingFrame.t:SetTexture(1, 1, 1, 1)
 			
@@ -513,14 +513,14 @@ local function updateUnitIsVisible()
 		
 	if vis == nil then			
         if (vis ~= lastVis) then
-		    print(""Target Is Not Visible"")		
+		    --print(""Target Is Not Visible"")		
 
 	        unitIsVisibleFrame.t:SetTexture(1, 1, 1, 1)
 		    lastVis = vis				
         end
 	else
 		if vis ~= lastVis then
-			print(""Target Is Visible"")			
+			--print(""Target Is Visible"")			
 
 			unitIsVisibleFrame.t:SetTexture(1, 0, 0, 1)			
 			lastVis = vis		
