@@ -665,5 +665,11 @@ namespace PixelMagic.GUI
         {
 
         }
+
+        private void imageToByteArrayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GUI.frmImageToByteArray f = new GUI.frmImageToByteArray();
+            f.ShowDialog();
+        }
     }
 }

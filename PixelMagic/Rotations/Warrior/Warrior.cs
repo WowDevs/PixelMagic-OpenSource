@@ -47,16 +47,8 @@ namespace PixelMagic.Rotation
                 return Image.FromStream(new MemoryStream(arrBytes));
 
                 // You can generate this array string from any picture box as below
-                //public byte[] imageToByteArray(System.Drawing.Image imageIn)
-                //{
-                //    MemoryStream ms = new MemoryStream();
-                //    imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
-                //    return ms.ToArray();
-                //}
-
-                // Then call 
-                // var bytes = imageToByteArray(pictureBox1.Image);
-                // string byteString = string.Join(",", bytes);
+                // Use Tools -> Image to byte string / array - and paste the output in the newByteArray above.
+                // Warning dont use large images as they will take forever to generate
             }
         }
         

@@ -76,6 +76,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ColorProgressBar\ColorProgressBarDesigner.cs" />
+    <Compile Include="GUI\frmImageToByteArray.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmImageToByteArray.Designer.cs">
+      <DependentUpon>frmImageToByteArray.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\frmSubmitTicket.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,6 +186,9 @@
     <Content Include="ToDoList.txt" />
     <EmbeddedResource Include="ColorProgressBar\ColorProgressBar.resx">
       <DependentUpon>ColorProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmImageToByteArray.resx">
+      <DependentUpon>frmImageToByteArray.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\frmSubmitTicket.resx">
       <DependentUpon>frmSubmitTicket.cs</DependentUpon>

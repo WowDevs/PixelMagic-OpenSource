@@ -139,7 +139,8 @@ local function updateSpellCooldowns()
 	for _, spellId in pairs(cooldowns) do
 		-- start is the value of GetTime() at the point the spell began cooling down
 		-- duration is the total duration of the cooldown, NOT the remaining
-		local start, duration, enable = GetSpellCooldown(spellId)
+		local start, duration, 
+= GetSpellCooldown(spellId)
 		if start and duration then -- the spell is on cooldown
 			local getTime = GetTime()
 
