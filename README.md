@@ -1,4 +1,4 @@
-# Pixel-Bot-Sample-Application
+# Pixel Magic - where colour unlocks the world.
 
 Developer: WiNiFiX<br>
 Copyright Owner: WiNiFiX<br>
