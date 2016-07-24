@@ -108,6 +108,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmdBrowse);
             this.Name = "frmImageToByteArray";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Image To Byte Array";
             ((System.ComponentModel.ISupportInitialize)(this.picSample)).EndInit();
             this.ResumeLayout(false);

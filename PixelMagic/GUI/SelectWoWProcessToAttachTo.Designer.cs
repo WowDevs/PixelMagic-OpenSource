@@ -41,6 +41,7 @@
             // 
             // cmbWoW
             // 
+            this.cmbWoW.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbWoW.FormattingEnabled = true;
             this.cmbWoW.Location = new System.Drawing.Point(12, 129);
             this.cmbWoW.Name = "cmbWoW";

@@ -318,7 +318,7 @@ namespace PixelMagic.GUI
 
                 Log.DrawHorizontalLine();
                 Log.Write("Please select a rotation to load from 'File' -> 'Load Rotation...'", Color.Green);
-                Log.Write("Please note that you can only start bot or setup spellbook once you have loaded a rotation", Color.Black);
+                Log.Write("Please note that you can only start a bot, or setup the spellbook, once you have loaded a rotation", Color.Black);
                 Log.DrawHorizontalLine();
 
                 //// For testing only
