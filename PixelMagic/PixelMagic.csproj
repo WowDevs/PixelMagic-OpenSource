@@ -183,6 +183,7 @@
     <Content Include="Hadezign-Hobbies-Magic.ico" />
     <None Include="Resources\body-bg-baked-1920px2.jpg" />
     <None Include="Resources\wow2.png" />
+    <None Include="Resources\green_veins_by_user28435.jpg" />
     <Content Include="ToDoList.txt" />
     <EmbeddedResource Include="ColorProgressBar\ColorProgressBar.resx">
       <DependentUpon>ColorProgressBar.cs</DependentUpon>
